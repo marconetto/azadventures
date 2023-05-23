@@ -20,6 +20,7 @@ your resources are provisioned.
 
 
 Check out create_peering_vpn.sh in this folder to automate vpn peering
+
 Check out create_peering_bastion.sh in this folder to automate bastion peering
 
 

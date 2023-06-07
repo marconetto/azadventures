@@ -312,7 +312,7 @@ You will basically do:
 curl
 https://raw.githubusercontent.com/marconetto/azadventures/main/chapter3/create_peering_bastion.sh  -O
 
-bash ./create_peering_bastion.sh $JUMPBOXRG $JUMPBOXVNET $RG $VMSSVNET
+bash ./create_peering_bastion.sh $JUMPBOXRG $JUMPBOXVNET $RG $VMSSVNETNAME
 ```
 
 You will then be able to ssh into a VM instance of the VMSS

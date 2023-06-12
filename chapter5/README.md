@@ -363,6 +363,7 @@ az group delete -g $RG
 - cloud init: https://learn.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-automate-vm-deployment
 - cloud init: https://cloud-init.io/
 - storage options: https://learn.microsoft.com/en-us/azure/storage/common/nfs-comparison
+- performance tips: https://learn.microsoft.com/en-us/azure/storage/blobs/network-file-system-protocol-support-performance?source=recommendations
 
 
 

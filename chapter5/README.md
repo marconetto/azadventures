@@ -362,6 +362,7 @@ az group delete -g $RG
 - mount nfs: https://learn.microsoft.com/en-us/azure/storage/blobs/network-file-system-protocol-support-how-to
 - cloud init: https://learn.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-automate-vm-deployment
 - cloud init: https://cloud-init.io/
+- storage options: https://learn.microsoft.com/en-us/azure/storage/common/nfs-comparison
 
 
 

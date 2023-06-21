@@ -47,7 +47,7 @@ in literature, but the concept is the same.
 
 
 <p align="center" width="100%">
-    <img width="50%" src="architecture.jpg">
+    <img width="75%" src="architecture.jpg">
 </p>
 
 

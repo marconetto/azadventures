@@ -16,3 +16,4 @@ tutorials in this repository.
 4. chapter 4: TBD
 5. [Chapter5:](https://github.com/marconetto/azadventures/tree/main/chapter5/) VMSS with NFS on blob
 5. [Chapter6:](https://github.com/marconetto/azadventures/tree/main/chapter6/) Auto scaling in VMSS
+5. [Chapter7:](https://github.com/marconetto/azadventures/tree/main/chapter7/) Boot worker processes in VMSS

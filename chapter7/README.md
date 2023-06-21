@@ -46,7 +46,9 @@ in literature, but the concept is the same.
 
 
 
-![Architecture Overview](architecture.jpg width="200")
+<p align="center" width="100%">
+    <img width="50%" src="architecture.jpg">
+</p>
 
 
 There are two major communication protocols for these application. One is called

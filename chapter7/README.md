@@ -46,7 +46,7 @@ in literature, but the concept is the same.
 
 
 
-![Architecture Overview](architecture.jpg)
+![Architecture Overview](architecture.jpg width="200")
 
 
 There are two major communication protocols for these application. One is called

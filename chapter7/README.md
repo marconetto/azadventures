@@ -46,10 +46,7 @@ in literature, but the concept is the same.
 
 
 
-<img src="https://github.com/marconetto/azadventures/tree/main/chapter7/figure.jpg" align="center" width="144" />
-
 ![Communication Protocol](figure.jpg)
-![Communication Protocol](https://github.com/marconetto/azadventures/tree/main/chapter7/figure.jpg)
 
 
 There are two major communication protocols for these application. One is called

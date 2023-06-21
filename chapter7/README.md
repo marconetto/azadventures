@@ -45,7 +45,10 @@ execution of the pending tasks. This manager-worker architecture has other names
 in literature, but the concept is the same.
 
 
-![Communication Protocol](https://github.com/marconetto/azadventures/tree/main/chapter7/figure.jpg "Communication Protocol")
+
+<img src="https://github.com/marconetto/azadventures/tree/main/chapter7/figure.jpg" align="center" width="144" />
+
+![Communication Protocol](https://github.com/marconetto/azadventures/tree/main/chapter7/figure.jpg)
 
 
 There are two major communication protocols for these application. One is called

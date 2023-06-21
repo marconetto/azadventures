@@ -46,18 +46,26 @@ in literature, but the concept is the same.
 
 
 
-![Communication Protocol](figure.jpg)
+![Architecture Overview](architecture.jpg)
 
 
 There are two major communication protocols for these application. One is called
 **Push**, in which the manager is knows a priori all the workers available in
 a worker pool and assigns tasks to the workers as the tasks become completed.
-So, the load distribution is initiated by the manager. Another one is called
+So, the load distribution is initiated by the manager.
+
+
+
+![Communication Protocol push](pushprotocol.jpg)
+
+Another one is called
 **Pull**, in which the manager waits for workers to be part of the
 worker pull and to request work to the manager. Therefore, the major different
 between these protocols lies on the initialization. During the life time of the
 worker process, there can be some health check messages in order verify if
 workers are still processing and are alive.
+
+![Communication Protocol pull](pullprotocol.jpg)
 
 When using VMSS, it is common to explore auto-scaling capabilities, in which
 the number of VMs changes overtime. When workers have to let the manager know

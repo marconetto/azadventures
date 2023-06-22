@@ -9,14 +9,13 @@ situation, this tutorial may be relevant to you.
 The goal of this tutorial is to discuss places to start worker processes at boot
 time when running embarrassingly parallel applications in Azure VM Scale Sets
 (VMSSs). The description here is based on UbuntuLTS Linux operating system but
-can be leveraged by users of other operating systems.
+can be leveraged by users of other operating systems. Users of other application
+types may benefit from this tutorial as well.
 
 Let's first understand a bit about the communication protocol in these
 applications, then have an overview about the provisioning/booting process of
 a VM in Azure, and describe a few options available to start worker processes of
-these applications at boot time. Even though the focus is on embarrassingly
-parallel applications, other applications could benefit from this tutorial.
-
+these applications at boot time.
 
 Coming from the on-premise world, a common practice is to trigger worker processes
 in systemd (or in our old friend rc.local from System V Init). But is this the

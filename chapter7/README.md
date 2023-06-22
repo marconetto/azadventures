@@ -27,10 +27,9 @@ right place to trigger worker processes in the cloud? Let's have a look!
 
 
 #### TL;TR
-- systemd and cloud-init are steps in boot executed while machine is still in
-  **Creating** state;
-- controls should be added to use sytemd and cloud-init to trigger worker
-  process to guarantee the VM instance has reached **Succeeded** state;
+- systemd and cloud-init are part of the boot process executed while a VM
+  is still in **Creating** state;
+- controls should be added to use systemd and cloud-init to guarantee worker process is triggered after a VM reaches the **Succeeded** state;
 - azure extension is executed just before the machine reached the **Succeeded**
   state, but it is executed only when the machine is provisioned---so it won't
   be executed if the VM instance needs to rebooted.
@@ -40,9 +39,8 @@ right place to trigger worker processes in the cloud? Let's have a look!
 
 The architecture of embarrassingly parallel applications usually consists of
 a manager, which contains tasks that need to be executed, have been executed, or
-failed. This manager assign the tasks to workers, which are responsible for the
-execution of the pending tasks. This manager-worker architecture has other names
-in literature, but the concept is the same.
+failed. This manager assigns tasks to workers, which are responsible for their execution. This manager-worker architecture has other names
+in literature, but the components and concept are the same.
 
 
 
@@ -51,9 +49,9 @@ in literature, but the concept is the same.
 </p>
 
 
-There are two major communication protocols for these application. One is called
-**Push**, in which the manager is knows a priori all the workers available in
-a worker pool and assigns tasks to the workers as the tasks become completed.
+There are two major communication protocols in this type of application. One is called
+**Push**, in which the manager knows a priori all the workers available in
+the worker pool and assigns tasks to the workers as the tasks get completed.
 So, the load distribution is initiated by the manager.
 
 
@@ -62,9 +60,9 @@ So, the load distribution is initiated by the manager.
 </p>
 
 
-Another one is called
+Another protocol is called
 **Pull**, in which the manager waits for workers to be part of the
-worker pull and to request work to the manager. Therefore, the major different
+worker pool and to request work to the manager. Therefore, the major difference
 between these protocols lies on the initialization. During the life time of the
 worker process, there can be some health check messages in order verify if
 workers are still processing and are alive.
@@ -75,7 +73,7 @@ workers are still processing and are alive.
 
 
 When using VMSS, it is common to explore auto-scaling capabilities, in which
-the number of VMs changes overtime. When workers have to let the manager know
+the number of VMs changes over time. When workers have to let the manager know
 that they are available to be part of the worker pool and receive work, there
 are a few options to start the worker process. But before getting into that,
 let's first take a look at the provisioning and boot process of VMs.
@@ -98,7 +96,7 @@ Here are some relevant points to our context:
   responsible for the interaction of the VM with the Azure platform. It enables,
   for instance, the VM to send status updates, receive instructions, and report
       health information to the Azure platform. It also allows the installation
-      and update of Azure VM extensions. and manages security-related tasks.
+      and update of Azure VM extensions and performs security-related tasks.
 
 - Once the machine starts booting, several services start execution as part of
   the Linux **systemd** suite. And Secure Shell Service is one of them. So, one
@@ -111,11 +109,11 @@ Here are some relevant points to our context:
   storage mount points, network configuration, and custom scripts. Again, here
   the machine is still in **Creating** state. Cloud-init creates a filed called
   ``/var/lib/cloud/instance/boot-finished`` once it finishes execution. This is
-  not an indication the the machine reached the **Succeeded** state because
-  azure still has to run internal processes before releasing the machine to the
+  not an indication that the machine reached the **Succeeded** state because
+  Azure still has to run internal processes before releasing the machine to the
   user.
 
-- After the VM has reached the **Succeeded** state, the Azure VM Agent
+- When the VM is about to reach the **Succeeded** state, the Azure VM Agent
   communicates with the Azure platform to fetch the required Azure VM
   Extensions. The Azure VM Agent then proceeds to install and execute the
   specified extensions on the VM.
@@ -144,7 +142,7 @@ WantedBy=multi-user.target
 ```
 
 If this is the case, one must realize that at this moment the full provisioning
-process is not yet completed and the status of the VM is still **Creating**.
+process is not yet completed and the state of the VM is still **Creating**.
 
 This may not be a problem for some applications. However depending on the
 application, the time to get to the **Succeeded** provisioning state, and other

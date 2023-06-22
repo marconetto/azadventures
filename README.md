@@ -1,6 +1,8 @@
 # Azure Adventures
 
 
+**Github Pages:** https://marconetto.github.io/azadventures/
+
 Here we have a set of tutorials to work with Azure cloud technologies.
 
 These tutorials represent my personal experience and may be helpful for other

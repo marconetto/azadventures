@@ -1,18 +1,15 @@
 ## Starting HPC Worker Processes at Boot Time in VM Scale Sets
 
+One is deploying an HPC embarrassingly parallel application in Azure VM Scale Sets
+(VMSSs) and realized that (i) ssh into a VM instance is possible even when the
+VM has not fully completed its provision and (ii) worker processes started
+before such fully completed provision state was reached. If you got into this
+situation, this tutorial may be relevant to you.
 
 The goal of this tutorial is to discuss places to start worker processes at boot
 time when running embarrassingly parallel applications in Azure VM Scale Sets
-(VMSSs). This tutorial is based on UbuntuLTS Linux operating system but can be
-leveraged by users of other operating systems.
-
-
-Embarrassingly parallel applications (a.k.a intrinsically parallel,  pleasingly
-parallel, bag-of-tasks, etc) are those composed of tasks that can run
-independently, that is, require no inter-task communication. They are in several
-domains including financial risk modeling, VFX and 3D image processing, genetic
-sequence analysis, monte carlo simulations, and software testing.
-
+(VMSSs). The description here is based on UbuntuLTS Linux operating system but
+can be leveraged by users of other operating systems.
 
 Let's first understand a bit about the communication protocol in these
 applications, then have an overview about the provisioning/booting process of
@@ -21,20 +18,26 @@ these applications at boot time. Even though the focus is on embarrassingly
 parallel applications, other applications could benefit from this tutorial.
 
 
-Coming from the on-premise world, a common practice is start worker processes
-in systemd (or our old friend rc.local from System V Init). But is this the
+Coming from the on-premise world, a common practice is to trigger worker processes
+in systemd (or in our old friend rc.local from System V Init). But is this the
 right place to trigger worker processes in the cloud? Let's have a look!
 
 
 #### TL;TR
 - systemd and cloud-init are part of the boot process executed while a VM
   is still in **Creating** state;
-- controls should be added to use systemd and cloud-init to guarantee worker process is triggered after a VM reaches the **Succeeded** state;
+- controls should be added to use systemd and cloud-init to guarantee worker process is triggered after a VM reaches the **Succeeded** state (we've got a code snippet for that);
 - azure extension is executed just before the machine reached the **Succeeded**
   state, but it is executed only when the machine is provisioned---so it won't
   be executed if the VM instance needs to rebooted.
 
 #### 1. Communication protocol in embarrassingly parallel applications
+
+Embarrassingly parallel applications (a.k.a intrinsically parallel,  pleasingly
+parallel, bag-of-tasks, etc) are those composed of tasks that can run
+independently, that is, require no inter-task communication. They are in several
+domains including financial risk modeling, VFX and 3D image processing, genetic
+sequence analysis, monte carlo simulations, and software testing.
 
 
 The architecture of embarrassingly parallel applications usually consists of

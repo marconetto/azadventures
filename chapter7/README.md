@@ -128,9 +128,11 @@ Here are some relevant points to our context:
 ##### 3.1 service unit in systemd
 
 
-Depending on the application, its installer may create a new service unit file in
-systemd to trigger the starting of a worker process at boot time. Something like
-this:
+Depending on the application, its installer may create a new service unit file
+in systemd to trigger the starting of a worker process at boot time. Here we
+assume that ``/usr/local/bin/myhpcworkerprocess`` is the command to start the
+worker process and that it goes to background once the worker initializes (i.e.
+does not get stuck in foreground). An example of a service unit file would be:
 
 ```
 [Unit]
@@ -191,7 +193,7 @@ if you want to propagate to existing VM instances:
 
 ```
 az vmss update-instances --resource-group <myresourcegroup>
-                         --name myScaleSet --instance-ids '*'
+                         --name <myscaleset> --instance-ids '*'
 ```
 
 If you want to have system identity at the VMSS creation time, as an example,
@@ -301,7 +303,7 @@ worker process, be aware it is still in **Creating** status:
 #cloud-config
 
 runcmd:
-  - nohup /usr/local/bin/myhpcworkerprocess &
+  - /usr/local/bin/myhpcworkerprocess
 ```
 
 To force the waiting of the Succeeded state, the ``waitprovisioning.sh`` script
@@ -311,7 +313,7 @@ could be used here as well.
 #cloud-config
 
 runcmd:
-  - nohup /bin/bash -c '/usr/local/bin/waitprovisioning.sh && /usr/local/bin/myhpcworkerprocess' &
+  - /bin/bash -c '/usr/local/bin/waitprovisioning.sh && /usr/local/bin/myhpcworkerprocess'
 ```
 
 In this examples, cloud-init will run every time the VM is provisioned and not
@@ -320,8 +322,9 @@ in every boot once it is provisioned.
 If one wants to use cloud-init to add the trigger of the worker node in every
 boot, add a script in ``/var/lib/cloud/scripts/per-boot`` that waits for the
 provisoning state to get to **Succeeded** and triggers the worker process.
-Scripts in this folder are executed in alphabetical order.
-
+Scripts in this folder are executed in alphabetical order. Make sure the script
+has ``#!/bin/sh`` in its first line and proper executable permission such as
+``chmod 744 script.sh``.
 
 
 ##### 3.3 Azure custom script extension
@@ -350,7 +353,7 @@ assign the custom script.
                        --resource-group <myresourcegroup> \
                        --name customScript \
                        --version 2.0 --publisher Microsoft.Azure.Extensions \
-                       --settings '{"commandToExecute": ""nohup /usr/local/bin/myhpcworkerprocess &" "}'
+                       --settings '{"commandToExecute": "/usr/local/bin/myhpcworkerprocess"}'
 ```
 
 

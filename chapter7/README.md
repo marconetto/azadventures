@@ -381,18 +381,21 @@ to a VM that will be suddenly destroyed.
 
 ## References
 
+- **azure cli:**
+  [https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt)
 - **cloud init:**
   [https://cloudinit.readthedocs.io/en/latest/explanation/boot.html](https://cloudinit.readthedocs.io/en/latest/explanation/boot.html])
-- cloud init per-boot: https://cloudinit.readthedocs.io/en/20.4/topics/modules.html?highlight=per-boot#scripts-per-boot
-- custom script: https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-linux
+- **cloud init per-boot:** [https://cloudinit.readthedocs.io/en/20.4/topics/modules.html?highlight=per-boot#scripts-per-boot](https://cloudinit.readthedocs.io/en/20.4/topics/modules.html?highlight=per-boot#scripts-per-boot)
+- **custom extension:** [https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-linux](https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-linux)
+- **custom extension for
+  vmss:** [https://learn.microsoft.com/en-us/cli/azure/vmss/extension?view=azure-cli-latest](https://learn.microsoft.com/en-us/cli/azure/vmss/extension?view=azure-cli-latest)
+- **custom script:** [https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-linux](https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-linux)
+- **managed identity:** [https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview](https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview)
+- **managed identity:** [https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/qs-configure-cli-windows-vmss](https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/qs-configure-cli-windows-vmss)
+- **overprovisioning feature:** [https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-design-overview#overprovisioning](https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-design-overview#overprovisioning)
+- **systemd:** [https://www.freedesktop.org/wiki/Software/systemd/](https://www.freedesktop.org/wiki/Software/systemd/)
+- **VM metadata service:** [https://learn.microsoft.com/en-us/azure/virtual-machines/instance-metadata-service?tabs=linux](https://learn.microsoft.com/en-us/azure/virtual-machines/instance-metadata-service?tabs=linux)
 
-- systemd: https://www.freedesktop.org/wiki/Software/systemd/
-- VM metadata service: https://learn.microsoft.com/en-us/azure/virtual-machines/instance-metadata-service?tabs=linux
-- managed identity: https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview
-- managed identity: https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/qs-configure-cli-windows-vmss
-- azure cli:
-  https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt
-- custom extension for
-  vmss: https://learn.microsoft.com/en-us/cli/azure/vmss/extension?view=azure-cli-latest
-- custom extension: https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-linux
-- overprovisioning feature: https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-design-overview#overprovisioning
+
+
+

@@ -57,8 +57,10 @@ a worker pool and assigns tasks to the workers as the tasks become completed.
 So, the load distribution is initiated by the manager.
 
 
+<p align="center" width="100%">
+    <img width="75%" src="pushprotocol.jpg">
+</p>
 
-![Communication Protocol push](pushprotocol.jpg)
 
 Another one is called
 **Pull**, in which the manager waits for workers to be part of the
@@ -67,13 +69,17 @@ between these protocols lies on the initialization. During the life time of the
 worker process, there can be some health check messages in order verify if
 workers are still processing and are alive.
 
-![Communication Protocol pull](pullprotocol.jpg)
+<p align="center" width="100%">
+    <img width="75%" src="pullprotocol.jpg">
+</p>
+
 
 When using VMSS, it is common to explore auto-scaling capabilities, in which
 the number of VMs changes overtime. When workers have to let the manager know
 that they are available to be part of the worker pool and receive work, there
 are a few options to start the worker process. But before getting into that,
 let's first take a look at the provisioning and boot process of VMs.
+
 
 #### 2. Provisioning + boot process
 

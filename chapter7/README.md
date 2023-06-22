@@ -356,27 +356,29 @@ assign the custom script.
 
 #### 4. Key takeways
 
-Here we saw some options to handle the triggering of worker processes at VM boot
+Here we discussed some options to handle the triggering of worker processes at VM boot
 time in VMSS.
 
 
 If the worker application needs to be embedded into the VM image, it is worth
-adding the ``waitprovisioning.sh`` snippet and worker process trigger in
-a systemd service unit. The advantage is that whenever the VMs get rebooted, the
-worker process will be triggered.
+adding the ``waitprovisioning.sh`` code snippet and worker process trigger in
+a systemd service unit. The advantage is that whenever a VM instance gets
+rebooted, the worker process gets triggered.
 
-Some times one be install the worker application using Cloud-init. If that is
-the case, the ``waitprovisioning.sh`` snippet could also be used in cloud-init,
-with extra care to add the triggering of the worker process in the cloud-init
-``per-boot`` folder in order to be executed even when the VM requires rebooting.
+One may want to install the worker application using cloud-init. If that is the
+case, the ``waitprovisioning.sh`` code snippet plus the triggering of the worker
+process could be placed in cloud-init. However, the ``per-boot`` folder should
+be used because scripts there are executed whenever a VM boots---typically
+cloud-init is used to install/configure software only at the provisioning time.
 
-If one is sure that the VM instance won't require reboot, using Azure custom
+If one is sure that the VM instances won't require reboot, using Azure custom
 script seems to be a clean solution because it is executed just before VMs get
-into the **Succeeded** state.
+into the **Succeeded** state. So there is no need to add a control to wait for
+the **Suceeded** state.
 
-Depending on the application, making sure the VMs reach the **Succeeded** state
+Depending on the application, making sure that VMs reach the **Succeeded** state
 before triggering the worker process is particularly important when VMSS has the
-overprovisioning feature enabled, otherwise the manager process may assign work
+**overprovisioning** feature enabled, otherwise the manager process may assign work
 to a VM that will be suddenly destroyed.
 
 

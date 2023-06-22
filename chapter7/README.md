@@ -29,9 +29,12 @@ a look!
 - controls should be added to use systemd and cloud-init to guarantee worker
   process is triggered after a VM reaches the **Succeeded** state (we've got
   a code snippet for that);
-- azure extension is executed just before the machine reached the **Succeeded**
-  state, but it is executed only when the machine is provisioned---so it won't
-  be executed if the VM instance needs to rebooted.
+- azure custom script extension is executed just before the provisioned VMs
+  reach the **Succeeded** state. It sounds good but two things to watch out: (i)
+  it is executed only when VMs are provisioned (not called when just rebooted)
+  and (ii) if overprovisioning feature is enabled, the VMs that will be exceeded
+  VMs that are detroyed do execute the custom script---so worker processes will
+  be started but VMs will get unavailable quickly later on.
 
 #### 1. Communication protocol in embarrassingly parallel applications
 
@@ -347,7 +350,7 @@ the script won't be executed again.
 There are several ways to use the azure custom script, including Azure Portal
 and ARM template. Here is one way to do it via Azure CLI.
 
-What has to be done is to assign a custom script to an VMSS (by using ARM
+What has to be done is to assign a custom script to a VMSS (by using ARM
 templates one could assign the custom script together with the provisioning
 step). Once the script has been assigned, it will affect the new VM instances
 created. So it may be an option to create a VMSS with zero VM instances and then
@@ -361,6 +364,11 @@ assign the custom script.
                        --settings '{"commandToExecute": "/usr/local/bin/myhpcworkerprocess"}'
 ```
 
+An important note here is that if overprovisioning feature is enabled, the VMs
+not utilized to meet user request, and that will be destroyed, will also execute
+the script. So worker processes will be started and VMs will get unavailable
+quickly later on. Therefore, if overprovisioning is enabled, it is recommended
+that the ``waitprovisioning.sh`` script needs to be used as well.
 
 #### 4. Key takeways
 
@@ -382,12 +390,9 @@ cloud-init is used to install/configure software only at the provisioning time.
 If one is sure that the VM instances won't require reboot, using Azure custom
 script seems to be a clean solution because it is executed just before VMs get
 into the **Succeeded** state. So there is no need to add a control to wait for
-the **Suceeded** state.
-
-Depending on the application, making sure that VMs reach the **Succeeded** state
-before triggering the worker process is particularly important when VMSS has the
-**overprovisioning** feature enabled, otherwise the manager process may assign work
-to a VM that will be suddenly destroyed.
+the **Suceeded** state, unless overprovisioning feature is enabled. This will
+guarantee that the manager process will not assign work to a VM that will be
+suddenly destroyed.
 
 
 

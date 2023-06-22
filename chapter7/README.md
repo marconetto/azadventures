@@ -354,7 +354,7 @@ assign the custom script.
 
 #### 4. Key takeways
 
-Here we saw some options to handle to triggering of worker processes at VM boot
+Here we saw some options to handle the triggering of worker processes at VM boot
 time in VMSS.
 
 
@@ -381,7 +381,8 @@ to a VM that will be suddenly destroyed.
 
 ## References
 
-- cloud init: https://cloudinit.readthedocs.io/en/latest/explanation/boot.html
+- cloud init
+  [https://cloudinit.readthedocs.io/en/latest/explanation/boot.html](https://cloudinit.readthedocs.io/en/latest/explanation/boot.html])
 - cloud init per-boot: https://cloudinit.readthedocs.io/en/20.4/topics/modules.html?highlight=per-boot#scripts-per-boot
 - custom script: https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-linux
 

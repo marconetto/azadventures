@@ -2,8 +2,8 @@
 
 One is deploying an HPC embarrassingly parallel application in Azure VM Scale Sets
 (VMSSs) and realized that (i) ssh into a VM instance is possible even when the
-VM has not fully completed its provision and (ii) worker processes started
-before such fully completed provision state was reached. If you got into this
+VM has not been fully provisioned and (ii) worker processes start
+before such fully completed provisioned state is reached. If you got into this
 situation, this tutorial may be relevant to you.
 
 The goal of this tutorial is to discuss places to start worker processes at boot

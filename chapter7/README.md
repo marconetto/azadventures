@@ -1,9 +1,9 @@
 ## Starting HPC Worker Processes at Boot Time in VM Scale Sets
 
-One is deploying an HPC embarrassingly parallel application in Azure VM Scale Sets
-(VMSSs) and realized that (i) ssh into a VM instance is possible even when the
-VM has not been fully provisioned and (ii) worker processes start
-before such fully completed provisioned state is reached. If you got into this
+One is deploying an HPC embarrassingly parallel application in Azure VM Scale
+Sets (VMSSs) and realized that (i) ssh into a VM instance is possible even when
+the VM has not been fully provisioned and (ii) worker processes start before
+such fully completed provisioned state is reached. If you got into this
 situation, this tutorial may be relevant to you.
 
 The goal of this tutorial is to discuss places to start worker processes at boot
@@ -17,22 +17,25 @@ applications, then have an overview about the provisioning/booting process of
 a VM in Azure, and describe a few options available to start worker processes of
 these applications at boot time.
 
-Coming from the on-premise world, a common practice is to trigger worker processes
-in systemd (or in our old friend rc.local from System V Init). But is this the
-right place to trigger worker processes in the cloud? Let's have a look!
+Coming from the on-premise world, a common practice is to trigger worker
+processes in systemd (or in our old friend rc.local from System V Init). But is
+this the right place to trigger worker processes in the cloud? Let's have
+a look!
 
 
 #### TL;TR
-- systemd and cloud-init are part of the boot process executed while a VM
-  is still in **Creating** state;
-- controls should be added to use systemd and cloud-init to guarantee worker process is triggered after a VM reaches the **Succeeded** state (we've got a code snippet for that);
+- systemd and cloud-init are part of the boot process executed while a VM is
+  still in **Creating** state;
+- controls should be added to use systemd and cloud-init to guarantee worker
+  process is triggered after a VM reaches the **Succeeded** state (we've got
+  a code snippet for that);
 - azure extension is executed just before the machine reached the **Succeeded**
   state, but it is executed only when the machine is provisioned---so it won't
   be executed if the VM instance needs to rebooted.
 
 #### 1. Communication protocol in embarrassingly parallel applications
 
-Embarrassingly parallel applications (a.k.a intrinsically parallel,  pleasingly
+Embarrassingly parallel applications (a.k.a intrinsically parallel, pleasingly
 parallel, bag-of-tasks, etc) are those composed of tasks that can run
 independently, that is, require no inter-task communication. They are in several
 domains including financial risk modeling, VFX and 3D image processing, genetic
@@ -41,8 +44,9 @@ sequence analysis, monte carlo simulations, and software testing.
 
 The architecture of embarrassingly parallel applications usually consists of
 a manager, which contains tasks that need to be executed, have been executed, or
-failed. This manager assigns tasks to workers, which are responsible for their execution. This manager-worker architecture has other names
-in literature, but the components and concept are the same.
+failed. This manager assigns tasks to workers, which are responsible for their
+execution. This manager-worker architecture has other names in literature, but
+the components and concept are the same.
 
 
 
@@ -51,9 +55,9 @@ in literature, but the components and concept are the same.
 </p>
 
 
-There are two major communication protocols in this type of application. One is called
-**Push**, in which the manager knows a priori all the workers available in
-the worker pool and assigns tasks to the workers as the tasks get completed.
+There are two major communication protocols in this type of application. One is
+called **Push**, in which the manager knows a priori all the workers available
+in the worker pool and assigns tasks to the workers as the tasks get completed.
 So, the load distribution is initiated by the manager.
 
 
@@ -226,13 +230,14 @@ itself.
 ```
 #!/usr/bin/env bash
 
-POOLINGTIME=10
-
 if ! command -v az &> /dev/null
 then
     echo "azure client not installed"
-    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    # run the code snippet in the appendix of this tutorial
+    # to install azure cli
 fi
+
+POOLINGTIME=10
 
 az login --identity
 
@@ -404,5 +409,44 @@ to a VM that will be suddenly destroyed.
 - **VM metadata service:** [https://learn.microsoft.com/en-us/azure/virtual-machines/instance-metadata-service?tabs=linux](https://learn.microsoft.com/en-us/azure/virtual-machines/instance-metadata-service?tabs=linux)
 
 
+## Appendix
 
+Use the following code if azure client is not in the VM image:
+
+```
+function retry_installer(){
+    local attempts=0
+    local max=15
+    local delay=60
+
+    while true; do
+        ((attempts++))
+        "$@" && {
+            echo "CLI installed"
+            break
+        } || {
+            if [[ $attempts -lt $max ]]; then
+                echo "CLI installation failed. Attempt $attempts/$max."
+                sleep $delay;
+            else
+                echo "CLI installation has failed after $attempts attempts."
+                break
+            fi
+        }
+    done
+}
+
+function install_azure_cli(){
+    install_script="/tmp/azurecli_installer.sh"
+    curl -sL https://aka.ms/InstallAzureCLIDeb -o "$install_script"
+    retry_installer sudo bash "$install_script"
+    rm $install_script
+}
+
+if ! command -v az &> /dev/null
+then
+    echo "azure client not installed"
+    install_azure_cli
+fi
+```
 

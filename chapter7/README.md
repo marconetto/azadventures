@@ -379,11 +379,11 @@ assign the custom script.
                        --settings '{"commandToExecute": "/usr/local/bin/myhpcworkerprocess"}'
 ```
 
-**NOTE:** If the **overprovisioning** feature is enabled, the VMs not utilized
-to meet user request also execute the script before they are destroyed (i.e.
-move to **Deleting** state). So worker processes will be started and VMs will
-get unavailable quickly later on. Therefore, if overprovisioning is enabled, it
-is recommended to use the ``waitprovisioning.sh`` script as well.
+**NOTE:** If the **overprovisioning** feature is enabled in the VMSS, the VMs
+not utilized to meet user request also execute the script before they are
+destroyed (i.e. move to **Deleting** state). So worker processes will be started
+and VMs will get unavailable quickly later on. Therefore, if overprovisioning is
+enabled, it is recommended to use the ``waitprovisioning.sh`` script as well.
 
 #### 4. Key takeways
 

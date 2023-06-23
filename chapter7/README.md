@@ -185,6 +185,16 @@ login into Azure, and we are gonna do this via Managed Identity so we can
 automate this process.
 
 
+To test the current status of a machine, one can rely on (i) Azure Instance
+Metadata Service (IMD) and Azure Managed Identity via Azure CLI. IMD provides
+information about VMs. IMDS is a REST API available in this IP address:
+169.254.169.254. Requests to this service can only be accessed from within the
+VM. We are gonna use IMD to get the resource id in Azure from the VM. We will
+use Azure CLI to obtain the provisioning status information. Azure CLI needs to
+login into Azure, and we are gonna do this via Managed Identity so we can
+automate this process.
+
+
 First, we need to make sure VMSS has system identity enabled. So, from the
 machine you provisioned your VMSS (e.g. your jumpbox machine), you can type
 (replacing myresourcegroup, myscaleset, mysubscription accordingly):
@@ -233,11 +243,13 @@ itself.
 ```
 #!/usr/bin/env bash
 
+# add here the functions install_azure_cli and retry_installer from the code snippet
+# in the appendix of this tutorial to install azure cli
+
 if ! command -v az &> /dev/null
 then
     echo "azure client not installed"
-    # run the code snippet in the appendix of this tutorial
-    # to install azure cli
+    install_azure_cli
 fi
 
 POOLINGTIME=10
@@ -247,12 +259,14 @@ az login --identity
 vm_resource_id=$(curl -H "Metadata: true" "http://169.254.169.254/metadata/instance/compute/resourceId?api-version=2021-02-01&format=text")
 
 provisioningState="None"
-while $provisioning_state != "Succeeded" ; then
+while [ "$provisioning_state" != "Succeeded" ]; do
     provisioning_state=$(az resource show --ids "$vm_resource_id" \
-                                          --query 'properties.provisioningState'
+                                          --query 'properties.provisioningState' \
                                           --output tsv)
-    sleep $POOLINGTIME
+    sleep "$POOLINGTIME"
 done
+
+echo "ready to go!"
 ```
 
 You can encapsulate the above code snippet into a script, for instance, located

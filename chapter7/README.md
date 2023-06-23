@@ -263,6 +263,7 @@ while [ "$provisioning_state" != "Succeeded" ]; do
     provisioning_state=$(az resource show --ids "$vm_resource_id" \
                                           --query 'properties.provisioningState' \
                                           --output tsv)
+    echo "provisioning state = $provisioning_state"
     sleep "$POOLINGTIME"
 done
 
@@ -436,7 +437,7 @@ Use the following code if azure client is not in the VM image:
 function retry_installer(){
     local attempts=0
     local max=15
-    local delay=60
+    local delay=20
 
     while true; do
         ((attempts++))

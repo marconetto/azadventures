@@ -1,16 +1,16 @@
 ## Starting HPC Worker Processes at Boot Time in VM Scale Sets
 
-One is deploying an HPC embarrassingly parallel application in Azure VM Scale
-Sets (VMSSs) and realized that (i) ssh into a VM instance is possible even when
-the VM has not been fully provisioned and (ii) worker processes start before
-such fully completed provisioned state is reached. If you got into this
+One is deploying an HPC embarrassingly parallel application in Azure Virtual
+Machine Scale Sets (VMSSs) and realized that (i) ssh into VM instances is
+possible even when they have not been fully provisioned and (ii) worker
+processes start before such provisioned state is reached. If you got into this
 situation, this tutorial may be relevant to you.
 
 The goal of this tutorial is to discuss places to start worker processes at boot
-time when running embarrassingly parallel applications in Azure VM Scale Sets
-(VMSSs). The description here is based on UbuntuLTS Linux operating system but
-can be leveraged by users of other operating systems. Users of other application
-types may benefit from this tutorial as well.
+time when running embarrassingly parallel applications in Azure VMSSs. The
+description here is based on UbuntuLTS Linux operating system but can be
+leveraged by users of other operating systems. Users of other application types
+may benefit from this tutorial as well.
 
 Let's first understand a bit about the communication protocol in these
 applications, then have an overview about the provisioning/booting process of
@@ -30,11 +30,12 @@ a look!
   process is triggered after a VM reaches the **Succeeded** state (we've got
   a code snippet for that);
 - azure custom script extension is executed just before the provisioned VMs
-  reach the **Succeeded** state. It sounds good but two things to watch out: (i)
-  it is executed only when VMs are provisioned (not called when just rebooted)
-  and (ii) if overprovisioning feature is enabled, the VMs that will be exceeded
-  VMs that are detroyed do execute the custom script---so worker processes will
-  be started but VMs will get unavailable quickly later on.
+  reach the **Succeeded** state. It sounds good but two things to consider: (i)
+  it is executed only when VMs are provisioned (not called when they are just
+  rebooted) and (ii) if VMSS **overprovisioning** feature is enabled, the
+  exceeding VMs that are destroyed do execute the custom script---so worker
+  processes will get started but their VMs will quickly become unavailable later
+  on.
 
 #### 1. Communication protocol in embarrassingly parallel applications
 

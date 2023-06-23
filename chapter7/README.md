@@ -24,12 +24,12 @@ a look!
 
 
 #### TL;TR
-- systemd and cloud-init are part of the boot process executed while a VM is
-  still in **Creating** state;
-- controls should be added to use systemd and cloud-init to guarantee worker
+- The systemd and cloud-init systems are part of the boot process executed while
+  a VM is still in **Creating** state;
+- Controls should be added to use systemd and cloud-init to guarantee worker
   process is triggered after a VM reaches the **Succeeded** state (we've got
   a code snippet for that);
-- azure custom script extension is executed just before the provisioned VMs
+- Azure custom script extension is executed just before the provisioned VMs
   reach the **Succeeded** state. It sounds good but two things to consider: (i)
   it is executed only when VMs are provisioned (not called when they are just
   rebooted) and (ii) if VMSS **overprovisioning** feature is enabled, the
@@ -82,11 +82,11 @@ workers are still processing and are alive.
 </p>
 
 
-When using VMSS, it is common to explore auto-scaling capabilities, in which
-the number of VMs changes over time. When workers have to let the manager know
-that they are available to be part of the worker pool and receive work, there
-are a few options to start the worker process. But before getting into that,
-let's first take a look at the provisioning and boot process of VMs.
+When using VMSS, it is a common practice to explore its auto-scaling
+capabilities to increase or reduce the number of VM instances. There are a few
+options to let the manager know when workers want to join the worker pool. But
+before getting into that, let's first take a look at the provisioning and boot
+process of VMs.
 
 
 #### 2. Provisioning + boot process
@@ -97,7 +97,7 @@ instance until it is fully available to the user. Physical resources have to be
 identified, network and storage infrastructure has to be in place, operating
 system image has to retrieved and installed, monitoring and agents have to be
 installed, operating system has to boot, post-booting processes have to be run,
-health checks executed, etc..
+health checks executed, etc.
 
 Here are some relevant points to our context:
 
@@ -106,14 +106,14 @@ Here are some relevant points to our context:
   responsible for the interaction of the VM with the Azure platform. It enables,
   for instance, the VM to send status updates, receive instructions, and report
       health information to the Azure platform. It also allows the installation
-      and update of Azure VM extensions and performs security-related tasks.
+      and update of Azure VM extensions and performs security-related tasks;
 
 - Once the machine starts booting, several services start execution as part of
   the Linux **systemd** suite. And Secure Shell Service is one of them. So, one
   can ssh into the VM that is being provisioned while the provisioning state is
-  still **Creating**.
+  still **Creating**;
 
-- As part of the **systemd** suite, cloud-init is also triggered. It reads the
+- As part of the **systemd** suite, **cloud-init** is also triggered. It reads the
   configuration from the cloud-init user-data, metadata, or custom configuration
   file(s) and executes the defined actions including package installation,
   storage mount points, network configuration, and custom scripts. Again, here
@@ -121,7 +121,7 @@ Here are some relevant points to our context:
   ``/var/lib/cloud/instance/boot-finished`` once it finishes execution. This is
   not an indication that the machine reached the **Succeeded** state because
   Azure still has to run internal processes before releasing the machine to the
-  user.
+  user;
 
 - When the VM is about to reach the **Succeeded** state, the Azure VM Agent
   communicates with the Azure platform to fetch the required Azure VM
@@ -130,10 +130,7 @@ Here are some relevant points to our context:
 
 
 
-#### 3. Where to trigger the worker process
-
-
-##### 3.1 service unit in systemd
+#### 3. Where to trigger the worker process: service unit in systemd
 
 
 Depending on the application, its installer may create a new service unit file
@@ -156,15 +153,15 @@ WantedBy=multi-user.target
 If this is the case, one must realize that at this moment the full provisioning
 process is not yet completed and the state of the VM is still **Creating**.
 
-This may not be a problem for some applications. However depending on the
-application, the time to get to the **Succeeded** provisioning state, and other
-factors including auto-scaling rules, placing the starting of the worker process
-here may be a problem. For instance, the worker process may start receiving load
-which will not be computed in auto-scaling rules because the machine has not
-yet being fully provisioned. If the manager process of the user application
-distributes load based on health check information of VMs running worker
-processes, the manager process be get confused because the worker process is
-running but it is not ready.
+This may not be a problem for some applications. However, for others, depending
+on the time to get to the **Succeeded** state, and other factors including
+auto-scaling rules, triggering the worker process here may be a problem. For
+instance, the worker may start processing load and the auto-scaling threshold
+time has not started counting yet because the machine is not fully provisioned.
+Another example of issue is if the manager uses health check information of VMs
+running worker processes for load distribution purposes. In this case the
+manager process may get confused because the worker process is running but the
+VM is "not available".
 
 Placing the worker process here can also complicate debugging because there are
 other processes under execution while the worker process is already running,
@@ -174,16 +171,6 @@ including cloud-init and other azure-related services.
 Given this context, it is possible to include a simple polling mechanism on the
 machine itself to start the worker process once the machine reaches
 **Succeeded** state.
-
-
-To test the current status of a machine, one can rely on (i) Azure Instance
-Metadata Service (IMD) and Azure Managed Identity via Azure CLI. IMD provides
-information about VMs. IMDS is a REST API available in this IP address:
-169.254.169.254. Requests to this service can only be accessed from within the
-VM. We are gonna use IMD to get the resource id in Azure from the VM. We will
-use Azure CLI to obtain the provisioning status information. Azure CLI needs to
-login into Azure, and we are gonna do this via Managed Identity so we can
-automate this process.
 
 
 To test the current status of a machine, one can rely on (i) Azure Instance
@@ -207,7 +194,7 @@ az vmss identity assign --resource-group <myresourcegroup> \
                         --scope /subscriptions/<mysubscription>/resourceGroups/<myresourcegroup>
 ```
 
-if you want to propagate to existing VM instances:
+If you want to propagate to existing VM instances:
 
 ```
 az vmss update-instances --resource-group <myresourcegroup>
@@ -233,7 +220,7 @@ az vmss create --resource-group <myresourcegroup> \
                --scope <mysubscription>
 ```
 The last three parameters are related to the managed identity, which enables
-identity and assigns an Azure role of 'Reader' to 'mySubscrition':
+identity and assigns an Azure role of 'Reader' to 'mysubscription':
 
 With managed identity configured, you can use the following code to verify if
 the VM has reached the **Succeeded** state at time intervals defined by the
@@ -279,7 +266,7 @@ chmod +x /usr/local/bin/waitprovisioning.sh
 ```
 
 This script can then be called before the execution of the worker process in
-original systemd service unit file triggering the worker process:
+the original systemd service unit file triggering the worker process:
 
 ```
 [Unit]
@@ -307,16 +294,14 @@ WantedBy=multi-user.target
 ```
 
 
-##### 3.2 cloud init
+#### 4. Where to trigger the worker process: cloud init
 
 Cloud-init is another place one may consider to start a worker process. However,
 cloud-init is typically designed for initialization tasks during the instance
-boot process and is not intended for continuous execution of long-running
+first boot process and is not intended for continuous execution of long-running
 processes such as an HPC worker process. It is also a place to add tasks to be
 executed at the provisioning phase of the VM, and not tasks to be executed every
 boot (different from systemd above)---but note you can configure it to do so.
-Even though it is not a recommended place to add the trigger for an application
-worker process, it is worth mentioning it.
 
 At the stage of the cloud-init execution the VM is also not at the **Succeeded**
 provisioning state. So if one has a code like the one below to trigger the
@@ -340,8 +325,8 @@ runcmd:
   - /bin/bash -c '/usr/local/bin/waitprovisioning.sh && /usr/local/bin/myhpcworkerprocess'
 ```
 
-In this examples, cloud-init will run every time the VM is provisioned and not
-in every boot once it is provisioned.
+In this example, cloud-init will run this code only once---when the VM is
+provisioned and not in every boot once it is provisioned.
 
 If one wants to use cloud-init to add the trigger of the worker node in every
 boot, add a script in ``/var/lib/cloud/scripts/per-boot`` that waits for the
@@ -351,12 +336,12 @@ has ``#!/bin/sh`` in its first line and proper executable permission such as
 ``chmod 744 script.sh``.
 
 
-##### 3.3 Azure custom script extension
+#### 5. Where to trigger the worker process: Azure custom script extension
 
 Last, but not least, we have the Azure custom script extension. You can use such
 extension for post-deployment configuration, software installation, and other
 configuration or management tasks. The custom script can be automatically
-downloaded from from Azure Storage or another accessible internet location
+downloaded from Azure Storage or another accessible Internet location
 including github, or some direct commands one can specify.
 
 But note that the script is executed as the last step of the provisioning phase
@@ -366,11 +351,11 @@ the script won't be executed again.
 There are several ways to use the azure custom script, including Azure Portal
 and ARM template. Here is one way to do it via Azure CLI.
 
-What has to be done is to assign a custom script to a VMSS (by using ARM
-templates one could assign the custom script together with the provisioning
-step). Once the script has been assigned, it will affect the new VM instances
-created. So it may be an option to create a VMSS with zero VM instances and then
-assign the custom script.
+One must assign a custom script to a VMSS (by using ARM templates one could
+assign the custom script together with the provisioning step). Once the script
+has been assigned, it will affect the new VM instances created. So it may be an
+option to create a VMSS with zero VM instances and then assign the custom
+script.
 
 ```
  az vmss extension set --vmss-name <myscaleset> \
@@ -386,7 +371,7 @@ destroyed (i.e. move to **Deleting** state). So worker processes will be started
 and VMs will get unavailable quickly later on. Therefore, if overprovisioning is
 enabled, it is recommended to use the ``waitprovisioning.sh`` script as well.
 
-#### 4. Key takeways
+#### 6. Key takeways
 
 Here we discussed some options to handle the triggering of worker processes at VM boot
 time in VMSS.
@@ -404,9 +389,9 @@ be used because scripts there are executed whenever a VM boots---typically
 cloud-init is used to install/configure software only at the provisioning time.
 
 If one is sure that the VM instances won't require reboot, using Azure custom
-script seems to be a clean solution because it is executed just before VMs get
+script is a good alternative because it is executed just before VMs get
 into the **Succeeded** state. So there is no need to add a control to wait for
-the **Suceeded** state, unless overprovisioning feature is enabled. This will
+the **Succeeded** state, unless overprovisioning feature is enabled. This will
 guarantee that the manager process will not assign work to a VM that will be
 suddenly destroyed.
 
@@ -432,7 +417,7 @@ suddenly destroyed.
 
 ## Appendix
 
-Use the following code if azure client is not in the VM image:
+Use the following code if Azure client is not in the VM image:
 
 ```
 function retry_installer(){
@@ -471,3 +456,5 @@ then
 fi
 ```
 
+
+Copy of the ``waitprovisioning.sh``: [waitprovisioning script](https://github.com/marconetto/azadventures/blob/main/chapter7/waitprovisioning.sh)

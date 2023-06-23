@@ -437,7 +437,7 @@ Use the following code if azure client is not in the VM image:
 function retry_installer(){
     local attempts=0
     local max=15
-    local delay=20
+    local delay=25
 
     while true; do
         ((attempts++))

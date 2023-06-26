@@ -385,7 +385,7 @@ rebooted, the worker process gets triggered.
 One may want to install the worker application using cloud-init. If that is the
 case, the ``waitprovisioning.sh`` code snippet plus the triggering of the worker
 process could be placed in cloud-init. However, the ``per-boot`` folder should
-be used because scripts there are executed whenever a VM boots---typically
+be used because scripts they are executed whenever a VM boots---typically
 cloud-init is used to install/configure software only at the provisioning time.
 
 If one is sure that the VM instances won't require reboot, using Azure custom

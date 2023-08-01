@@ -35,6 +35,8 @@ set -x
 mpirun -np $NP --oversubscribe --host ${src}:${PPN},${dst}:${PPN} --map-by ppr:${PPN}:node --mca btl tcp,vader,self --mca coll_hcoll_enable 0 --mca btl_tcp_if_include lo,eth0 --mca pml ^ucx ${AZ_BATCH_APP_PACKAGE_mpi_batch_1_0_0}/mpi_batch/mpi_hello_world
 EOF
 
+chmod +x run_mpi.sh
+
 
 if [ -f /etc/bashrc ]; then
         . /etc/bashrc

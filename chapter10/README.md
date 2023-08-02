@@ -42,6 +42,8 @@ In more details these are the major steps:
 - [compile.sh](compile.sh): compiles MPI source code and generates the mpirun
   script into the storage
 - [mpi_show_hosts.c](mpi_show_hosts.c): MPI application source code
+- [GIT Folder](https://github.com/marconetto/azadventures/tree/main/chapter10):
+  source code folder
 
 
 

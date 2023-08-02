@@ -1,14 +1,22 @@
 ## Run MPI jobs using Azure Batch + NFS
 
+<br>
+
+**GOAL AND CONTEXT**
+
 The goal of this tutorial is to demonstrate how to run
 a Message Passing Interface (MPI) application using Azure Batch.
 
 Azure Batch allows the creation of resources to run High Performance Computing
 (HPC) applications. Different from Azure CycleCloud, it does not make use of
 traditional job schedulers such as PBS, SLURM, LSF, etc. It has its own
-resource/task manager/scheduler. It is possible to use Azure Batch for both
+resource/task manager/scheduler. We can use Azure Batch for both
 embarrassingly parallel and tightly coupled applications.
 
+
+<br>
+
+**ORGANIZATION**
 
 In this tutorial we will consider a setup that there is no public IP address to
 access resources and that any access to resource pool is done via a VPN (or
@@ -36,8 +44,9 @@ In more details these are the major steps:
 9. Prepare MPI program into the storage
 10. Submit MPI task
 
+<br>
 
-**FILES:**
+**FILES**
 - [mpi_batch.sh](mpi_batch.sh): automates all these steps and has some useful functions
 - [compile.sh](compile.sh): compiles MPI source code and generates the mpirun
   script into the storage
@@ -46,11 +55,11 @@ In more details these are the major steps:
   source code folder
 
 
+<br>
 
-*DISCLAIMER: This document is work-in-progress and my personal experience
+**DISCLAIMER.** This document is work-in-progress and my personal experience
 performing this task.*
 
-<br>
 
 ---
 

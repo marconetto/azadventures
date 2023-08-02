@@ -4,6 +4,11 @@
 
 echo "Creating run_mpi.sh file"
 
+
+MPI_EXE=mpi_show_hosts
+MPI_CODE=mpi_show_hosts.c
+
+MPI_EXE_PATH="${AZ_BATCH_NODE_MOUNTS_DIR}/data/"
 cat << 'EOF' > run_mpi.sh
 #!/bin/bash
 
@@ -32,7 +37,7 @@ NP=$(($NODES*$PPN))
 
 set -x
 
-mpirun -np $NP --oversubscribe --host ${src}:${PPN},${dst}:${PPN} --map-by ppr:${PPN}:node --mca btl tcp,vader,self --mca coll_hcoll_enable 0 --mca btl_tcp_if_include lo,eth0 --mca pml ^ucx ${AZ_BATCH_APP_PACKAGE_mpi_batch_1_0_0}/mpi_batch/mpi_hello_world
+mpirun -np $NP --oversubscribe --host ${src}:${PPN},${dst}:${PPN} --map-by ppr:${PPN}:node --mca btl tcp,vader,self --mca coll_hcoll_enable 0 --mca btl_tcp_if_include lo,eth0 --mca pml ^ucx ${MPI_EXE_PATH}/${MPI_EXE}
 EOF
 
 chmod +x run_mpi.sh
@@ -47,5 +52,5 @@ module load mpi/hpcx
 
 set -x
 echo "Compiling mpi code"
-mpicc -o mpi_show_hosts mpi_show_hosts.c
-ls -l mpi_show_hosts
+mpicc -o ${MPI_EXE} ${MPI_CODE}
+ls -l ${MPI_EXE}

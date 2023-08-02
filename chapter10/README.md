@@ -37,10 +37,11 @@ In more details these are the major steps:
 
 **FILES:**
 
-- ``mpi_batch.sh``: automates all these steps and has some useful functions
-- compile.sh
-[compile.sh:](compile.sh)
-  https://raw.githubusercontent.com/marconetto/azadventures/main/chapter10/compile.sh
+- [mpi_batch.sh](mpi_batch.sh): automates all these steps and has some useful functions
+- [compile.sh](compile.sh): compiles MPI source code and generates the mpirun
+  script into the storage
+- [mpi_show_hosts.c](mpi_show_hosts.c): MPI application source code
+
 
 
 *DISCLAIMER: This document is work-in-progress and my personal experience

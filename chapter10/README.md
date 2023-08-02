@@ -58,7 +58,7 @@ In more details these are the major steps:
 <br>
 
 **DISCLAIMER.** This document is work-in-progress and my personal experience
-performing this task.*
+performing this task.
 
 
 ---

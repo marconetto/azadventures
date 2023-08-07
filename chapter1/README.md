@@ -245,7 +245,7 @@ and certificate password)
 
 #### Alternative (1): Manual
 
-Go to network settings of macos and from the zip file access Generic/VpnSettings.xml. There you will find VpnServer. Get that info and use in two fields: Server address and Remote ID. For local ID use the USERNAME specified in above steps (which is the name of the p12 bundle certificate).
+Go to network settings of macos and from the zip file access Generic/VpnSettings.xml. There you will find VpnServer. Get that info and use in two fields: Server address and Remote ID. For local ID use the USERNAME specified in above steps (which is the name of the p12 bundle certificate). The certificate is the one call USERNAME that will be in a list of other imported certificates.
 
 
 

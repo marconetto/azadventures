@@ -10,7 +10,10 @@ only part that is manual is the setup of the macos vpn client, in which it is
 necessary to have a few clicks to enable vpn.
 
 
-Check out create_vpn.sh in this folder to automate vpn creation
+**FILES**
+- [create_vpn.sh](create_vpn.sh): automates all these steps and has some useful functions
+- [create_selfsigncertificate.sh](create_selfsigncertificate.sh): automate certificate generation
+
 
 *DISCLAIMER: This document is work-in-progress and my personal experience
 performing this task.*

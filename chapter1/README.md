@@ -143,7 +143,6 @@ az network vnet-gateway update -g rgnetto1 \
 
 ```
 brew install strongswan
-brew install openssl
 ```
 
 Generate the CA certificate
@@ -154,7 +153,7 @@ ipsec pki --self --in caKey.pem --dn "CN=VPN CA" --ca --outform pem > caCert.pem
 ```
 
 ```
-openssl x509 -in caCert.pem -outform der | base64 > tmp_cert_base64
+/usr/bin/openssl x509 -in caCert.pem -outform der | base64 > tmp_cert_base64
 ROOT_CERTIFICATE_PATH=tmp_cert_base64
 # ROOT_CERTIFICATE_DATA=$(openssl x509 -in caCert.pem  -outform der | base64 -w0 ; echo)
 
@@ -180,12 +179,11 @@ ipsec pki --pub --in "${USERNAME}Key.pem" | ipsec pki --issue \
 
 Create a p12 bundle, which is basically the certificate from the pem files.
 
-IMPORTANT: if you use mac, do not forget the -legacy flag after your -export,
-because "OpenSSL 3.x changed the default algorithm and it's not compatible with
-macOS SSL libraries".
+IMPORTANT: be careful with the openssl version used. Last reference of this tutorial has a discussion
+on using -legacy flag after -export, because "OpenSSL 3.x changed the default algorithm and it's not compatible with macOS SSL libraries". To be sure, use /usr/bin/openssl, which will be the one provided by apple (not from brew).
 
 ```
-openssl pkcs12 -in "${USERNAME}Cert.pem" \
+/usr/bin/openssl pkcs12 -in "${USERNAME}Cert.pem" \
                -inkey "${USERNAME}Key.pem" \
                -certfile caCert.pem \
                -export -legacy -out "${USERNAME}.p12" \

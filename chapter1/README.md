@@ -180,11 +180,15 @@ ipsec pki --pub --in "${USERNAME}Key.pem" | ipsec pki --issue \
 
 Create a p12 bundle, which is basically the certificate from the pem files.
 
+IMPORTANT: if you use mac, do not forget the -legacy flag after your -export,
+because "OpenSSL 3.x changed the default algorithm and it's not compatible with
+macOS SSL libraries".
+
 ```
 openssl pkcs12 -in "${USERNAME}Cert.pem" \
                -inkey "${USERNAME}Key.pem" \
                -certfile caCert.pem \
-               -export -out "${USERNAME}.p12" \
+               -export -legacy -out "${USERNAME}.p12" \
                -password "pass:${PASSWORD}"
 ```
 
@@ -289,6 +293,8 @@ az vm list -otable -g rgnetto1
 ##### VPN connection is no longer working
 It may be a good idea to reboot your machine if you tried several things :)
 
+If you have issues importing the p12 file, take a look a the last reference of
+this tutorial.
 
 ## References
 
@@ -313,3 +319,5 @@ https://learn.microsoft.com/en-us/azure/vpn-gateway/point-to-site-vpn-client-cer
 - https://learn.microsoft.com/en-us/azure/storage/files/storage-files-configure-p2s-vpn-linux
 
 - https://learn.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys
+
+- problem import p12 certificate on mac: https://discussions.apple.com/thread/254518218

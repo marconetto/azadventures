@@ -15,7 +15,7 @@ Check out create_vpn.sh in this folder to automate vpn creation
 *DISCLAIMER: This document is work-in-progress and my personal experience
 performing this task.*
 
-</br>
+<br>
 
 ---
 

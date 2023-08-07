@@ -27,7 +27,7 @@ Check out create_peering_bastion.sh in this folder to automate bastion peering
 *DISCLAIMER: This document is work-in-progress and my personal experience
 performing this task.*
 
-</br>
+<br>
 ---
 
 ##### GW VNET TO VM VNET

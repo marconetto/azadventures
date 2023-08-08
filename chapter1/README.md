@@ -321,4 +321,6 @@ https://learn.microsoft.com/en-us/azure/vpn-gateway/point-to-site-vpn-client-cer
 
 - https://learn.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys
 
+- mac (avoid asking password): https://discussions.apple.com/thread/252126483
+
 - problem import p12 certificate on mac: https://discussions.apple.com/thread/254518218

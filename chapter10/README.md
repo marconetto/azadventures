@@ -337,11 +337,6 @@ az batch account create --resource-group $RG \
 
 Note you cannot use ``--storage-account $STORAGEACCOUNT`` as batch does not support storage account with fileshare to be link with it.
 
-
-
-# --storage-account $STORAGEACCOUNT    # does not support azure fileshare
-
-
 ### 6. Login into the batch account
 
 

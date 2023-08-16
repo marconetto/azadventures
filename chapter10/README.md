@@ -34,9 +34,9 @@ In a high level, the instructions will:
 In more details these are the major steps:
 
 1. Create resource group, VNET, and SUBNET
-2. Provision a VM for testing purposes
-3. Peering VPN
-4. Create storage account with NFS and private endpoint
+2. Peering VPN
+3. Create storage account with NFS and private endpoint
+4. Provision a VM for testing purposes
 5. Create batch account with user subscription allocation mode
 6. Login into the batch account
 7. Create pool with nfs support
@@ -120,24 +120,9 @@ az network vnet create -g $RG \
 ```
 
 
-### 2. Provision a VM for testing purposes
 
 
-```
-az vm create -n $VMNAME \
-          -g $RG \
-          --image $VMIMAGE \
-          --size $SKU \
-          --vnet-name $VMVNETNAME \
-          --subnet $VMSUBNETNAME \
-          --public-ip-address "" \
-          --admin-username $ADMINUSER \
-          --generate-ssh-keys
-private_ip=`az vm show -g $RG -n $VMNAME -d --query privateIps -otsv`
-echo "Private IP of $VMNAME: ${private_ip}"
-```
-
-### 3. Peering VPN
+### 2. Peering VPN
 
 
 ```
@@ -148,7 +133,7 @@ bash ./create_peering_vpn.sh $VPNRG $VPNVNET $RG $VMVNETNAME
 A solution using jumpbox/bastion could be also used here.
 
 
-### 4. Create storage account with NFS and private endpoint
+### 3. Create storage account with NFS and private endpoint
 
 Here we are gonna be using Azure file share
 
@@ -286,6 +271,22 @@ Inside the test VM (which can be access with ssh via vpn):
 sudo mkdir /nfs ; sudo mount $STORAGEACCOUNT.file.core.windows.net:/$STORAGEACCOUNT/$STORAGEFILE /nfs/
 ```
 
+### 4. Provision a VM for testing purposes
+
+
+```
+az vm create -n $VMNAME \
+          -g $RG \
+          --image $VMIMAGE \
+          --size $SKU \
+          --vnet-name $VMVNETNAME \
+          --subnet $VMSUBNETNAME \
+          --public-ip-address "" \
+          --admin-username $ADMINUSER \
+          --generate-ssh-keys
+private_ip=`az vm show -g $RG -n $VMNAME -d --query privateIps -otsv`
+echo "Private IP of $VMNAME: ${private_ip}"
+```
 
 ### 5. Create batch account with user subscription allocation mode
 

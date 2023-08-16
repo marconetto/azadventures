@@ -16,19 +16,25 @@ STORAGEFILE=data
 JSON_POOL=pool_nfs.json
 JSON_TASK=task_mpi.json
 
-VNETADDRESS=10.44.0.0
+VNETADDRESS=10.36.0.0
 
 VPNRG=myvpn
 VPNVNET=myvpnvnet
 
-VMNAME="$RG"vm1
-VMVNETNAME="$VMNAME"VNET
-VMSUBNETNAME="$VMNAME"SUBNET
+VMNAMEPREFIX="$RG"vm
+VMVNETNAME="$RG"VNET
+VMSUBNETNAME="$RG"SUBNET
 ADMINUSER=azureuser
 DNSZONENAME="privatelink.file.core.windows.net"
 
 POOLNAME=mpipool
 JOBNAME=mpijob
+
+function get_random_code(){
+
+    random_number=$((RANDOM % 9000 + 1000))
+    echo $random_number
+}
 
 function create_resource_group(){
 
@@ -49,7 +55,20 @@ function create_vm() {
 
    echo "creating $VMNAME for testing"
 
-   az vm create -n $VMNAME \
+   vmname="${VMNAMEPREFIX}_"$(get_random_code)
+
+   FILE=/tmp/vmcreate.$$
+   cat << EOF > $FILE
+#cloud-config
+
+runcmd:
+- echo "mounting shared storage on the vm"
+- mkdir /nfs
+- mount $STORAGEACCOUNT.file.core.windows.net:/$STORAGEACCOUNT/$STORAGEFILE /nfs/
+EOF
+
+
+   az vm create -n $vmname \
              -g $RG \
              --image $VMIMAGE \
              --size $SKU \
@@ -57,10 +76,11 @@ function create_vm() {
              --subnet $VMSUBNETNAME \
              --public-ip-address "" \
              --admin-username $ADMINUSER \
-             --generate-ssh-keys
+             --generate-ssh-keys \
+             --custom-data $FILE
 
-   private_ip=`az vm show -g $RG -n $VMNAME -d --query privateIps -otsv`
-   echo "Private IP of $VMNAME: ${private_ip}"
+   private_ip=`az vm show -g $RG -n $vmname -d --query privateIps -otsv`
+   echo "Private IP of $vmname: ${private_ip}"
 }
 
 function peer_vpn(){
@@ -295,11 +315,7 @@ function create_job(){
         --pool-id $POOLNAME
 }
 
-function get_random_code(){
 
-    random_number=$((RANDOM % 9000 + 1000))
-    echo $random_number
-}
 
 function create_mpirun_task(){
 
@@ -356,9 +372,9 @@ function add_mpi_program_storage(){
 
 create_resource_group
 create_vnet_subnet
-create_vm
 peer_vpn
 create_storage_account_files_nfs
+create_vm
 create_batch_account_with_usersubscription
 login_batch_with_usersubcription
 create_pool

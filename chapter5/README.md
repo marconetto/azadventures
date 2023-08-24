@@ -27,7 +27,10 @@ In more details these are the major steps:
 All these steps can be executed from your personal Linux machine OR in a linux jumpbox
 VM inside azure.
 
-**FILE:** Check out ``vmss_nfs.sh`` in this folder that automates all these steps.
+
+**FILES**
+- [vmss_nfs.sh](vmss_nfs.sh): automates all steps defined here via Azure CLI
+
 
 *DISCLAIMER: This document is work-in-progress and my personal experience
 performing this task.*

@@ -241,14 +241,14 @@ runcmd:
   - 'chmod o+rx $STORAGEMOUNTPOINT'
   - 'mount -a'
   - |
-set -x
-if [ ! -f $APPFOLDER ] ; then
-    echo "creating $APPFOLDER folder"
-    chmod o+rx $STORAGEMOUNTPOINT
-    mkdir $APPFOLDER
-    chown $VMSSADMINUSER.$VMSSADMINUSER $APPFOLDER
-    install -o $VMSSADMINUSER -g $VMSSADMINUSER /dev/null "$APPFOLDER/$VMSSADMINUSER"_files_here
-fi
+    set -x
+    if [ ! -f $APPFOLDER ] ; then
+        echo "creating $APPFOLDER folder"
+        chmod o+rx $STORAGEMOUNTPOINT
+        mkdir $APPFOLDER
+        chown $VMSSADMINUSER.$VMSSADMINUSER $APPFOLDER
+        install -o $VMSSADMINUSER -g $VMSSADMINUSER /dev/null "$APPFOLDER/$VMSSADMINUSER"_files_here
+    fi
 EOF
 ```
 

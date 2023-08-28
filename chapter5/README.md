@@ -30,7 +30,7 @@ VM inside azure.
 
 **FILES**
 - [vmss_nfs.sh](vmss_nfs.sh): automates all steps defined here via Azure CLI
-- [bicep folder](bicep): automates all steps defined here via Azure BICEP
+- [bicep folder](https://github.com/marconetto/azadventures/tree/main/chapter5/bicep): automates all steps defined here via Azure BICEP
 
 
 *DISCLAIMER: This document is work-in-progress and my personal experience

@@ -22,5 +22,6 @@ tutorials in this repository.
 8. Chapter8: Transfer files using azcopy
 9. Chapter9: TBD
 10. [Chapter10:](chapter10/) Run MPI jobs using Azure Batch + NFS
+11. [Chapter11:](chapter11/) Run MPI jobs using Azure CycleCloud + SLURM
 
 

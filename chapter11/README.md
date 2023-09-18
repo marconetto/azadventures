@@ -50,11 +50,15 @@ VPNVNET=myvpnvnet
 
 ##### 1.1 Go to market place and search for cyclecloud
 
-select version 8.4
-username can be kept azureuser
-select generate new ssh key pair or provide existing one
-in network tab select no public ip address (None)
-in management tab enable system assigned managed identity
+Select cyclecloud version 8.4
+
+Username can be kept azureuser
+
+Select generate new ssh key pair or provide existing one
+
+Select no public ip address (None) in network tab
+
+Enable system assigned managed identity in management tab
 
 ##### 1.2 Peer vnet
 
@@ -76,7 +80,7 @@ az storage account create \
 
 ##### 1.4 Login into the ccportal and create administrator account
 
-Open the web browser: https://<cyclecloudvmipaddress>/welcome
+Open the web browser: ``https://<cyclecloudvmipaddress>/welcome``
 
 For the administor user you can use the same admin user of the cyclecloud vm: azureuser
 
@@ -110,7 +114,7 @@ az role assignment create \
       --role "Contributor" \
       --scope "/subscriptions/$SUBSCRIPTION"
 
-az role assignment list $VMPrincipalID
+az role assignment list --assignee $VMPrincipalID
 ```
 
 ##### 1.6 Complete installation

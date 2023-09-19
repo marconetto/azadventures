@@ -1,6 +1,6 @@
 ## Run MPI jobs using Azure CycleCloud + SLURM 
 
-# (Work in Process)
+### (Work in Process)
 
 <br>
 
@@ -45,7 +45,7 @@ performing this task.
 
 <br>
 
-##  Provision of CycleCloud (fully automated)
+##  Provision of CycleCloud
 
 ### 1. Define a few variables
 
@@ -86,6 +86,7 @@ export CCPASSWORD=HelloMyPassword
 export CCPUBKEY=$(cat ~/.ssh/id_rsa.pub)
 ```
 
+<br>
 
 ### 2. Run automation script to provision cyclecloud
 
@@ -102,6 +103,7 @@ Once it is done you can login into the VM created in the browser after that usin
 <VMCycleCloudIPAddress>:8080
 ```
 
+<br>
 
 ## References
 - azure cyclecloud: https://learn.microsoft.com/en-us/azure/cyclecloud/overview

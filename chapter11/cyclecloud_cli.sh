@@ -272,7 +272,7 @@ function validate_secret_availability(){
                 echo "Happy for you! Will use this key!"
                 CCPUBKEY=$(cat $PUBKEYFILE)
             else
-                echo "Without CCPUBKEY I cannot continue..."
+                echo "Okay, set CCPUBKEY environment variable with your key and try again..."
                 exit
             fi
         fi
@@ -289,6 +289,8 @@ function set_keyvault_secrets(){
     az keyvault secret set --name ccpubkey --vault-name $KEYVAULT --value "$CCPUBKEY" > /dev/null
 }
 
+# assume user will use the existing key from home directory
+validate_secret_availability
 
 create_resource_group
 create_vnet_subnet
@@ -300,7 +302,6 @@ create_cloud_init
 set_keyvault_secrets
 create_vm
 
-validate_secret_availability
 
 add_vm_permission_subscription
 add_vm_permission_keyvault

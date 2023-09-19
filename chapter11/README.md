@@ -25,7 +25,7 @@ jumpbox/bastion vm).
 
 In a high level, the instructions will:
 
-1. Provision CycleCloud fully automated (plus setup of admin account and subscription enablement)
+1. Provision CycleCloud fully automated (including setup of admin account and subscription access)
 2. Provision the SLURM cluster in Cyclecloud
 3. Submit a job/task to run a simple MPI application with two nodes.
 4. Appendix: 1. Provision CycleCloud via marketplace: mix browser and CLI (traditional installation)
@@ -49,21 +49,43 @@ performing this task.
 
 ### 1. Define a few variables
 
-Here you can create a file called ``variables.sh``, then execute ``source variables.sh``
-
-You can also use ``export VAR=VALUE`` for variables such as ``CCPASSWORD`` and ``CCPUBKEY``.
+The first lines of the automation script there are a few variables you may want to change.
 
 ```
 RG=mydemo1
-STORAGE_ACCOUNT="$RG"sa
-VMNAME="$RG"vm
+SKU=Standard_B2ms
+VMIMAGE=microsoft-dsvm:ubuntu-hpc:1804:18.04.2021120101
+REGION=eastus
+
+STORAGEACCOUNT="$RG"sa
+KEYVAULT="$RG"kv
+
+VNETADDRESS=10.38.0.0
 
 VPNRG=myvpnrg
 VPNVNET=myvpnvnet
 
-CCPASSWORD=content1
-CCPUBKEY=pubsshkey
+VMNAME="$RG"vm
+VMVNETNAME="$RG"VNET
+VMSUBNETNAME="$RG"SUBNET
+ADMINUSER=azureuser
 ```
+
+
+In the automation process we also need two variables: ``CCPASSWORD`` and ``CCPUBKEY``.
+
+These variables need to be setup, as they will be stored in key vault and collected by cloud-init when provisioning the cyclecloud VM.
+
+During the execution of the automation script, you will be asked about these two variables if they are not set.
+For ``CCPUBKEY``, it will try to get the key from ``$HOME/.ssh/id_rsa.pub``.
+
+If you don't want any interaction when executing the automation you can simply do:
+
+```
+export CCPASSWORD=HelloMyPassword
+export CCPUBKEY=$(cat ~/.ssh/id_rsa.pub)
+```
+
 
 ### 2. Run automation script to provision cyclecloud
 
@@ -72,6 +94,13 @@ CCPUBKEY=pubsshkey
 ./cyclecloud_cli.sh
 ```
 
+Depending on your setup, you need to switch on again your VPN client.
+
+Once it is done you can login into the VM created in the browser after that using:
+
+```
+<VMCycleCloudIPAddress>:8080
+```
 
 
 ## References

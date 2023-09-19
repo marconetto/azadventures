@@ -80,7 +80,9 @@ CCPUBKEY=pubsshkey
 - azure cyclecloud manual install: https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/install-manual?view=cyclecloud-8
 - managed identities overview: https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview
 - managed identity in cyclecloud: https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/managed-identities?view=cyclecloud-8
-
+- cyclecloud terraform automation: https://github.com/yosoyjay/cyclecloud-llm/tree/main/cyclecloud
+- cyclecloud bicep automation: https://techcommunity.microsoft.com/t5/azure-high-performance-computing/automate-the-deployment-of-your-cyclecloud-server-with-bicep/ba-p/3668769
+- https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/running-in-locked-down-network?view=cyclecloud-8
 
 ## Appendix: 1. Provision CycleCloud via marketplace: mix browser and CLI (traditional installation)
 

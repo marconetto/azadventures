@@ -25,7 +25,7 @@ jumpbox/bastion vm).
 
 In a high level, the instructions will:
 
-1. Provision CycleCloud fully automated (TBD)
+1. Provision CycleCloud fully automated (plus setup of admin account and subscription enablement)
 2. Provision the SLURM cluster in Cyclecloud
 3. Submit a job/task to run a simple MPI application with two nodes.
 4. Appendix: 1. Provision CycleCloud via marketplace: mix browser and CLI (traditional installation)
@@ -34,9 +34,18 @@ In a high level, the instructions will:
 **FILES**
 - [cyclecloud_cli.sh](cyclecloud_cli.sh): automates cylecloud installation
 
+
+
+<br>
+
+**DISCLAIMER.** This document is work-in-progress and my personal experience
+performing this task.
+
 ---
 
 <br>
+
+##  Provision of CycleCloud (fully automated)
 
 ### 1. Define a few variables
 
@@ -56,34 +65,13 @@ CCPASSWORD=content1
 CCPUBKEY=pubsshkey
 ```
 
-
-
 ### 2. Run automation script to provision cyclecloud
-
 
 
 ```
 ./cyclecloud_cli.sh
 ```
 
-
-
-
-<br>
-
-**DISCLAIMER.** This document is work-in-progress and my personal experience
-performing this task.
-
-
----
-
-<br>
-
-### You can delete everything! :)
-
-```
-az group delete -g $RG
-```
 
 
 ## References

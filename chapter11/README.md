@@ -25,6 +25,7 @@ In a high level, the instructions will:
 3. Submit a job/task to run a simple MPI application with two nodes.
 4. Appendix: 1. Provision CycleCloud via marketplace: mix browser and CLI (traditional installation)
 
+<br>
 
 **ASSUMPTIONS**
 
@@ -33,6 +34,7 @@ In a high level, the instructions will:
 - The automation was tested only with image ``microsoft-dsvm:ubuntu-hpc:1804:18.04.2021120101``
 - All resources (cyclecloud, storage account, keyvault...) are in the same resource group
 
+<br>
 
 **FILES**
 - [cyclecloud_cli.sh](cyclecloud_cli.sh): automates cyclecloud installation using Azure CLI

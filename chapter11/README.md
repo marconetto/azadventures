@@ -30,6 +30,8 @@ In a high level, the instructions will:
 
 - Cyclecloud will be used with no public address;
 - A VPN is expected to be configured (see [https://marconetto.github.io/azadventures/chapter1/](https://marconetto.github.io/azadventures/chapter1/)
+- The automation was tested only with image ``microsoft-dsvm:ubuntu-hpc:1804:18.04.2021120101``
+- All resources (cyclecloud, storage account, keyvault...) are in the same resource group
 
 
 **FILES**

@@ -18,11 +18,6 @@ schedulers such as PBS, SLURM, and LSF, etc.
 
 **ORGANIZATION**
 
-In this tutorial we will consider a setup that there is no public IP address to
-access resources and that any access to resource pool is done via a VPN (or
-jumpbox/bastion vm).
-
-
 In a high level, the instructions will:
 
 1. Provision CycleCloud fully automated (including setup of admin account and subscription access)
@@ -31,8 +26,14 @@ In a high level, the instructions will:
 4. Appendix: 1. Provision CycleCloud via marketplace: mix browser and CLI (traditional installation)
 
 
+**ASSUMPTIONS**
+
+- Cyclecloud will be used with no public address;
+- A VPN is expected to be configured (see [https://marconetto.github.io/azadventures/chapter1/](https://marconetto.github.io/azadventures/chapter1/)
+
+
 **FILES**
-- [cyclecloud_cli.sh](cyclecloud_cli.sh): automates cylecloud installation
+- [cyclecloud_cli.sh](cyclecloud_cli.sh): automates cyclecloud installation using Azure CLI
 
 
 
@@ -49,7 +50,7 @@ performing this task.
 
 ### 1. Define a few variables
 
-The first lines of the automation script there are a few variables you may want to change.
+The first lines of the automation script contain variables you may want to change.
 
 ```
 RG=mydemo1
@@ -105,6 +106,8 @@ Once it is done you can login into the VM created in the browser after that usin
 
 <br>
 
+<br>
+
 ## References
 - azure cyclecloud: https://learn.microsoft.com/en-us/azure/cyclecloud/overview
 - azure cyclecloud marketplace install: https://learn.microsoft.com/en-us/azure/cyclecloud/qs-install-marketplace?view=cyclecloud-8
@@ -114,6 +117,12 @@ Once it is done you can login into the VM created in the browser after that usin
 - cyclecloud terraform automation: https://github.com/yosoyjay/cyclecloud-llm/tree/main/cyclecloud
 - cyclecloud bicep automation: https://techcommunity.microsoft.com/t5/azure-high-performance-computing/automate-the-deployment-of-your-cyclecloud-server-with-bicep/ba-p/3668769
 - https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/running-in-locked-down-network?view=cyclecloud-8
+
+<br>
+
+<br>
+
+---
 
 ## Appendix: 1. Provision CycleCloud via marketplace: mix browser and CLI (traditional installation)
 

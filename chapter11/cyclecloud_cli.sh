@@ -249,7 +249,6 @@ function get_password_manually(){
             CCPASSWORD+="$char"
         fi
     done
-    echo -e "\npassword=$CCPASSWORD"
 }
 
 

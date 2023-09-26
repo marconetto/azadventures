@@ -1,4 +1,4 @@
-## Run MPI jobs using Azure CycleCloud + SLURM 
+## Run MPI jobs using Azure CycleCloud + SLURM
 
 ### (Work in Process)
 
@@ -38,6 +38,7 @@ In a high level, the instructions will:
 
 **FILES**
 - [cyclecloud_cli.sh](cyclecloud_cli.sh): automates cyclecloud installation using Azure CLI
+- [setvars.sh](setvars.sh): sets variables to customize deployment
 
 
 
@@ -52,32 +53,17 @@ performing this task.
 
 ##  Provision of CycleCloud
 
-### 1. Define a few variables
+### 1. Define deployment variables
 
-The first lines of the automation script contain variables you may want to change.
+Modify `setvars.sh` to customize deployment variables, which are related names
+of resource group, storage account, keyvault, among others. Type the following
+command to setup the variables before deployment.
 
 ```
-RG=mydemo1
-SKU=Standard_B2ms
-VMIMAGE=microsoft-dsvm:ubuntu-hpc:1804:18.04.2021120101
-REGION=eastus
-
-STORAGEACCOUNT="$RG"sa
-KEYVAULT="$RG"kv
-
-VNETADDRESS=10.38.0.0
-
-VPNRG=myvpnrg
-VPNVNET=myvpnvnet
-
-VMNAME="$RG"vm
-VMVNETNAME="$RG"VNET
-VMSUBNETNAME="$RG"SUBNET
-ADMINUSER=azureuser
+source setvars.sh
 ```
 
-
-In the automation process we also need two variables: ``CCPASSWORD`` and ``CCPUBKEY``.
+In the automation process we also need two variables: ``CCPASSWORD`` and ``CCPUBKEY``, which are not `setvars.sh`
 
 These variables need to be setup, as they will be stored in key vault and collected by cloud-init when provisioning the cyclecloud VM.
 
@@ -96,6 +82,14 @@ export CCPUBKEY=$(cat ~/.ssh/id_rsa.pub)
 ### 2. Run automation script to provision cyclecloud
 
 
+
+This automation script contains the following major steps:
+1. provision basic infrastructure (resource group, vnet, vnet peering with vpn, keyvault)
+2. store admin password and public ssh key in keyvault
+3. generate a cloud-init that will install cyclecloud when the cyclecloud vm is created
+4. provision cyclecloud vm, setup admin password, setup subscription
+
+
 ```
 ./cyclecloud_cli.sh
 ```
@@ -107,6 +101,23 @@ Once it is done you can login into the VM created in the browser after that usin
 ```
 <VMCycleCloudIPAddress>:8080
 ```
+
+
+
+### 3. Run automation script to provision cyclecloud + slurm cluster (scheduler + 2 nodes)
+
+
+get template
+generate json parameter file
+get project for slurm 3.0.4
+
+
+### 4. Run automation script to provision cyclecloud + slurm cluster + mpi test code
+
+
+
+
+
 
 <br>
 
@@ -121,6 +132,8 @@ Once it is done you can login into the VM created in the browser after that usin
 - cyclecloud terraform automation: https://github.com/yosoyjay/cyclecloud-llm/tree/main/cyclecloud
 - cyclecloud bicep automation: https://techcommunity.microsoft.com/t5/azure-high-performance-computing/automate-the-deployment-of-your-cyclecloud-server-with-bicep/ba-p/3668769
 - https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/running-in-locked-down-network?view=cyclecloud-8
+- cyclecloud cluster templates: https://learn.microsoft.com/en-us/training/modules/customize-clusters-azure-cyclecloud/2-describe-templates
+- cyclecloud projects: https://learn.microsoft.com/en-us/training/modules/customize-clusters-azure-cyclecloud/5-customize-software-installations
 
 <br>
 

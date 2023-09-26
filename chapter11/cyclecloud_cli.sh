@@ -1,25 +1,23 @@
 #!/usr/bin/env bash
 
 
-RG=mydemo
-SKU=Standard_B2ms
-VMIMAGE=microsoft-dsvm:ubuntu-hpc:1804:18.04.2021120101
-CCIMAGE=azurecyclecloud:azure-cyclecloud:cyclecloud8:latest
-REGION=eastus
+: "${RG:=mydemo}"
+: "${REGION:=eastus}"
 
-STORAGEACCOUNT="$RG"sa
+: "${SKU:=Standard_B2ms}"
+: "${VMIMAGE:=microsoft-dsvm:ubuntu-hpc:1804:18.04.2021120101}"
+: "${ADMINUSER:=azureuser}"
 
-VNETADDRESS=10.38.0.0
+: "${STORAGEACCOUNT:=${RG}sa}"
+: "${KEYVAULT=${RG}kv}"
 
-VPNRG=myvpnrg
-VPNVNET=myvpnvnet
+: "${VNETADDRESS:=10.38.0.0}"
+: "${VMVNETNAME:=${RG}VNET}"
+: "${VMSUBNETNAME:=${RG}SUBNET}"
 
-VMNAME="$RG"vm
-VMVNETNAME="$RG"VNET
-VMSUBNETNAME="$RG"SUBNET
-ADMINUSER=azureuser
+: "${VPNRG:=myvpnrg}"
+: "${VPNVNET:=myvpnvnet}"
 
-KEYVAULT="$RG"kv
 
 CLOUDINITFILE=cloudinit.file
 

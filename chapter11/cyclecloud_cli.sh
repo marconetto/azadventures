@@ -393,7 +393,7 @@ function peer_vpn(){
 
 
     if [ -z $VPNRG ] || [ -z $VPNVNET ]; then
-        showmsg "failed" "VPNRG and VPNVNET are required for VPN peering and testing cylecloud access"
+        showmsg "failed" "VPNRG and VPNVNET are required for VPN peering and testing cyclecloud access"
         return 1
     fi
 

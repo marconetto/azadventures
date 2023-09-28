@@ -3,9 +3,19 @@
 if [ "$#" != 4 ] ; then
 
     echo "Usage: $0 <resourcegroup gw vnet> <gw vnet> <resourcegroup vm vnet> <vm vnet>"
-    exit
+    exit 1
 fi
 
+
+function check_error(){
+
+    error=$1
+
+    if [[ $error -ne 0 ]]; then
+        echo "Error creating peering"
+        exit $1
+    fi
+}
 
 
 RGGWVNET=$1
@@ -30,6 +40,8 @@ vmvnetid=$(az network vnet show \
   --name $VMVNET \
   --query id --out tsv)
 
+echo "vmvnetid=$vmvnetid"
+
 az network vnet peering create \
   --name $GWVNET_TO_VMVNET \
   --resource-group $RGGWVNET \
@@ -38,6 +50,9 @@ az network vnet peering create \
   --allow-vnet-access \
   --allow-gateway-transit \
   --allow-forwarded-traffic
+
+check_error $?
+
 
 # VM VNET TO GW VNET
 gwvnetid=$(az network vnet show \
@@ -54,6 +69,7 @@ az network vnet peering create \
   --allow-forwarded-traffic \
   --use-remote-gateways
 
+check_error $?
 
 
 az network vnet peering list -g $RGGWVNET --vnet-name $GWVNET -o table

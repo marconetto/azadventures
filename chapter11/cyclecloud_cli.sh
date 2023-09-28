@@ -42,7 +42,7 @@ LOGFILE=cyclecloud_cli_$(date "+%Y_%m_%d_%H%M").log
 ##############################################################################
 # Variable that should not be changed
 ##############################################################################
-VPNVNETPEERED=true
+VPNVNETPEERED=false
 
 ##############################################################################
 # Log related functions
@@ -574,6 +574,6 @@ add_vm_permission_subscription
 add_vm_permission_keyvault
 show_vm_access
 
-if [ $CREATE_CLUSTER == true ]; then
+if [ $CREATE_CLUSTER == true ];  then
     wait_cluster_provision
 fi

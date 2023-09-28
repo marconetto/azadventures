@@ -1,13 +1,10 @@
-## Run MPI jobs using Azure CycleCloud + SLURM
-
-### (Work in Process)
+## Provision CycleCloud + SLURM using CLI to run MPi jobs
 
 <br>
 
 **GOAL AND CONTEXT**
 
-The goal of this tutorial is to demonstrate how to run
-a Message Passing Interface (MPI) application using Azure Cycle Cloud.
+The goal of this tutorial is to demonstrate how to provision cyclecloud and a SLURM cluster using Azure CLI and Cyclecloud CLI.
 
 Azure CycleCloud allows the creation of resources to run High Performance
 Computing (HPC) applications. It allows the deployment of traditional job
@@ -22,17 +19,18 @@ In a high level, the instructions will:
 
 1. Provision CycleCloud fully automated (including setup of admin account and subscription access)
 2. Provision the SLURM cluster in Cyclecloud
-3. Submit a job/task to run a simple MPI application with two nodes.
-4. Appendix: 1. Provision CycleCloud via marketplace: mix browser and CLI (traditional installation)
+3. Appendix: 1. Provision CycleCloud via marketplace: mix browser and CLI (traditional installation)
 
 <br>
 
 **ASSUMPTIONS**
 
-- Cyclecloud will be used with no public address;
+- Cyclecloud will be used with NO public address;
 - A VPN is expected to be configured (see [https://marconetto.github.io/azadventures/chapter1/](https://marconetto.github.io/azadventures/chapter1/)
+- If VPN is not configured, it is OK!  Leave `VPNRG` and `VPNVNET` unset. You will just not have a verification to see if cyclecloud is running and the slurm cluster is ready for job submission
 - The automation was tested only with image ``microsoft-dsvm:ubuntu-hpc:1804:18.04.2021120101``
 - All resources (cyclecloud, storage account, keyvault...) are in the same resource group
+- Scheduler and compute node images are the default ones of the cyclecloud SLURM template: cycle.image.alma
 
 <br>
 
@@ -104,12 +102,13 @@ Once it is done you can login into the VM created in the browser after that usin
 
 
 
-### 3. Run automation script to provision cyclecloud + slurm cluster (scheduler + 2 nodes)
+### 3. Run automation script to provision cyclecloud + slurm cluster
 
+To provision the slurm cluster as well, just use the parameter `cluster` when calling the script. This will add more steps in the cloud-init file used to provision the cyclecloud VM. The cluster will be created based on the cyclecloud SLURM template. If VPN is setup, the script will poll cyclecloud to check when the cluster becomes ready to submit jobs via the cluster scheduler machine.
 
-get template
-generate json parameter file
-get project for slurm 3.0.4
+```
+./cyclecloud_cli.sh cluster
+```
 
 
 ### 4. Run automation script to provision cyclecloud + slurm cluster + mpi test code

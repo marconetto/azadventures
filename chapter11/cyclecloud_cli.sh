@@ -372,7 +372,7 @@ EOF
 
 function create_vm() {
 
-    showmsg "done" "Start provisioning request."
+    showmsg "done" "Start provisioning request"
 
     az vm create -n $VMNAME \
         -g $RG \

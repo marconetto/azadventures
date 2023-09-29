@@ -66,7 +66,7 @@ In the automation process we also need two variables: `CCPASSWORD` and
 in keyvault and collected by cloud-init when provisioning the cyclecloud VM.
 
 During the execution of the automation script, you will be asked about these
-two variables if they are not set. For `CCPASSWORD`` you will be asked for two passwords that match and for `CCPUBKEY`, it will try to get the key from ``$HOME/.ssh/id_rsa.pub`` or you can provide an alternative file.
+two variables if they are not set. For `CCPASSWORD` you will be asked for two passwords that match and for `CCPUBKEY`, it will try to get the key from ``$HOME/.ssh/id_rsa.pub`` or you can provide an alternative file.
 
 If you don't want any interaction when executing the automation you can simply
 run:

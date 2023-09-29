@@ -40,7 +40,7 @@ CREATE_CLUSTER=false
 LOGFILE=cyclecloud_cli_$(date "+%Y_%m_%d_%H%M").log
 
 ##############################################################################
-# Variable that should not be changed
+# Variable that should not be changed as it is handled by this script
 ##############################################################################
 VPNVNETPEERED=false
 
@@ -127,7 +127,7 @@ function validate_secret_availability(){
 
     if [ -z ${CCPASSWORD+x} ] ; then
         echo "CCPASSWORD: must be set and non-empty"
-        echo "Control-C to cancel and set CCPASSWORD in environment variable"
+        echo "Control-C to cancel and set CCPASSWORD as environment variable"
         get_password_manually
     else
         echo "Got CCPASSWORD from environment variable"
@@ -139,7 +139,6 @@ function validate_secret_availability(){
         if [ -f "$PUBKEYFILE" ]; then
             read -p "[$PUBKEYFILE] Can I get the pub key from here [Y|n]? " yn
             if [ -z "$yn" ] || [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
-                echo "Happy for you! Will use this key!"
                 CCPUBKEY=$(cat $PUBKEYFILE)
             else
                 echo "Okay, set CCPUBKEY environment variable with your key and try again..."
@@ -227,6 +226,7 @@ cat << EOF
          runuser -l $ADMINUSER -c 'cyclecloud show_cluster  -t' | grep  'slurm.*template'  | awk '{print \$1}'
          SLURMTEMPLATE=\$(runuser -l $ADMINUSER -c 'cyclecloud show_cluster  -t' | grep  "slurm.*template" | cut -d':' -f1)
          runuser -l $ADMINUSER -c "cyclecloud create_cluster \$SLURMTEMPLATE $CLUSTERNAME -p /tmp/$CLUSTERPARAMETERFILE"
+         runuser -l $ADMINUSER -c "cyclecloud start_cluster $CLUSTERNAME"
 
          echo "Waiting for scheduler to be up-and-running..."
          max_provisioning_time=120
@@ -549,8 +549,9 @@ function wait_cluster_provision(){
 echo "=============================================="
 echo "Logfile of execution: $LOGFILE"
 
-if [ $# == 1 ] && [ $1 == "cluster" ]; then
-    echo "Cluster creation enabled"
+if [ $# == 1 ]; then
+    CLUSTERNAME=$1
+    echo "Cluster creation enabled: $CLUSTERNAME"
     CREATE_CLUSTER=true
 fi
 

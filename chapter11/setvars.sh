@@ -1,6 +1,7 @@
 export RG=mydemo
 export REGION=eastus
 
+export VMNAME=${RG}vm
 export SKU=Standard_B2ms
 export VMIMAGE=microsoft-dsvm:ubuntu-hpc:1804:18.04.2021120101
 export ADMINUSER=azureuser

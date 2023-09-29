@@ -35,6 +35,7 @@ In a high level, the instructions will:
 <br>
 
 **FILES**
+- [git folder](https://github.com/marconetto/azadventures/tree/main/chapter11): git folder with the required files
 - [cyclecloud_cli.sh](cyclecloud_cli.sh): automates cyclecloud installation using Azure CLI
 - [setvars.sh](setvars.sh): sets variables to customize deployment
 

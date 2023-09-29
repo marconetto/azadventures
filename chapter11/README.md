@@ -132,8 +132,11 @@ One part of this cloud-init file contains a setup of commands to be executed:
 
 ```
 runcmd:
-    # initial commands to install azure cli in VM
-    # obtain and prepare password and ssh public key from keyvault
+    ...
+    # Initial commands to install Azure CLI in the CycleCloud VM
+    # Process to obtain and prepare password and ssh public key from Azure keyvault
+    # full cloud-init available in the script source code
+    ...
     - apt-get install -yq cyclecloud8=8.4.0-3122
     - sed -i "s/CCPASSWORD/\$escaped_CCPASSWORD/g" /tmp/cyclecloud_account.json
     - sed -i "s/CCPUBKEY/\$escaped_CCPUBKEY/g" /tmp/cyclecloud_account.json

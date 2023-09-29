@@ -2,8 +2,6 @@
 
 Git Pages: <https://marconetto.github.io/azadventures/chapter11/>
 
-<br>
-
 Azure CycleCloud allows the creation of resources to run High Performance
 Computing (HPC) applications based on widely used job schedulers such as PBS,
 SLURM, and LSF. Once CycleCloud is installed, it requires a few steps in the

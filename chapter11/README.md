@@ -1,5 +1,7 @@
 ## Automated deployment of CycleCloud and SLURM using CLI
 
+Git Pages: <https://marconetto.github.io/azadventures/chapter11/>
+
 <br>
 
 Azure CycleCloud allows the creation of resources to run High Performance

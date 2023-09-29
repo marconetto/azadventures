@@ -133,11 +133,14 @@ One part of this cloud-init file contains a setup of commands to be executed:
 ```
 runcmd:
     ...
-    # Initial commands to:
+    ...
+    # The first lines of this part, not placed here, contain initial commands to:
     #    (1) install Azure CLI in the CycleCloud VM
     #    (2) obtain and prepare password and ssh public key from Azure keyvault
-    # Full cloud-init available in the script source code
+    # Full content of this cloud-init file is available in the script source code
     ...
+    ...
+    # Install CycleCloud and CycleCloud CLI
     - apt-get install -yq cyclecloud8=8.4.0-3122
     - mv /tmp/$CYCLECLOUDACCOUNTFILE /opt/cycle_server/config/data/
     - /opt/cycle_server/cycle_server await_startup
@@ -145,6 +148,8 @@ runcmd:
     - python3 /tmp/cyclecloud-cli-installer/install.py -y --installdir /home/${cyclecloud_admin_name}/.cycle --system
     - cmd="/usr/local/bin/cyclecloud initialize --loglevel=debug --batch --url=http://localhost:8080 --verify-ssl=false --username=${cyclecloud_admin_name} --password='\$CCPASSWORD'"
     - runuser -l ${cyclecloud_admin_name} -c "\$cmd"
+
+    # Initial CycleCloud setup
     - mv /tmp/$AZURESUBSCRIPTIONFILE /opt/cycle_server/
     - runuser -l ${cyclecloud_admin_name} -c '/usr/local/bin/cyclecloud account create -f /opt/cycle_server/$AZURESUBSCRIPTIONFILE'
     - rm -f /opt/cycle_server/config/data/${CYCLECLOUDACCOUNTFILE}.imported
@@ -226,7 +231,7 @@ provisioning:
 
 echo "Setting up the slurm cluster!"
 SLURMTEMPLATE=$(runuser -l $ADMINUSER -c 'cyclecloud show_cluster  -t' | grep  'slurm.*template' | awk '{print $1}' )
-echo "SLURMTEMPLATE=\$SLURMTEMPLATE"
+echo "SLURMTEMPLATE=$SLURMTEMPLATE"
 
 runuser -l $ADMINUSER -c 'cyclecloud show_cluster  -t' | grep  'slurm.*template'  | awk '{print $1}'
 SLURMTEMPLATE=$(runuser -l $ADMINUSER -c 'cyclecloud show_cluster  -t' | grep  "slurm.*template" | cut -d':' -f1)
@@ -285,15 +290,15 @@ focuses on having a simple deployment with an interesting user experience.
 <br>
 
 ## References
-- azure cyclecloud: <https://learn.microsoft.com/en-us/azure/cyclecloud/overview>
-- azure cyclecloud marketplace install: <https://learn.microsoft.com/en-us/azure/cyclecloud/qs-install-marketplace?view=cyclecloud-8>
-- azure cyclecloud manual install: <https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/install-manual?view=cyclecloud-8>
-- managed identities overview: <https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview>
-- managed identity in cyclecloud: <https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/managed-identities?view=cyclecloud-8>
-- cyclecloud terraform automation: <https://github.com/yosoyjay/cyclecloud-llm/tree/main/cyclecloud>
-- cyclecloud bicep automation: <https://techcommunity.microsoft.com/t5/azure-high-performance-computing/automate-the-deployment-of-your-cyclecloud-server-with-bicep/ba-p/3668769>
-- cyclecloud bicep automation: <https://github.com/edwardsp/cyclecloud-bicep/tree/main>
-- Lockdown network: <https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/running-in-locked-down-network?view=cyclecloud-8>
-- cyclecloud cluster templates: <https://learn.microsoft.com/en-us/training/modules/customize-clusters-azure-cyclecloud/2-describe-templates>
-- cyclecloud projects: <https://learn.microsoft.com/en-us/training/modules/customize-clusters-azure-cyclecloud/5-customize-software-installations>
+1. azure cyclecloud: <https://learn.microsoft.com/en-us/azure/cyclecloud/overview>
+1. azure cyclecloud marketplace install: <https://learn.microsoft.com/en-us/azure/cyclecloud/qs-install-marketplace?view=cyclecloud-8>
+1. azure cyclecloud manual install: <https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/install-manual?view=cyclecloud-8>
+1. managed identities overview: <https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview>
+1. managed identity in cyclecloud: <https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/managed-identities?view=cyclecloud-8>
+1. cyclecloud terraform automation: <https://github.com/yosoyjay/cyclecloud-llm/tree/main/cyclecloud>
+1. cyclecloud bicep automation: <https://techcommunity.microsoft.com/t5/azure-high-performance-computing/automate-the-deployment-of-your-cyclecloud-server-with-bicep/ba-p/3668769>
+1. cyclecloud bicep automation: <https://github.com/edwardsp/cyclecloud-bicep/tree/main>
+1. lockdown network: <https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/running-in-locked-down-network?view=cyclecloud-8>
+1. cyclecloud cluster templates: <https://learn.microsoft.com/en-us/training/modules/customize-clusters-azure-cyclecloud/2-describe-templates>
+1. cyclecloud projects: <https://learn.microsoft.com/en-us/training/modules/customize-clusters-azure-cyclecloud/5-customize-software-installations>
 

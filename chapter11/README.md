@@ -51,9 +51,9 @@ Example of execution from a user laptop:
 
 Before running the script itself we need to setup a few environment variables; really a few ;-).
 
-Modify `setvars.sh` to customize deployment variables, which are related names
-of resource group, storage account, keyvault, among others. Type the following
-command to setup the variables before deployment.
+Modify `setvars.sh` to customize deployment variables, which are related to
+names of resource group, storage account, keyvault, among others. Type the
+following command to setup the variables before deployment.
 
 ```
 source setvars.sh
@@ -133,9 +133,10 @@ One part of this cloud-init file contains a setup of commands to be executed:
 ```
 runcmd:
     ...
-    # Initial commands to install Azure CLI in the CycleCloud VM
-    # Process to obtain and prepare password and ssh public key from Azure keyvault
-    # full cloud-init available in the script source code
+    # Initial commands to:
+    #    (1) install Azure CLI in the CycleCloud VM
+    #    (2) obtain and prepare password and ssh public key from Azure keyvault
+    # Full cloud-init available in the script source code
     ...
     - apt-get install -yq cyclecloud8=8.4.0-3122
     - sed -i "s/CCPASSWORD/\$escaped_CCPASSWORD/g" /tmp/cyclecloud_account.json
@@ -151,62 +152,62 @@ runcmd:
     - rm -f /opt/cycle_server/config/data/${CYCLECLOUDACCOUNTFILE}.imported
 ```
 
-Here it sets up the password and public key in the CycleCloud account json
+The script sets up the password and public key in the CycleCloud account json
 file, installs CycleCloud package, and waits until the CycleCloud server is up
 and running. After that it installs the CycleCloud CLI, and completes the
 CycleCloud account setup. Some of these steps require two files that are
-created by cloud-init:
+automatically created by cloud-init:
 
 
 ```
 write_files:
 
-    - path: /tmp/$CYCLECLOUDACCOUNTFILE
-      content: |
-        [
-          {
-            "AdType": "Application.Setting",
-            "Name": "cycleserver.installation.initial_user",
-            "Value": "${cyclecloud_admin_name}"
-          },
-          {
-            "AdType": "AuthenticatedUser",
-            "Name": "${cyclecloud_admin_name}",
-            "RawPassword": "CCPASSWORD",
-            "Superuser": true
-          },
-          {
-            "AdType": "Credential",
-            "CredentialType": "PublicKey",
-            "Name": "${cyclecloud_admin_name}/public",
-            "PublicKey": "CCPUBKEY"
-          },
-          {
-            "AdType": "Application.Setting",
-            "Name": "cycleserver.installation.complete",
-            "Value": true
-          }
-        ]
+ - path: /tmp/$CYCLECLOUDACCOUNTFILE
+   content: |
+     [
+       {
+         "AdType": "Application.Setting",
+         "Name": "cycleserver.installation.initial_user",
+         "Value": "${cyclecloud_admin_name}"
+       },
+       {
+         "AdType": "AuthenticatedUser",
+         "Name": "${cyclecloud_admin_name}",
+         "RawPassword": "CCPASSWORD",  <<--- from Azure Keyvault at VM first boot time
+         "Superuser": true
+       },
+       {
+         "AdType": "Credential",
+         "CredentialType": "PublicKey",
+         "Name": "${cyclecloud_admin_name}/public",
+         "PublicKey": "CCPUBKEY"       <<--- from Azure Keyvault at VM first boot time
+       },
+       {
+         "AdType": "Application.Setting",
+         "Name": "cycleserver.installation.complete",
+         "Value": true
+       }
+     ]
 
-    - path: /tmp/$AZURESUBSCRIPTIONFILE
-      content: |
-        {
-          "Environment": "public",
-          "AzureRMUseManagedIdentity": true,
-          "AzureResourceGroup": "${cyclecloud_rg}",
-          "AzureRMApplicationId": " ",
-          "AzureRMApplicationSecret": " ",
-          "AzureRMSubscriptionId": "${azure_subscription_id}",
-          "AzureRMTenantId": " ${azure_tenant_id}",
-          "DefaultAccount": true,
-          "Location": "${cyclecloud_location}",
-          "Name": "${cyclecloud_subscription_name}",
-          "Provider": "azure",
-          "ProviderId": "${azure_subscription_id}",
-          "RMStorageAccount": "${cyclecloud_storage_account}",
-          "RMStorageContainer": "${cyclecloud_storage_container}",
-          "AcceptMarketplaceTerms": true
-        }
+ - path: /tmp/$AZURESUBSCRIPTIONFILE
+   content: |
+     {
+       "Environment": "public",
+       "AzureRMUseManagedIdentity": true,
+       "AzureResourceGroup": "${cyclecloud_rg}",
+       "AzureRMApplicationId": " ",
+       "AzureRMApplicationSecret": " ",
+       "AzureRMSubscriptionId": "${azure_subscription_id}",
+       "AzureRMTenantId": " ${azure_tenant_id}",
+       "DefaultAccount": true,
+       "Location": "${cyclecloud_location}",
+       "Name": "${cyclecloud_subscription_name}",
+       "Provider": "azure",
+       "ProviderId": "${azure_subscription_id}",
+       "RMStorageAccount": "${cyclecloud_storage_account}",
+       "RMStorageContainer": "${cyclecloud_storage_container}",
+       "AcceptMarketplaceTerms": true
+     }
 ```
 
 In the main automation scripts, there are also steps to automate the access of
@@ -218,7 +219,7 @@ CycleCloud documentation (see References).
 
 If one wants the SLURM cluster as well, then an additional line is appended to
 the `runcmd` cloud-init part: `- bash $CREATECLUSTERFILE`---here
-$CREATECLUSTERFILE is an auto-generated script to handle the SLURM
+`$CREATECLUSTERFILE` is an auto-generated script to handle the SLURM
 provisioning:
 
 
@@ -253,15 +254,15 @@ done
 #### 4. Final remarks
 
 
-Some times one wants to have a quick provisioning of CycleCloud (with SLURM
-cluster) for testing, but does not want rely on a browser to go through some
-steps. Alternatives with terraform or bicep are also available (see
-References). With CLI, one can see step-by-step the procedures to have such a
-deployment which can be handy in certain circunstances.
+One may want to quickly provision CycleCloud (with SLURM cluster)
+for testing, but does not want rely on a browser to go through some steps.
+Alternatives with terraform or bicep are also available (see References). With
+CLI, one can see the step-by-step procedures to have such a deployment which
+come in handy under certain circumstances.
 
-The script is available, and further improvements will happen. However the
-focus here is on simplicity of the automation process, with a simple deployment
-and interesting user experience.
+The script is publicly available, and further improvements are expected. One
+can modify/expand it to handle different use cases. This initial version
+focuses on having a simple deployment with an interesting user experience.
 
 
 

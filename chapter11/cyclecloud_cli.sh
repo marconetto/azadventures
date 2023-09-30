@@ -37,6 +37,9 @@ CREATECLUSTERFILE=/tmp/createcluster.sh
 CLUSTERNAME=mycluster
 CREATE_CLUSTER=false
 
+# used for slurm compute nodes and scheduler
+CLUSTERIMAGE=almalinux8
+
 LOGFILE=cyclecloud_cli_$(date "+%Y_%m_%d_%H%M").log
 
 ##############################################################################
@@ -212,7 +215,11 @@ cat << EOF
           "Region": "${REGION}",
           "AdditionalNFSExportPath": null,
           "AdditionalNFSMountPoint": null,
-          "DynamicSpotMaxPrice": null
+          "DynamicSpotMaxPrice": null,
+          "HTCImageName" : "$CLUSTERIMAGE",
+          "HPCImageName" : "$CLUSTERIMAGE",
+          "SchedulerImageName" : "$CLUSTERIMAGE",
+          "DynamicImageName" : "$CLUSTERIMAGE"
         }
 
     - path: $CREATECLUSTERFILE
@@ -288,26 +295,27 @@ cat << EOF > $CLOUDINITFILE
 #cloud-config
 
 runcmd:
+    # Install CycleCloud
     - apt-get -y install gnupg2
     - wget -qO - https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
     - echo 'deb https://packages.microsoft.com/repos/cyclecloud bionic main' > /etc/apt/sources.list.d/cyclecloud.list
     - apt-get update
-    - apt-get install -yq openjdk-8-jdk
-    - update-java-alternatives -s java-1.8.0-openjdk-amd64
-    - apt-get install -yq python3-venv
-    - echo "Install Azure CLI"
+    - apt-get install -yq cyclecloud8=8.4.0-3122
+    - /opt/cycle_server/cycle_server await_startup
+
+    # Collect and process admin password and ssh public key
     - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-    - which az
     - az login --identity --allow-no-subscriptions
     - CCPASSWORD=\$(az keyvault secret show --name ccpassword --vault-name $KEYVAULT --query 'value' -o tsv)
     - CCPUBKEY=\$(az keyvault secret show --name ccpubkey --vault-name $KEYVAULT --query 'value' -o tsv)
-    - apt-get install -yq cyclecloud8=8.4.0-3122
     - escaped_CCPASSWORD=\$(printf '%s\n' "\$CCPASSWORD" | sed -e 's/[]\/\$*.^[]/\\\&/g')
     - escaped_CCPUBKEY=\$(printf '%s\n' "\$CCPUBKEY" | sed -e 's/[]\/\$*.^[]/\\\&/g')
-    - sed -i "s/CCPASSWORD/\$escaped_CCPASSWORD/g" /tmp/cyclecloud_account.json
-    - sed -i "s/CCPUBKEY/\$escaped_CCPUBKEY/g" /tmp/cyclecloud_account.json
+    - sed -i "s/CCPASSWORD/\$escaped_CCPASSWORD/g" /tmp/${CYCLECLOUDACCOUNTFILE}
+    - sed -i "s/CCPUBKEY/\$escaped_CCPUBKEY/g" /tmp/${CYCLECLOUDACCOUNTFILE}
+
+    # Setup CycleCloud
     - mv /tmp/$CYCLECLOUDACCOUNTFILE /opt/cycle_server/config/data/
-    - /opt/cycle_server/cycle_server await_startup
+    - apt-get install -yq unzip python3-venv
     - unzip /opt/cycle_server/tools/cyclecloud-cli.zip -d /tmp
     - python3 /tmp/cyclecloud-cli-installer/install.py -y --installdir /home/${cyclecloud_admin_name}/.cycle --system
     - cmd="/usr/local/bin/cyclecloud initialize --loglevel=debug --batch --url=http://localhost:8080 --verify-ssl=false --username=${cyclecloud_admin_name} --password='\$CCPASSWORD'"
@@ -561,12 +569,12 @@ echo "=============================================="
 echo "Start provisioning process"
 log_on
 
-create_resource_group
-create_vnet_subnet
-
-peer_vpn
-create_storage_account
-create_keyvault
+# create_resource_group
+# create_vnet_subnet
+#
+# peer_vpn
+# create_storage_account
+# create_keyvault
 
 create_cloud_init
 set_keyvault_secrets

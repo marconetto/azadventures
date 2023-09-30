@@ -2,23 +2,34 @@
 
 Git Pages: <https://marconetto.github.io/azadventures/chapter11/>
 
+
+#### TL;TR
+- We provide a script for full creation of a CycleCloud instance with a SLURM cluster ready to submit your (MPI) jobs using only Command Line Interface (CLI);
+- The script can be used to either provision only CycleCloud instance or go one step further and make a SLURM cluster available---single scheduler node in which compute nodes are added automatically as user submits jobs;
+- The proposed solution relies heavily on both cloud-init and Azure/CycleCloud CLI commands;
+- Keyvault is used to handle CycleCloud admin password and public ssh key;
+- [Git folder](https://github.com/marconetto/azadventures/tree/main/chapter11): git repository with the automation script
+
+
+<br>
+
 Azure CycleCloud allows the creation of resources to run High Performance
 Computing (HPC) applications based on widely used job schedulers such as PBS,
 SLURM, and LSF. Once CycleCloud is installed, it requires a few steps in the
-browser including setup of site name, acceptance of the license agreement,
-setup the administrator account, and subscription access permissions of the VM
+browser including setup of site name, accept the license agreement, setup the
+administrator account, and add subscription access permissions of the VM
 principal ID. After that, if one wants to create a SLURM cluster using existing
-built-in template, another set of steps would be required; via either browser or
+built-in template, another set of steps is required; via either browser or
 command line.
 
-What if a **single script** could do all of these steps in a **single
+What if a **single script** could handle all these steps in a **single
 execution**? Here we describe the key steps to achieve this automation and the
-script itself, which can be used as is, for quick provisioning of CycleCloud
-service, or serve as a building block to create more sophisticated
-clusters/automation.
+script itself, which can be used as is---for quick provisioning of CycleCloud
+service---or serve as a building block to create more sophisticated
+clusters/automation. The scripts relies only on Command Line Interface (CLI).
 
 Here is the git repository that contains the script:
-- [git folder](https://github.com/marconetto/azadventures/tree/main/chapter11): git folder with the required files
+- [git folder](https://github.com/marconetto/azadventures/tree/main/chapter11): git repository with automation script
 - [cyclecloud_cli.sh](cyclecloud_cli.sh): automates cyclecloud installation using Azure CLI
 - [setvars.sh](setvars.sh): sets variables to customize deployment
 
@@ -30,21 +41,14 @@ Example of execution from a user laptop:
 </p>
 
 
-
-#### TL;TR
-- It is possible to automate the full creation of a CycleCloud instance with a SLURM cluster ready to submit your (MPI) jobs using only CLI;
-- The proposed solution relies heavily on cloud-init and Azure and CycleCloud CLI commands;
-- The available script can be used to either provision only CycleCloud instance or go one step further and make a SLURM cluster avaiable---single scheduler node in which compute nodes are added automatically as user submits jobs;
-- Keyvault is used to handle CycleCloud admin password and public ssh key.
-
-
-
 #### Assumptions
+
 - Deployment relies only on PRIVATE IPs, so ideally VPN (or bastion) has to be previously setup;
 - Private and public ssh keys available;
-- Deployment relies on the built-in SLURM template that comes with CycleCloud, and specification of more sophisticated configuration for the scheduler and compute nodes via CycleCloud projects is out of the scope here.
-- All resources (cyclecloud, storage account, keyvault...) are in the same resource group
-- Default Alma Linux image is used: `almalinux8` or `almalinux:almalinux-hpc:8_5-hpc-gen2:latest` for both scheduler and compute nodes
+- Deployment relies on the built-in SLURM template that comes with CycleCloud, and specification of more sophisticated configuration for the scheduler and compute nodes via CycleCloud projects is out of the scope here;
+- All resources (cyclecloud, storage account, keyvault...) are in the same resource group;
+- Alma Linux image 8 (`almalinux8` / `almalinux:almalinux-hpc:8_5-hpc-gen2:latest`) is used for both scheduler and compute nodes;
+- Azure CLI must be setup in the user machine that triggers the script call (i.e. `az login` should work with the subscription for deployment).
 
 
 #### 1. How to run the script
@@ -74,16 +78,16 @@ export CCPASSWORD=<mygreatpassword>
 export CCPUBKEY=$(cat ~/.ssh/id_rsa.pub)
 ```
 
-To run the script it self you have two options:
+You have two options to run the script:
 
-Provision and setup of only CycleCloud without any cluster:
+**Option 1:** Provision and setup only CycleCloud without any cluster:
 
 ```
 ./cyclecloud_cli.sh
 ```
 
 
-Or provision and setup of CycleCloud with a SLURM cluster ready for job submission (just pass a clustername):
+**Option 2:** Provision and setup of CycleCloud with a SLURM cluster ready for job submission (just pass a clustername):
 
 ```
 ./cyclecloud_cli.sh <clustername>
@@ -132,14 +136,27 @@ One part of this cloud-init file contains a setup of commands to be executed:
 
 ```
 runcmd:
-    ...
-    ...
-    # The first lines of this part, not placed here, contain initial commands to:
-    #    (1) install Azure CLI in the CycleCloud VM
-    #    (2) obtain and prepare password and ssh public key from Azure keyvault
-    # Full content of this cloud-init file is available in the script source code
-    ...
-    ...
+    # Initial steps to collect and process admin password and ssh public key
+
+- apt-get -y install gnupg2
+- wget -qO - https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+- echo 'deb https://packages.microsoft.com/repos/cyclecloud bionic main' > /etc/apt/sources.list.d/cyclecloud.list
+- apt-get update
+- apt-get install -yq openjdk-8-jdk
+- update-java-alternatives -s java-1.8.0-openjdk-amd64
+- apt-get install -yq python3-venv
+- echo "Install Azure CLI"
+- curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+- which az
+- az login --identity --allow-no-subscriptions
+- CCPASSWORD=\$(az keyvault secret show --name ccpassword --vault-name $KEYVAULT --query 'value' -o tsv)
+- CCPUBKEY=\$(az keyvault secret show --name ccpubkey --vault-name $KEYVAULT --query 'value' -o tsv)
+- apt-get install -yq cyclecloud8=8.4.0-3122
+- escaped_CCPASSWORD=\$(printf '%s\n' "\$CCPASSWORD" | sed -e 's/[]\/\$*.^[]/\\\&/g')
+- escaped_CCPUBKEY=\$(printf '%s\n' "\$CCPUBKEY" | sed -e 's/[]\/\$*.^[]/\\\&/g')
+- sed -i "s/CCPASSWORD/\$escaped_CCPASSWORD/g" /tmp/cyclecloud_account.json
+- sed -i "s/CCPUBKEY/\$escaped_CCPUBKEY/g" /tmp/cyclecloud_account.json
+
     # Install CycleCloud and CycleCloud CLI
     - apt-get install -yq cyclecloud8=8.4.0-3122
     - mv /tmp/$CYCLECLOUDACCOUNTFILE /opt/cycle_server/config/data/

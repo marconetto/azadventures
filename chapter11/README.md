@@ -147,20 +147,19 @@ runcmd:
     # Collect and process admin password and ssh public key
     - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
     - az login --identity --allow-no-subscriptions
-    - CCPASSWORD=\$(az keyvault secret show --name ccpassword --vault-name $KEYVAULT --query 'value' -o tsv)
-    - CCPUBKEY=\$(az keyvault secret show --name ccpubkey --vault-name $KEYVAULT --query 'value' -o tsv)
-    - escaped_CCPASSWORD=\$(printf '%s\n' "\$CCPASSWORD" | sed -e 's/[]\/\$*.^[]/\\\&/g')
-    - escaped_CCPUBKEY=\$(printf '%s\n' "\$CCPUBKEY" | sed -e 's/[]\/\$*.^[]/\\\&/g')
-    - sed -i "s/CCPASSWORD/\$escaped_CCPASSWORD/g" /tmp/${CYCLECLOUDACCOUNTFILE}
-    - sed -i "s/CCPUBKEY/\$escaped_CCPUBKEY/g" /tmp/${CYCLECLOUDACCOUNTFILE}
+    - CCPASSWORD=$(az keyvault secret show --name ccpassword --vault-name $KEYVAULT --query 'value' -o tsv)
+    - CCPUBKEY=$(az keyvault secret show --name ccpubkey --vault-name $KEYVAULT --query 'value' -o tsv)
+    - escaped_CCPASSWORD=\$(printf '%s\n' "$CCPASSWORD" | sed -e 's/[]\/\$*.^[]/\\\&/g')
+    - escaped_CCPUBKEY=\$(printf '%s\n' "$CCPUBKEY" | sed -e 's/[]\/\$*.^[]/\\\&/g')
+    - sed -i "s/CCPASSWORD/$escaped_CCPASSWORD/g" /tmp/${CYCLECLOUDACCOUNTFILE}
+    - sed -i "s/CCPUBKEY/$escaped_CCPUBKEY/g" /tmp/${CYCLECLOUDACCOUNTFILE}
 
-     # Setup CycleCloud
+    # Setup CycleCloud
     - mv /tmp/$CYCLECLOUDACCOUNTFILE /opt/cycle_server/config/data/
     - apt-get install -yq unzip python3-venv
     - unzip /opt/cycle_server/tools/cyclecloud-cli.zip -d /tmp
     - python3 /tmp/cyclecloud-cli-installer/install.py -y --installdir /home/${cyclecloud_admin_name}/.cycle --system
-    - cmd="/usr/local/bin/cyclecloud initialize --loglevel=debug --batch --url=http://localhost:8080 --verify-ssl=false --username=${cyclecloud_admin_name} --password='\$CCPASSWORD'"
-    - runuser -l ${cyclecloud_admin_name} -c "\$cmd"
+    - runuser -l ${cyclecloud_admin_name} -c "/usr/local/bin/cyclecloud initialize --loglevel=debug --batch --url=http://localhost:8080 --verify-ssl=false --username=\"$cyclecloud_admin_name\" --password=\"$CCPASSWORD\""
     - mv /tmp/$AZURESUBSCRIPTIONFILE /opt/cycle_server/
     - runuser -l ${cyclecloud_admin_name} -c '/usr/local/bin/cyclecloud account create -f /opt/cycle_server/$AZURESUBSCRIPTIONFILE'
     - rm -f /opt/cycle_server/config/data/${CYCLECLOUDACCOUNTFILE}.imported

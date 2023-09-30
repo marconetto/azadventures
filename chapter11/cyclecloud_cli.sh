@@ -318,8 +318,7 @@ runcmd:
     - apt-get install -yq unzip python3-venv
     - unzip /opt/cycle_server/tools/cyclecloud-cli.zip -d /tmp
     - python3 /tmp/cyclecloud-cli-installer/install.py -y --installdir /home/${cyclecloud_admin_name}/.cycle --system
-    - cmd="/usr/local/bin/cyclecloud initialize --loglevel=debug --batch --url=http://localhost:8080 --verify-ssl=false --username=${cyclecloud_admin_name} --password='\$CCPASSWORD'"
-    - runuser -l ${cyclecloud_admin_name} -c "\$cmd"
+    - runuser -l ${cyclecloud_admin_name} -c "/usr/local/bin/cyclecloud initialize --loglevel=debug --batch --url=http://localhost:8080 --verify-ssl=false --username=\"$cyclecloud_admin_name\" --password=\"\$CCPASSWORD\""
     - mv /tmp/$AZURESUBSCRIPTIONFILE /opt/cycle_server/
     - runuser -l ${cyclecloud_admin_name} -c '/usr/local/bin/cyclecloud account create -f /opt/cycle_server/$AZURESUBSCRIPTIONFILE'
     - rm -f /opt/cycle_server/config/data/${CYCLECLOUDACCOUNTFILE}.imported

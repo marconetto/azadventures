@@ -304,7 +304,7 @@ runcmd:
     - /opt/cycle_server/cycle_server await_startup
 
     # Collect and process admin password and ssh public key
-    - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    - bash /tmp/azcliinstaller.sh
     - az login --identity --allow-no-subscriptions
     - CCPASSWORD=\$(az keyvault secret show --name ccpassword --vault-name $KEYVAULT --query 'value' -o tsv)
     - CCPUBKEY=\$(az keyvault secret show --name ccpubkey --vault-name $KEYVAULT --query 'value' -o tsv)
@@ -372,6 +372,43 @@ write_files:
           "RMStorageContainer": "${cyclecloud_storage_container}",
           "AcceptMarketplaceTerms": true
         }
+
+    - path: /tmp/azcliinstaller.sh
+      content: |
+        function retry_installer(){
+            local attempts=0
+            local max=15
+            local delay=25
+
+            while true; do
+                ((attempts++))
+                "\$@" && {
+                    echo "CLI installed"
+                    break
+                } || {
+                    if [[ \$attempts -lt \$max ]]; then
+                        echo "CLI installation failed. Attempt \$attempts/\$max."
+                        sleep \$delay;
+                    else
+                        echo "CLI installation has failed after \$attempts attempts."
+                        break
+                    fi
+                }
+            done
+        }
+
+        function install_azure_cli(){
+            install_script="/tmp/azurecli_installer.sh"
+            curl -sL https://aka.ms/InstallAzureCLIDeb -o "\$install_script"
+            retry_installer sudo bash "\$install_script"
+            rm \$install_script
+        }
+
+        if ! command -v az &> /dev/null
+        then
+            echo "Installing Azure CLI"
+            install_azure_cli
+        fi
 $(create_cluster_cloudinit_files $cyclecloud_subscription_name)
 
 EOF
@@ -568,12 +605,12 @@ echo "=============================================="
 echo "Start provisioning process"
 log_on
 
-# create_resource_group
-# create_vnet_subnet
-#
-# peer_vpn
-# create_storage_account
-# create_keyvault
+create_resource_group
+create_vnet_subnet
+
+peer_vpn
+create_storage_account
+create_keyvault
 
 create_cloud_init
 set_keyvault_secrets

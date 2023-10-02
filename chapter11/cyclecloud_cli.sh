@@ -1,26 +1,27 @@
 #!/usr/bin/env bash
 
+set -u
 ##############################################################################
 # Default variable definitions
 ##############################################################################
-: "${RG:=mydemo}"
-: "${REGION:=eastus}"
+: ${RG:=mydemo}
+: ${REGION:=eastus}
 
-: "${VMNAME=${RG}vm}"
-: "${SKU:=Standard_B2ms}"
-: "${VMIMAGE:=microsoft-dsvm:ubuntu-hpc:1804:18.04.2021120101}"
-: "${ADMINUSER:=azureuser}"
+: ${VMNAME:=${RG}vm}
+: ${SKU:=Standard_B2ms}
+: ${VMIMAGE:=microsoft-dsvm:ubuntu-hpc:1804:18.04.2021120101}
+: ${ADMINUSER:=azureuser}
 
-: "${STORAGEACCOUNT:=${RG}sa}"
-: "${KEYVAULT=${RG}kv}"
+: ${STORAGEACCOUNT:=${RG}sa}
+: ${KEYVAULT:=${RG}kv}
 
-: "${VNETADDRESS:=10.38.0.0}"
-: "${VMVNETNAME:=${RG}VNET}"
-: "${VMSUBNETNAME:=${RG}SUBNET}"
+: ${VNETADDRESS:=10.38.0.0}
+: ${VMVNETNAME:=${RG}VNET}
+: ${VMSUBNETNAME:=${RG}SUBNET}
 
-# - Not required if no status checking for cyclecloud provisioning is required
-#: "${VPNRG:=myvpnrg}"
-#: "${VPNVNET:=myvpnvnet}"
+# Checking status for cyclecloud provisioning is not mandatory
+: ${VPNRG:=}
+: ${VPNVNET:=}
 
 ##############################################################################
 # Definitions that are not recommended to be changed
@@ -36,11 +37,12 @@ CREATE_CLUSTER=false
 # used for slurm compute nodes and scheduler
 CLUSTERIMAGE=almalinux8
 
+##############################################################################
+# Variables that should not be changed
+##############################################################################
 LOGFILE=cyclecloud_cli_$(date "+%Y_%m_%d_%H%M").log
-##############################################################################
-# Variable that should not be changed as it is handled by this script
-##############################################################################
 VPNVNETPEERED=false
+SSHCMD="ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null"
 
 ##############################################################################
 # Log related functions
@@ -65,15 +67,19 @@ function showmsg(){
         echo -en "${GREEN}[DONE]: " >&3
     elif  [[ $tag == "failed" ]]; then
         echo -en "${RED}[FAILED]: " >&3
+    elif  [[ $tag == "warn" ]]; then
+        echo -en "${YELLOW}[WARNING]: " >&3
     fi
 
     echo -e "${YELLOW}$msg${RESET}" >&3
 }
+
 ##############################################################################
 # Support functions for acquiring user password and public ssh key
 ##############################################################################
 function return_typed_password(){
 
+    set +u
     password=""
     echo -n "Enter password: " >&2
     while IFS= read -p "$prompt" -r -s -n 1 char
@@ -91,6 +97,7 @@ function return_typed_password(){
     done
     echo $password
     echo "" >&2
+    set -u
 }
 
 function get_password_manually(){
@@ -138,8 +145,8 @@ function validate_secret_availability(){
     else
         echo "Got CCPUBKEY from environment variable"
     fi
-
 }
+
 ##############################################################################
 # Core functions
 ##############################################################################
@@ -180,7 +187,6 @@ cat << EOF
     - bash $CREATECLUSTERFILE
 
 EOF
-
 }
 
 function create_cluster_cloudinit_files(){
@@ -262,7 +268,6 @@ cat << EOF
          done
          echo "Final scheduler state = \$schedulerstate"
 EOF
-
 }
 
 function create_cloud_init(){
@@ -424,7 +429,7 @@ function peer_vpn(){
 
 
     if [ -z $VPNRG ] || [ -z $VPNVNET ]; then
-        showmsg "failed" "VPNRG and VPNVNET are required for VPN peering and testing cyclecloud access"
+        showmsg "warn" "VPNRG and VPNVNET are required for VPN peering and testing cyclecloud access"
         return 1
     fi
 
@@ -516,7 +521,6 @@ function show_vm_access() {
     showmsg "done" "CycleCloud VM WEB access: http://$ipaddress:8080"
 }
 
-
 function set_keyvault_secrets(){
 
     az keyvault secret set --name ccpassword --vault-name $KEYVAULT --value "$CCPASSWORD" > /dev/null
@@ -525,22 +529,16 @@ function set_keyvault_secrets(){
     showmsg "done" "Set keyvault secrets"
 }
 
-function wait_cluster_provision(){
+function wait_cyclecloud(){
 
-    if [ "$VPNVNETPEERED" == false ]; then
-        showmsg "failed" "Cannot test cyclecloud/cluster access as no VPN peer was established"
-        return 1
-    fi
+    ccvmipaddress=$1
+    pollingdelay=$2
 
-    pollingdelay=10
     showmsg "done" "Start polling cyclecloud VM (VPN access required). You can control-c at any time..."
-
-    SSHCMD="ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null"
-    ipaddress=$(az vm show -g $RG -n $VMNAME --query privateIps -d --out tsv 2>&1)
 
     waited=false
     while true; do
-       gotaccess=$($SSHCMD $ADMINUSER@$ipaddress hostname > /dev/null 2>/dev/null)
+       gotaccess=$($SSHCMD $ADMINUSER@$ccvmipaddress hostname > /dev/null 2>/dev/null)
        error=$?
        [[ "$error" == 0 ]] && break
        sleep $pollingdelay
@@ -551,11 +549,18 @@ function wait_cluster_provision(){
     [[ "$waited" == true ]] && shownewline
 
     showmsg "done" "Got cyclecloud VM access"
+}
+
+function wait_scheduler() {
+
+    ccvmipaddress=$1
+    pollingdelay=$2
+
     showmsg "done" "Start polling cluster scheduler. This may take a while..."
 
     waited=false
     while true; do
-       schedulerstatus=$( $SSHCMD $ADMINUSER@$ipaddress 'cyclecloud show_nodes scheduler -c "$CLUSTERNAME" --states="Started" --output="%(Status)s" 2> /dev/null' )
+       schedulerstatus=$( $SSHCMD $ADMINUSER@$ccvmipaddress 'cyclecloud show_nodes scheduler -c "$CLUSTERNAME" --states="Started" --output="%(Status)s" 2> /dev/null' )
        [[ "$schedulerstatus" == "Ready" ]] && break
        echo "schedulerstatus=$schedulerstatus"
        sleep $pollingdelay
@@ -566,12 +571,27 @@ function wait_cluster_provision(){
    [[ $waited == true ]] && shownewline
 
    if [[ "$schedulerstatus" == "Ready" ]]; then
-      showmsg "done" "Cluster ready for submission"
-       schedulerip=$( $SSHCMD $ADMINUSER@$ipaddress 'cyclecloud show_nodes scheduler -c "$CLUSTERNAME" --states="Started" --output="%(PrivateIp)s" 2> /dev/null' )
+       showmsg "done" "Cluster ready for submission"
+       schedulerip=$( $SSHCMD $ADMINUSER@$ccvmipaddress 'cyclecloud show_nodes scheduler -c "$CLUSTERNAME" --states="Started" --output="%(PrivateIp)s" 2> /dev/null' )
        showmsg "done" "Scheduler SSH access: ssh [-i <privatesshkey>] $ADMINUSER@$schedulerip"
    else
       showmsg "failed" "Cannot access cluster"
    fi
+}
+
+function wait_cluster_provision(){
+
+    if [ "$VPNVNETPEERED" == false ]; then
+        showmsg "failed" "Cannot test cyclecloud/cluster access as no VPN peer was established"
+        return 1
+    fi
+
+    pollingdelay=10
+
+    ccvmipaddress=$(az vm show -g $RG -n $VMNAME --query privateIps -d --out tsv 2>&1)
+
+    wait_cyclecloud $ccvmipaddress $pollingdelay
+    wait_scheduler $ccvmipaddress $pollingdelay
 }
 
 ##############################################################################

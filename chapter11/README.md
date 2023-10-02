@@ -143,7 +143,7 @@ runcmd:
     - /opt/cycle_server/cycle_server await_startup
 
     # Collect and process admin password and ssh public key
-    - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    - bash /tmp/azcliinstaller.sh
     - az login --identity --allow-no-subscriptions
     - CCPASSWORD=$(az keyvault secret show --name ccpassword --vault-name $KEYVAULT --query 'value' -o tsv)
     - CCPUBKEY=$(az keyvault secret show --name ccpubkey --vault-name $KEYVAULT --query 'value' -o tsv)

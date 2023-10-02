@@ -18,13 +18,9 @@
 : "${VMVNETNAME:=${RG}VNET}"
 : "${VMSUBNETNAME:=${RG}SUBNET}"
 
-# - We need only if we want to check the status of cyclecloud provisioning
-# and the cluster scheduler provisioning
-# - So, no VPN for peering means, no testing available
-#
+# - Not required if no status checking for cyclecloud provisioning is required
 #: "${VPNRG:=myvpnrg}"
 #: "${VPNVNET:=myvpnvnet}"
-
 
 ##############################################################################
 # Definitions that are not recommended to be changed
@@ -41,7 +37,6 @@ CREATE_CLUSTER=false
 CLUSTERIMAGE=almalinux8
 
 LOGFILE=cyclecloud_cli_$(date "+%Y_%m_%d_%H%M").log
-
 ##############################################################################
 # Variable that should not be changed as it is handled by this script
 ##############################################################################
@@ -55,16 +50,9 @@ RED="\e[31m"
 YELLOW="\e[33m"
 RESET="\e[0m"
 
-function log_on(){
-    exec 3>&1 >> $LOGFILE 2>&1
-}
-
-function showprogress(){
-    echo -n "." | tee /dev/fd/3
-}
-function shownewline(){
-    echo "" | tee /dev/fd/3
-}
+log_on(){ exec 3>&1 >> $LOGFILE 2>&1 ; }
+showprogress(){ echo -n "." | tee /dev/fd/3 ; }
+shownewline(){ echo "" | tee /dev/fd/3 ; }
 
 function showmsg(){
 
@@ -81,7 +69,6 @@ function showmsg(){
 
     echo -e "${YELLOW}$msg${RESET}" >&3
 }
-
 ##############################################################################
 # Support functions for acquiring user password and public ssh key
 ##############################################################################
@@ -605,13 +592,14 @@ echo "=============================================="
 echo "Start provisioning process"
 log_on
 
-create_resource_group
-create_vnet_subnet
+# create_resource_group
+# create_vnet_subnet
+#
+# peer_vpn
+# create_storage_account
+# create_keyvault
 
-peer_vpn
-create_storage_account
-create_keyvault
-
+VPNVNETPEERED=true
 create_cloud_init
 set_keyvault_secrets
 create_vm

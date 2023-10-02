@@ -2,17 +2,6 @@
 
 Git Pages: <https://marconetto.github.io/azadventures/chapter11/>
 
-
-#### TL;TR
-- We provide a script for full creation of a CycleCloud instance with a SLURM cluster ready to submit your (MPI) jobs using only Command Line Interface (CLI);
-- The script can be used to either provision only CycleCloud instance or go one step further and make a SLURM cluster available---single scheduler node in which compute nodes are added automatically as user submits jobs;
-- The proposed solution relies heavily on both cloud-init and Azure/CycleCloud CLI commands;
-- Keyvault is used to handle CycleCloud admin password and public ssh key;
-- [Git folder](https://github.com/marconetto/azadventures/tree/main/chapter11): git repository with the automation script
-
-
-<br>
-
 Azure CycleCloud allows the creation of resources to run High Performance
 Computing (HPC) applications based on widely used job schedulers such as PBS,
 SLURM, and LSF. Once CycleCloud is installed, it requires a few steps in the
@@ -26,12 +15,21 @@ What if a **single script** could handle all these steps in a **single
 execution**? Here we describe the key steps to achieve this automation and the
 script itself, which can be used as is---for quick provisioning of CycleCloud
 service---or serve as a building block to create more sophisticated
-clusters/automation. The scripts relies only on Command Line Interface (CLI).
+clusters/automation. The script relies only on Command Line Interface (CLI) from both Azure and CycleCloud.
+
+
+#### TL;TR
+- We provide a script for full creation of a CycleCloud instance with a SLURM cluster ready to submit your (MPI) jobs using only Command Line Interface (CLI);
+- The script can be used to either provision only CycleCloud instance or go one step further and make a SLURM cluster available---single scheduler node in which compute nodes are added automatically as user submits jobs;
+- The proposed solution relies heavily on both cloud-init and Azure/CycleCloud CLI commands;
+- Keyvault is used to handle CycleCloud admin password and public ssh key;
+- We describe a few key steps from the script so one can see the CycleCloud CLI in action.
+
 
 Here is the git repository that contains the script:
 - [git folder](https://github.com/marconetto/azadventures/tree/main/chapter11): git repository with automation script
-- [cyclecloud_cli.sh](cyclecloud_cli.sh): automates cyclecloud installation using Azure CLI
-- [setvars.sh](setvars.sh): sets variables to customize deployment
+- [cyclecloud_cli.sh](cyclecloud_cli.sh): script itself to automate CycleCloud+SLURM installation using Azure/CycleCloud CLI
+- [setvars.sh](setvars.sh): helper script to setup variables to customize deployment
 
 
 Example of execution from a user laptop:
@@ -43,7 +41,7 @@ Example of execution from a user laptop:
 
 #### Assumptions
 
-- Deployment relies only on PRIVATE IPs, so ideally VPN (or bastion) has to be previously setup;
+- Deployment relies only on PRIVATE IP addresses, so ideally VPN (or bastion) has to be previously setup;
 - Private and public ssh keys available;
 - Deployment relies on the built-in SLURM template that comes with CycleCloud, and specification of more sophisticated configuration for the scheduler and compute nodes via CycleCloud projects is out of the scope here;
 - All resources (cyclecloud, storage account, keyvault...) are in the same resource group;
@@ -53,7 +51,7 @@ Example of execution from a user laptop:
 
 #### 1. How to run the script
 
-Before running the script itself we need to setup a few environment variables; really a few ;-).
+Before running the automation script we need to setup a few environment variables; really a few ;-).
 
 Modify `setvars.sh` to customize deployment variables, which are related to
 names of resource group, storage account, keyvault, among others. Type the
@@ -106,7 +104,7 @@ The script starts by making sure the required environment variables are setup,
 including the CycleCloud admin password and ssh public key. Next performs
 deployment of basic building blocks, including creation of resource group,
 provisioning of VNET and SUBNET, peering of VNET between the new VNET and your
-VPN VNET, provisioning of storage acccount for CycleCloud, and the keyvault.
+VPN VNET, provisioning of storage account for CycleCloud, and the keyvault.
 
 Then it provisions the CycleCloud VM with the following Azure CLI command:
 
@@ -125,7 +123,7 @@ az vm create -n $VMNAME \
 ```
 
 
-So the key component here is the `--custom-data`, which defines the cloud-init
+So the key component here is the `--custom-data` argument, which defines the cloud-init
 file. Cloud-init is a utility for automating the initialization of cloud
 instances at VM boot time. The automation script generates the cloud-init
 transparently. Here are few highlights of this auto-generated file. Its full
@@ -223,11 +221,6 @@ write_files:
      }
 ```
 
-In the main automation scripts, there are also steps to automate the access of
-the VM to the subscription as a contributor, as described in the official
-CycleCloud documentation (see References).
-
-
 #### 3. Behind the scenes: provisioning and setup of SLURM cluster
 
 If one wants the SLURM cluster as well, then an additional line is appended to
@@ -264,21 +257,25 @@ get_state(){ runuser -l $ADMINUSER -c "cyclecloud show_nodes scheduler -c $CLUST
 done
 ```
 
-The `$CLUSTERPARAMETERFILE` is also auto-generated by the cloud-init process:
+The `$CLUSTERPARAMETERFILE` file is also auto-generated by the cloud-init process:
 
 ```
 - path: /tmp/$CLUSTERPARAMETERFILE
   content: |
     {
-      "Credentials": "${cyclecloud_subscription_name}",
-      "SubnetId": "${RG}/${VMVNETNAME}/${VMSUBNETNAME}",
-      "ReturnProxy": false,
-      "UsePublicNetwork": false,
-      "ExecuteNodesPublic": false,
-      "Region": "${REGION}",
-      "AdditionalNFSExportPath": null,
-      "AdditionalNFSMountPoint": null,
-      "DynamicSpotMaxPrice": null
+        "Credentials": "${cyclecloud_subscription_name}",
+        "SubnetId": "${RG}/${VMVNETNAME}/${VMSUBNETNAME}",
+        "ReturnProxy": false,
+        "UsePublicNetwork": false,
+        "ExecuteNodesPublic": false,
+        "Region": "${REGION}",
+        "AdditionalNFSExportPath": null,
+        "AdditionalNFSMountPoint": null,
+        "DynamicSpotMaxPrice": null,
+        "HTCImageName" : "$CLUSTERIMAGE",
+        "HPCImageName" : "$CLUSTERIMAGE",
+        "SchedulerImageName" : "$CLUSTERIMAGE",
+        "DynamicImageName" : "$CLUSTERIMAGE"
     }
 ```
 
@@ -308,6 +305,7 @@ focuses on having a simple deployment with an interesting user experience.
 1. cyclecloud terraform automation: <https://github.com/yosoyjay/cyclecloud-llm/tree/main/cyclecloud>
 1. cyclecloud bicep automation: <https://techcommunity.microsoft.com/t5/azure-high-performance-computing/automate-the-deployment-of-your-cyclecloud-server-with-bicep/ba-p/3668769>
 1. cyclecloud bicep automation: <https://github.com/edwardsp/cyclecloud-bicep/tree/main>
+1. cyclecloud azhop automation: <https://github.com/Azure/az-hop/blob/main/playbooks/roles/cyclecloud/files/configure.py>
 1. lockdown network: <https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/running-in-locked-down-network?view=cyclecloud-8>
 1. cyclecloud cluster templates: <https://learn.microsoft.com/en-us/training/modules/customize-clusters-azure-cyclecloud/2-describe-templates>
 1. cyclecloud projects: <https://learn.microsoft.com/en-us/training/modules/customize-clusters-azure-cyclecloud/5-customize-software-installations>

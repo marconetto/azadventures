@@ -285,6 +285,8 @@ cat << EOF > $CLOUDINITFILE
 #cloud-config
 
 runcmd:
+    - alias apt-get='apt-get -o DPkg::Lock::Timeout=-1'
+
     # Install CycleCloud
     - apt-get -y install gnupg2
     - wget -qO - https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -

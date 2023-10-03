@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -u
+set -euo pipefail
 ##############################################################################
 # Default variable definitions
 ##############################################################################
@@ -31,8 +31,6 @@ AZURESUBSCRIPTIONFILE=azure_subscription.json
 CYCLECLOUDACCOUNTFILE=cyclecloud_account.json
 CLUSTERPARAMETERFILE=cluster_parameters.json
 CREATECLUSTERFILE=/tmp/createcluster.sh
-CLUSTERNAME=mycluster
-CREATE_CLUSTER=false
 
 # used for slurm compute nodes and scheduler
 CLUSTERIMAGE=almalinux8
@@ -81,7 +79,7 @@ function return_typed_password(){
 
     set +u
     password=""
-    echo -n "Enter password: " >&2
+    echo -n ">> Enter password: " >&2
     while IFS= read -p "$prompt" -r -s -n 1 char
     do
         if [[ $char == $'\0' ]] ; then
@@ -105,12 +103,11 @@ function get_password_manually(){
     unset CCPASSWORD
 
     while true; do
-
         password1=$(return_typed_password)
         password2=$(return_typed_password)
 
         if [[ ${password1} != ${password2} ]]; then
-            echo "Passwords do not match. Try again."
+            echo ">> Passwords do not match. Try again."
         else
             break
         fi
@@ -121,29 +118,26 @@ function get_password_manually(){
 function validate_secret_availability(){
 
     # assume user will use the existing ssh key from home directory
-
-    if [ -z ${CCPASSWORD+x} ] ; then
-        echo "CCPASSWORD: must be set and non-empty"
-        echo "Control-C to cancel and set CCPASSWORD as environment variable"
+    if [[ -z ${CCPASSWORD-} ]] ; then
+        echo ">> You can control-c and set CCPASSWORD as environment variable"
         get_password_manually
     else
-        echo "Got CCPASSWORD from environment variable"
+        echo ">> Got CCPASSWORD from environment variable"
     fi
 
-    if [ -z ${CCPUBKEY+x} ] ; then
-        echo "CCPUBKEY: must be set and non-empty"
+    if [ -z ${CCPUBKEY-} ] ; then
         PUBKEYFILE="$HOME/.ssh/id_rsa.pub"
         if [ -f "$PUBKEYFILE" ]; then
-            read -p "[$PUBKEYFILE] Can I get the pub key from here [Y|n]? " yn
+            read -p ">> [$PUBKEYFILE] Can I get the pub key from here [Y|n]? " yn
             if [ -z "$yn" ] || [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
                 CCPUBKEY=$(cat $PUBKEYFILE)
             else
-                echo "Okay, set CCPUBKEY environment variable with your key and try again..."
+                echo ">> Set CCPUBKEY environment variable with your key and try again..."
                 exit
             fi
         fi
     else
-        echo "Got CCPUBKEY from environment variable"
+        echo ">> Got CCPUBKEY from environment variable"
     fi
 }
 
@@ -181,7 +175,7 @@ function create_keyvault(){
 
 function create_cluster_cloudinit_commands(){
 
-    [[ ${CREATE_CLUSTER} = false ]] && return
+    [[ -z ${CLUSTERNAME-} ]] && return
 
 cat << EOF
     - bash $CREATECLUSTERFILE
@@ -191,7 +185,7 @@ EOF
 
 function create_cluster_cloudinit_files(){
 
-    [[ ${CREATE_CLUSTER} = false ]] && return
+    [[ -z ${CLUSTERNAME-} ]] && return
 
     cyclecloud_subscription_name=$1
 
@@ -427,7 +421,7 @@ function create_vm() {
 
 function peer_vpn(){
 
-
+    set +e
     if [ -z $VPNRG ] || [ -z $VPNVNET ]; then
         showmsg "warn" "VPNRG and VPNVNET are required for VPN peering and testing cyclecloud access"
         return 1
@@ -448,6 +442,7 @@ function peer_vpn(){
 
     showmsg $tag "Created VPN peering"
     rm -f create_peering_vpn.sh
+    set -e
 }
 
 function get_subnetid(){
@@ -531,6 +526,7 @@ function set_keyvault_secrets(){
 
 function wait_cyclecloud(){
 
+    set +e
     ccvmipaddress=$1
     pollingdelay=$2
 
@@ -549,10 +545,12 @@ function wait_cyclecloud(){
     [[ "$waited" == true ]] && shownewline
 
     showmsg "done" "Got cyclecloud VM access"
+    set -e
 }
 
 function wait_scheduler() {
 
+    set +e
     ccvmipaddress=$1
     pollingdelay=$2
 
@@ -577,6 +575,7 @@ function wait_scheduler() {
    else
       showmsg "failed" "Cannot access cluster"
    fi
+   set +-
 }
 
 function wait_cluster_provision(){
@@ -597,29 +596,25 @@ function wait_cluster_provision(){
 ##############################################################################
 # Main function calls
 ##############################################################################
-echo "=============================================="
-echo "Logfile of execution: $LOGFILE"
 
-if [ $# == 1 ]; then
-    CLUSTERNAME=$1
-    echo "Cluster creation enabled: $CLUSTERNAME"
-    CREATE_CLUSTER=true
-fi
+[[ "$*" =~ -h|--help|-help ]] && echo "$0 <clustername>" && exit 0
+
+echo ">> Logfile: $LOGFILE"
+
+[[ "$#" == 1 ]] && echo ">> Cluster creation enabled: ${CLUSTERNAME:=$1}"
 
 validate_secret_availability
 
-echo "=============================================="
-echo "Start provisioning process"
+echo ">> Start provisioning process"
 log_on
 
-# create_resource_group
-# create_vnet_subnet
-#
-# peer_vpn
-# create_storage_account
-# create_keyvault
+create_resource_group
+create_vnet_subnet
 
-VPNVNETPEERED=true
+peer_vpn
+create_storage_account
+create_keyvault
+
 create_cloud_init
 set_keyvault_secrets
 create_vm
@@ -627,6 +622,4 @@ add_vm_permission_subscription
 add_vm_permission_keyvault
 show_vm_access
 
-if [ $CREATE_CLUSTER == true ];  then
-    wait_cluster_provision
-fi
+[[ ! -z ${CLUSTERNAME-} ]] && wait_cluster_provision

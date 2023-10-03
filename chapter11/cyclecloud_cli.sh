@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+IFS=$'\n\t'
 ##############################################################################
 # Default variable definitions
 ##############################################################################
@@ -45,33 +46,32 @@ SSHCMD="ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFi
 ##############################################################################
 # Log related functions
 ##############################################################################
-GREEN="\e[32m"
-RED="\e[31m"
-YELLOW="\e[33m"
-RESET="\e[0m"
+GREEN=$'\e[32m'
+RED=$'\e[31m'
+YELLOW=$'\e[33m'
+CYAN=$'\e[36m'
+RESET=$'\e[0m'
 
 log_on(){ exec 3>&1 >> $LOGFILE 2>&1 ; }
-showprogress(){ echo -n "." | tee /dev/fd/3 ; }
-shownewline(){ echo "" | tee /dev/fd/3 ; }
 
-function showmsg(){
+showmsg(){ msg=$1 ; printf "${YELLOW}%-70s${RESET}" ${msg} >&3 ; }
 
-    tag=$1
-    msg=$2
+showmsginfo(){ msg=$1 ; printf "${YELLOW}%-70s%s\n" ${msg} "${CYAN}[info]${RESET}" >&3 ; }
 
-    echo "$1: $2"
+showstatusmsg(){
+    statusmsg=$1
+    [[ $statusmsg == "done" ]] && printf "%s\n" "${GREEN}[done]${RESET}" >&3
+    [[ $statusmsg == "failed" ]] && printf "%s\n" "${RED}[failed]${RESET}" >&3
+    [[ $statusmsg == "warning" ]] && printf "%s\n" "${CYAN}[warning]${RESET}" >&3
 
-    if [[ $tag == "done" ]]; then
-        echo -en "${GREEN}[DONE]: " >&3
-    elif  [[ $tag == "failed" ]]; then
-        echo -en "${RED}[FAILED]: " >&3
-    elif  [[ $tag == "warn" ]]; then
-        echo -en "${YELLOW}[WARNING]: " >&3
-    fi
-
-    echo -e "${YELLOW}$msg${RESET}" >&3
+    return 0
 }
 
+sp='/-\|'
+spinanim(){
+   printf '\b%.1s' "$sp" >&3
+   sp=${sp#?}${sp%???}
+}
 ##############################################################################
 # Support functions for acquiring user password and public ssh key
 ##############################################################################
@@ -146,22 +146,26 @@ function validate_secret_availability(){
 ##############################################################################
 function create_resource_group(){
 
+    showmsg "Create resource group: $RG"
     az group create --location $REGION \
                     --name $RG
-    showmsg "done" "Created resource group: $RG"
+    showstatusmsg "done"
 }
 
 function create_vnet_subnet(){
 
+    showmsg "Create VNET/VSUBNET: $VMVNETNAME/$VMSUBNETNAME"
     az network vnet create -g $RG \
                            -n $VMVNETNAME \
                            --address-prefix "$VNETADDRESS"/16 \
                            --subnet-name $VMSUBNETNAME \
                            --subnet-prefixes "$VNETADDRESS"/24
-    showmsg "done" "Created VNET and VSUBNET: $VMVNETNAME $VMSUBNETNAME"
+    showstatusmsg "done"
 }
 
 function create_keyvault(){
+
+    showmsg "Create keyvault: $KEYVAULT"
 
     az keyvault create --resource-group $RG \
                    --name $KEYVAULT \
@@ -170,7 +174,7 @@ function create_keyvault(){
                    --enabled-for-disk-encryption true \
                    --enabled-for-template-deployment true
 
-    showmsg "done" "Created keyvault: $KEYVAULT"
+    showstatusmsg "done"
 }
 
 function create_cluster_cloudinit_commands(){
@@ -402,7 +406,7 @@ EOF
 
 function create_vm() {
 
-    showmsg "done" "Start provisioning request"
+    showmsg "Start CycleCloud VM provisioning request"
 
     az vm create -n $VMNAME \
         -g $RG \
@@ -416,14 +420,15 @@ function create_vm() {
         --generate-ssh-keys \
         --custom-data $CLOUDINITFILE
 
-    showmsg "done" "Requested VM provisioning"
+    showstatusmsg "done"
 }
 
 function peer_vpn(){
 
     set +e
+    showmsg "VPNRG/VPNVNET required for testing cyclecloud access"
     if [ -z $VPNRG ] || [ -z $VPNVNET ]; then
-        showmsg "warn" "VPNRG and VPNVNET are required for VPN peering and testing cyclecloud access"
+        showstatusmsg "warning"
         return 1
     fi
 
@@ -436,11 +441,12 @@ function peer_vpn(){
 
     if [[ $? -ne 0 ]]; then
         tag="failed"
+        showstatusmsg "failed"
     else
        VPNVNETPEERED=true
+        showstatusmsg "done"
     fi
 
-    showmsg $tag "Created VPN peering"
     rm -f create_peering_vpn.sh
     set -e
 }
@@ -458,15 +464,19 @@ function get_subnetid(){
 
 function create_storage_account(){
 
+    showmsg "Create storage account: $STORAGEACCOUNT"
+
     az storage account create \
           -n $STORAGEACCOUNT \
           -g $RG \
           --sku Standard_LRS
 
-    showmsg "done" "Created storage account"
+    showstatusmsg "done"
 }
 
 function add_vm_permission_subscription(){
+
+    showmsg "Add VM principal ID access to subscription"
 
     account_info=$(az account show)
     subscription=$(echo $account_info | jq -r '.id')
@@ -485,10 +495,12 @@ function add_vm_permission_subscription(){
 
     az role assignment list --assignee ${VMPrincipalID}
 
-    showmsg "done" "Add VM principal ID permission to subscription: $subscription"
+    showstatusmsg "done"
 }
 
 function add_vm_permission_keyvault(){
+
+    showmsg "Add VM principal ID permission to keyvault: $KEYVAULT"
 
     VMPrincipalID=$(az vm show \
                          -g $RG \
@@ -504,24 +516,26 @@ function add_vm_permission_keyvault(){
                        --key-permissions all \
                        --secret-permissions all
 
-    showmsg "done" "Add VM principal ID permission to keyvault: $KEYVAULT"
+    showstatusmsg "done"
 }
 
 function show_vm_access() {
 
+    showmsginfo "CycleCloud access when cloud-init is done"
     ipaddress=$(az vm show -g $RG -n $VMNAME --query privateIps -d --out tsv)
 
-    showmsg "done" "Cloud-init will run in BACKGROUND and take some time to start cyclecloud (and cluster)"
-    showmsg "done" "CycleCloud VM SSH access: ssh [-i <privatesshkey>] $ADMINUSER@$ipaddress"
-    showmsg "done" "CycleCloud VM WEB access: http://$ipaddress:8080"
+    showmsginfo "CycleCloud via SSH: ssh [-i <privsshkey>] $ADMINUSER@$ipaddress"
+    showmsginfo "CycleCloud via WEB: http://$ipaddress:8080"
 }
 
 function set_keyvault_secrets(){
 
+    showmsg "Set keyvault secrets"
+
     az keyvault secret set --name ccpassword --vault-name $KEYVAULT --value "$CCPASSWORD" > /dev/null
     az keyvault secret set --name ccpubkey --vault-name $KEYVAULT --value "$CCPUBKEY" > /dev/null
 
-    showmsg "done" "Set keyvault secrets"
+    showstatusmsg "done"
 }
 
 function wait_cyclecloud(){
@@ -530,58 +544,53 @@ function wait_cyclecloud(){
     ccvmipaddress=$1
     pollingdelay=$2
 
-    showmsg "done" "Start polling cyclecloud VM (VPN access required). You can control-c at any time..."
+    showmsg "Polling CycleCloud (VPN required). You can control-c at any time "
 
-    waited=false
     while true; do
-       gotaccess=$($SSHCMD $ADMINUSER@$ccvmipaddress hostname > /dev/null 2>/dev/null)
+       gotaccess=$( eval $SSHCMD $ADMINUSER@$ccvmipaddress hostname > /dev/null 2>/dev/null)
        error=$?
+       echo "error=$error"
        [[ "$error" == 0 ]] && break
        sleep $pollingdelay
-       showprogress
-       waited=true
+       spinanim
     done
 
-    [[ "$waited" == true ]] && shownewline
-
-    showmsg "done" "Got cyclecloud VM access"
+    showstatusmsg "done"
     set -e
 }
 
 function wait_scheduler() {
 
     set +e
+    set -x
     ccvmipaddress=$1
     pollingdelay=$2
 
-    showmsg "done" "Start polling cluster scheduler. This may take a while..."
+    showmsg "Polling cluster scheduler. This may take a while..."
 
-    waited=false
     while true; do
-       schedulerstatus=$( $SSHCMD $ADMINUSER@$ccvmipaddress 'cyclecloud show_nodes scheduler -c "$CLUSTERNAME" --states="Started" --output="%(Status)s" 2> /dev/null' )
+       eval $SSHCMD $ADMINUSER@$ccvmipaddress 'cyclecloud show_nodes scheduler -c "$CLUSTERNAME" --states="Started" --output="%(Status)s" 2> /dev/null'
+       schedulerstatus=$( eval $SSHCMD $ADMINUSER@$ccvmipaddress 'cyclecloud show_nodes scheduler -c "$CLUSTERNAME" --states="Started" --output="%\(Status\)s" 2> /dev/null' )
        [[ "$schedulerstatus" == "Ready" ]] && break
        echo "schedulerstatus=$schedulerstatus"
        sleep $pollingdelay
-       showprogress
-       waited=true
+       spinanim
    done
 
-   [[ $waited == true ]] && shownewline
-
    if [[ "$schedulerstatus" == "Ready" ]]; then
-       showmsg "done" "Cluster ready for submission"
-       schedulerip=$( $SSHCMD $ADMINUSER@$ccvmipaddress 'cyclecloud show_nodes scheduler -c "$CLUSTERNAME" --states="Started" --output="%(PrivateIp)s" 2> /dev/null' )
-       showmsg "done" "Scheduler SSH access: ssh [-i <privatesshkey>] $ADMINUSER@$schedulerip"
+       showstatusmsg "done"
+       schedulerip=$( eval $SSHCMD $ADMINUSER@$ccvmipaddress 'cyclecloud show_nodes scheduler -c "$CLUSTERNAME" --states="Started" --output="%\(PrivateIp\)s" 2> /dev/null' )
+       showmsginfo "Scheduler via SSH: ssh [-i <privsshkey>] $ADMINUSER@$schedulerip"
    else
-      showmsg "failed" "Cannot access cluster"
+      showstatusmsg "failed"
    fi
-   set +-
+   set -e
 }
 
 function wait_cluster_provision(){
 
     if [ "$VPNVNETPEERED" == false ]; then
-        showmsg "failed" "Cannot test cyclecloud/cluster access as no VPN peer was established"
+        showmsginfo "Cannot test cyclecloud/cluster access as no VPN peer was established"
         return 1
     fi
 

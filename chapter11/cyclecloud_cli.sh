@@ -24,6 +24,10 @@ IFS=$'\n\t'
 : ${VPNRG:=}
 : ${VPNVNET:=}
 
+# /21 will give you 2k IP addresses
+CIDRVNETADDRESS="$VNETADDRESS"/16
+CIDRSUBVNETADDRESS="$VNETADDRESS"/21
+
 ##############################################################################
 # Definitions that are not recommended to be changed
 ##############################################################################
@@ -157,9 +161,9 @@ function create_vnet_subnet(){
     showmsg "Create VNET/VSUBNET: $VMVNETNAME/$VMSUBNETNAME"
     az network vnet create -g $RG \
                            -n $VMVNETNAME \
-                           --address-prefix "$VNETADDRESS"/16 \
+                           --address-prefix "$CIDRVNETADDRESS" \
                            --subnet-name $VMSUBNETNAME \
-                           --subnet-prefixes "$VNETADDRESS"/24
+                           --subnet-prefixes "$CIDRSUBVNETADDRESS"
     showstatusmsg "done"
 }
 

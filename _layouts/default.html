@@ -18,16 +18,15 @@
     {% if site.header-colours %}
     <style>
         .page-header {
-            background-image: linear-gradient(120deg, {
-                    {
-                    site.header-colours.right
-                }
-            }
+            background-image: None;
+            background-color: #3e4144;
+        }
 
-            , {
-                {
-                site.header-colours.left
-            }
+        ,
+        {
+            {
+            site.header-colours.left
+        }
         }) !important
         }
     </style>

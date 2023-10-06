@@ -1,6 +1,6 @@
 ## Automated deployment of CycleCloud and SLURM using CLI
 
-<! -- GitHub Pages: <https://marconetto.github.io/azadventures/chapter11/> -->
+**GitHub Pages: [Here](https://marconetto.github.io/azadventures/chapter11/)** 
 
 Azure CycleCloud allows the creation of resources to run High Performance
 Computing (HPC) applications based on widely used job schedulers such as PBS,

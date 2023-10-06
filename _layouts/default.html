@@ -67,7 +67,7 @@
         {% endif %}
         {% assign parts = page.path | split: '/' %}
         {% assign folder = parts | first %}
-        {% if site.github.is_project_page and site.hide_github != true %}
+        {% if site.github.is_project_page and site.hide_github != true and folder != "README.md" %}
         <a href="{{ site.github.repository_url }}/tree/main/{{ folder }}" class="btn">This Chapter on GitHub</a>
         {% endif %}
         {% if site.show_downloads %}

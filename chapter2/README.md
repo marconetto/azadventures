@@ -1,5 +1,6 @@
 ## Single VM under private net accessed by bastion in Azure
 
+**GitHub Pages: [Here](https://marconetto.github.io/azadventures/chapter2/)**
 
 This page contains instructions to create a single VM under a private network
 that is accessed via a bastion service. This VM is known also as jumpbox.

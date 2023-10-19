@@ -13,7 +13,7 @@ tutorials in this repository.
 
 
 1. [Chapter1:](chapter1/) VM under private net accessed via VPN
-2. [Chapter2:](chapter2/) VM under private net accessed via bastion
+2. [Chapter2:](chapter2/) VM under private net accessed via bastion (jumpbox)
 3. [Chapter3:](chapter3/) peering vnets to access via vpn and bastion
 4. Chapter 4: Build VM custom image
 5. [Chapter5:](chapter5/) VMSS with NFS on blob

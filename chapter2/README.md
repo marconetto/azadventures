@@ -1,4 +1,4 @@
-## Single VM under private net accessed by bastion in Azure
+## Single VM under private net accessed by bastion in Azure (jumpbox)
 
 **GitHub Pages: [Here](https://marconetto.github.io/azadventures/chapter2/)**
 

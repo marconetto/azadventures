@@ -1,142 +1,86 @@
 ## Single VM under private net accessed by bastion in Azure
 
 
-This is a step-by-step tutorial to create a single VM under a private network that
-is accessed via a bastion.
+This page contains instructions to create a single VM under a private network
+that is accessed via a bastion service. This VM is known also as jumpbox.
 
-All the steps are based on Azure CLI, and therefore can be fully automated.
+Azure Bastion is a service maintained for you and is not part of the user VM.
+An Azure Bastion deployment is per virtual network, not per
+subscription/account or virtual machine.
 
+<br>
 
-Azure Bastion is a service maintained for you and is not part of the user VM. An
-Azure Bastion deployment is per virtual network, not per subscription/account or
-virtual machine.
+**FILES**
 
-Check out create_bastion.sh in this folder to automate vpn creation
+- [create_bastion.sh](create_bastion.sh): CLI-based script to automate bastion+vm creation
+- [setvars.sh](setvars.sh): helper script to setup variables to customize deployment
+<br>
 
-*DISCLAIMER: This document is work-in-progress and my personal experience
-performing this task.*
+**DISCLAIMER.** This document is work-in-progress and my personal experience
+performing this task.
 
 <br>
 
 ---
 
-#### Create basic components (resource group, vnet and bastion subnet)
 
-Create resource group:
 
-```
-az group create --name mnettohpc1 \
-                --location EastUS
-```
+### Usage
 
-See the resource groups of your subscription:
+Modify `setvars.sh` to customize deployment variables (i.e. resource group, vnet, sku,..). Then:
 
 ```
-az group list -o table
+source setvars.sh
 ```
 
-To delete the resource group, in case you want to give up now :)! You can use
-the command below to delete everything once you are done with the tutorial.
+After variables are setup:
 
 ```
-az group delete -g mnettohpc1
+./create_bastion.sh
 ```
 
-Create a VNET. The default address space is: "10.0.0.0/16":
+The script will create the resource group, vnet, bastion and a VM (jumpbox). It will also create the `jumpboxaccess.sh` script, which contains a bash function to simplify the jupmpbox access.
 
 ```
-az network vnet create -g mnettohpc1 \
-                       -n mnettohpc1vnet1 \
-                       --address-prefix 10.201.0.0/20 \
-                       --tags 'NRMSBastion=true'
+source ./jumpboxaccess.sh
 ```
 
-Create subnet to place the VMs:
+To access the jumpbox vm, just type:
 
 ```
-az network vnet subnet create -g mnettohpc1 \
-                              -n mnettohpc1subnet1 \
-                              --vnet-name mnettohpc1vnet1 \
-                              --address-prefix 10.201.2.0/24
-```
-
-Create a virtual network and an Azure Bastion subnet, which needs to be
-AzureBastionSubnet so Azure can know know which subnet to deploy the Bastion
-resources to.
-
-```
-az network vnet subnet create -g mnettohpc1 \
-                              -n AzureBastionSubnet \
-                              --vnet-name mnettohpc1vnet1 \
-                              --address-prefix 10.201.0.0/26
-```
-
-Create public IP for the bastion node:
-
-
-```
-az network public-ip create --resource-group mnettohpc1 \
-                            --name mnettohpc1vnet1bastionpip \
-                            --sku Standard \
-                            --location eastus
+sshjumpbox
 ```
 
 
-Create bastion itself:
+
+### Behind the scenes
+
+There are no highlight discussions on this topic so all required steps are in the `create_bastion.sh` script.
+
+
+### Another way to connect to the jumpbox VM
+
+
+##### OPTION 1
+You can ignore the `jumpboxaccess.sh` script and run the steps manually:
 
 ```
-az network bastion create --name mnettohpc1bastion \
-                          --public-ip-address mnettohpc1vnet1bastionpip \
-                          --resource-group mnettohpc1 \
-                          --vnet-name mnettohpc1vnet1 \
-                          --location eastus \
-                          --enable-tunneling
-```
-
-Enable tunneling in case you see this message when using bastion ssh: "Bastion Host SKU must be Standard and Native Client must be enabled"
-
-```
-az network bastion update --name mnettohpc2bastion1 \
-                          --resource-group mnettohpc2 \
-                          --enable-tunneling
-```
-
-### Provision VM
-
-Provision your VM, with no public ip address, and configured to use your ssh key.
-
-```
-az vm create -n vm01 \
-             -g mnettohpc1 \
-             --image UbuntuLTS \
-             --size Standard_DS1_v2 \
-             --vnet-name mnettohpc1vnet1 \
-             --subnet mnettohpc1subnet1 \
-             --public-ip-address "" \
-             --generate-ssh-keys
-```
-
-### Connect to existing VM in the vnet
-
-Get vm id and connect to the vm ysing bastion ssh extension:
-```
-VMID=`az vm show --name vm01 \
-                 --resource-group mnettohpc5 \
+VMID=`az vm show --name $VMNAME \
+                 --resource-group $RG \
                  --query 'id'  \
                  --output tsv`
 
-az network bastion ssh --name mnettohpc5bastion \
-                       --resource-group mnettohpc5 \
+az network bastion ssh --name $BASTIONNAME \
+                       --resource-group $RG \
                        --target-resource-id $VMID \
                        --auth-type ssh-key \
-                       --username azureuser \
+                       --username $ADMINUSER \
                        --ssh-key ~/.ssh/id_rsa
 ```
 
-### Using local ssh client
+##### OPTION 2
 
-
-First open a tunnel, for instance:
+Alternatively, first open a tunnel, for instance:
 
 ```
 az network bastion tunnel --name mnettohpc1bastion \
@@ -152,8 +96,12 @@ then
 ssh azureuser@127.0.0.1 -p 2200
 ```
 
+
+##### OPTION 3
+
 You can also establish the ssh connection using bastion ssh and then, once you
-are in the vm, you can type ``~`` ``C``. This will open prompt: ``ssh>`` to add the tunnel (using the same syntax you would add to the ssh commandline):
+are in the vm, you can type ``~`` ``C``. This will open prompt: ``ssh>`` to add
+the tunnel (using the same syntax you would add to the ssh commandline):
 
 ```
 azureuser@vm01:~$
@@ -169,15 +117,15 @@ ssh azureuser@127.0.0.1 -p 2201
 
 
 
-### Delete all resources
+#### Delete all resources
 ```
-az group delete -n mnettohpc1 \
+az group delete -n $RG \
                 --force-deletion-types Microsoft.Compute/virtualMachines \
                 --yes
 ```
 
 
-## Problems
+### Problems
 
 If you cannot connect to bastion+vm make sure there is no security rule in your
 subscription.
@@ -186,8 +134,8 @@ subscription.
 
 ## References
 
-- https://learn.microsoft.com/en-us/azure/bastion/create-host-cli
-- https://learn.microsoft.com/en-us/azure/bastion/connect-native-client-windows
-- https://man.openbsd.org/ssh#ESCAPE_CHARACTERS
-- https://learn.microsoft.com/en-us/azure/bastion/bastion-overview
-- https://azure.microsoft.com/en-us/products/azure-bastion
+- bastion overview: <https://learn.microsoft.com/en-us/azure/bastion/bastion-overview>
+- bastion overview: <https://azure.microsoft.com/en-us/products/azure-bastion>
+- deploy bastion via cli: <https://learn.microsoft.com/en-us/azure/bastion/create-host-cli>
+- bastion connection: <https://learn.microsoft.com/en-us/azure/bastion/connect-native-client-windows>
+- escape characters: <https://man.openbsd.org/ssh#ESCAPE_CHARACTERS>

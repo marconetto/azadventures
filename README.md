@@ -15,7 +15,7 @@ tutorials in this repository.
 1. [Chapter1:](chapter1/) VM under private net accessed via VPN
 2. [Chapter2:](chapter2/) VM under private net accessed via bastion
 3. [Chapter3:](chapter3/) Peering vnets to access via vpn and bastion
-4. [Chapter4:](chapter4) On regions, SKUs, quotas, and costs
+4. [Chapter4:](chapter4/) On regions, SKUs, quotas, and costs
 5. [Chapter5:](chapter5/) VMSS with NFS on blob
 6. [Chapter6:](chapter6/) Auto scaling in VMSS
 7. [Chapter7:](chapter7/) Boot worker processes in VMSS

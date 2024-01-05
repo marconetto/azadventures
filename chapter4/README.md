@@ -206,8 +206,19 @@ python3 get_price.py  westus3 Standard_HB120rs_v3
 python3 get_price.py  canadacentral Standard_HC44rs
 ```
 
+There is also another modified version you can look for price for linux machine
+without being Low Priority or Spot and you can look for the sku name ignoreing
+the case:
+
 The `get_price.py` script has a few lines of code and can be easily modified to
 explore more filters of the rest api.
+
+
+```
+python3 get_price_linux.py    westus3 standard_HB120rs_v3
+```
+
+
 
 
 ### References

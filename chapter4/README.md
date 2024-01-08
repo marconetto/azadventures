@@ -189,6 +189,10 @@ Details on costs can be found here:
 
 <https://azure.microsoft.com/en-us/pricing/details/virtual-machines/linux/>
 
+There is also this site below which is not the official azure site but can be
+helpful:
+
+<https://azureprice.net/>
 
 For costs, you can leverage the rest api from Microsoft Azure. Details of the
 api can be found here:
@@ -221,12 +225,16 @@ python3 get_price_linux.py    westus3 standard_HB120rs_v3
 
 
 
+
+
 ### References
 
-- manage quota:
+- Manage quota:
   <https://learn.microsoft.com/en-us/cli/azure/quota?view=azure-cli-latest>
-- retail price api:
+- Retail price api:
   <https://learn.microsoft.com/en-us/rest/api/cost-management/retail-prices/azure-retail-prices>
+- Official price website: <https://azure.microsoft.com/en-us/pricing/details/virtual-machines/linux/>
+- Unofficial price website: <https://azureprice.net/>
 - More on naming: <https://www.kenmuse.com/blog/mastering-azure-virtual-machines>
 - SKU naming: <https://learn.microsoft.com/en-us/azure/virtual-machines/vm-naming-conventions>
 - Constrained vCPUs: <https://learn.microsoft.com/en-us/azure/virtual-machines/constrained-vcpu>

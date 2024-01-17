@@ -47,7 +47,7 @@ az network vnet peering create \
   --name "$GWVNET_TO_VMVNET" \
   --resource-group "$RGGWVNET" \
   --vnet-name "$GWVNET" \
-  --remote-vnet "$vmvnetid" \
+  --remote-vnet "'$vmvnetid'" \
   --allow-vnet-access \
   --allow-gateway-transit \
   --allow-forwarded-traffic
@@ -68,7 +68,7 @@ az network vnet peering create \
   --name "$VMVNET_TO_GWVNET" \
   --resource-group "$RGVMVNET" \
   --vnet-name "$VMVNET" \
-  --remote-vnet "$gwvnetid" \
+  --remote-vnet "'$gwvnetid'" \
   --allow-vnet-access \
   --allow-forwarded-traffic \
   --use-remote-gateways

@@ -16,3 +16,5 @@ export VMSUBNETNAME=${RG}SUBNET
 export VPNRG=myvpnrg
 export VPNVNET=myvpnvnet
 
+# uncomment here to enable tags for resource group
+#export AZURETAGS="'mytagname=mytagvalue' 'mytagname=mytagvalue2'"

@@ -17,4 +17,4 @@ export VPNRG=myvpnrg
 export VPNVNET=myvpnvnet
 
 # uncomment here to enable tags for resource group
-#export AZURETAGS="'mytagname=mytagvalue' 'mytagname=mytagvalue2'"
+#export AZURETAGS="'mytagname1=mytagvalue1' 'mytagname2=mytagvalue2'"

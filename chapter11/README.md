@@ -97,7 +97,7 @@ cluster scheduler IP to access it via SSH for job submission in case you specifi
 the `clustername` parameter.
 
 
-### NO VPN setup
+### No VPN setup
 
 If you don't have VPN setup, no problem, just make sure you comment these lines
 in `setvars.sh`:
@@ -106,6 +106,9 @@ in `setvars.sh`:
 # export VPNRG=myvpnrg
 # export VPNVNET=myvpnvnet
 ```
+
+Resources will be provisioned without VPN, but you won't be able to check when
+the cyclecloud VM is provisioned nor the cluster is ready.
 
 By doing so your output would be something like
 

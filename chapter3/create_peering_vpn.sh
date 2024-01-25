@@ -51,9 +51,8 @@ az network vnet peering create \
   --allow-vnet-access \
   --allow-gateway-transit \
   --allow-forwarded-traffic
-set +x
-
 check_error $?
+set +x
 
 # VM VNET TO GW VNET
 gwvnetid=$(az network vnet show \
@@ -72,9 +71,8 @@ az network vnet peering create \
   --allow-vnet-access \
   --allow-forwarded-traffic \
   --use-remote-gateways
-set +x
-
 check_error $?
+set +x
 
 az network vnet peering list -g "${RGGWVNET}" --vnet-name "${GWVNET}" -o table
 az network vnet peering list -g "${RGVMVNET}" --vnet-name "${VMVNET}" -o table

@@ -1,6 +1,6 @@
 ## Automated deployment of CycleCloud and SLURM using CLI
 
-**GitHub Pages: [Here](https://marconetto.github.io/azadventures/chapter11/)** 
+**GitHub Pages: [Here](https://marconetto.github.io/azadventures/chapter11/)**
 
 Azure CycleCloud allows the creation of resources to run High Performance
 Computing (HPC) applications based on widely used job schedulers such as PBS,
@@ -95,6 +95,35 @@ Once it is done you will receive three access points: (i) CycleCloud VM URL to
 access it via browser (ii) CycleCloud VM IP to access it via SSH; and (iii)
 cluster scheduler IP to access it via SSH for job submission in case you specified
 the `clustername` parameter.
+
+
+### NO VPN setup
+
+If you don't have VPN setup, no problem, just make sure you comment these lines
+in `setvars.sh`:
+
+```
+# export VPNRG=myvpnrg
+# export VPNVNET=myvpnvnet
+```
+
+By doing so your output would be something like
+
+```
+Create resource group: mydemo                                         [done]
+Create VNET/VSUBNET: mydemoVNET/mydemoSUBNET                          [done]
+VPNRG/VPNVNET required for testing cyclecloud access                  [warning]
+Create storage account: mydemosa                                      [done]
+Create keyvault: mydemokv                                             [done]
+Set keyvault secrets                                                  [done]
+Start CycleCloud VM provisioning request                              [done]
+Add VM principal ID access to subscription                            [done]
+Add VM principal ID permission to keyvault: mydemokv                  [done]
+CycleCloud access when cloud-init is done                             [info]
+CycleCloud via SSH: ssh [-i <privsshkey>] azureuser@10.49.0.4         [info]
+CycleCloud via WEB: http://10.49.0.4:8080                             [info]
+Cannot test cyclecloud/cluster access as no VPN peer was established  [info]
+```
 
 
 ## 2. Behind the scenes: provisioning and setup of CycleCloud

@@ -459,10 +459,8 @@ function peer_vpn() {
   curl https://raw.githubusercontent.com/marconetto/azadventures/main/chapter3/create_peering_vpn.sh -O 2 /dev/null &>1
 
   bash ./create_peering_vpn.sh "$VPNRG" "$VPNVNET" "$RG" "$VMVNETNAME"
-  tag="done"
 
   if [[ $? -ne 0 ]]; then
-    tag="failed"
     showstatusmsg "failed"
   else
     VPNVNETPEERED=true

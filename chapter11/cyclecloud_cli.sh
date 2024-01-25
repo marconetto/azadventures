@@ -559,6 +559,11 @@ function set_keyvault_secrets() {
 
 function wait_cyclecloud() {
 
+  if [ "$VPNVNETPEERED" == false ]; then
+    showmsginfo "Cannot test cyclecloud access as no VPN peer was established"
+    return 1
+  fi
+
   set +e
   ccvmipaddress=$1
   pollingdelay=$2
@@ -649,5 +654,6 @@ create_vm
 add_vm_permission_subscription
 add_vm_permission_keyvault
 show_vm_access
+wait_cyclecloud
 
 [[ ! -z ${CLUSTERNAME-} ]] && wait_cluster_provision

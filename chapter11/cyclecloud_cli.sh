@@ -557,6 +557,12 @@ function set_keyvault_secrets() {
   showstatusmsg "done"
 }
 
+function get_cyclecloud_ip() {
+
+  ccvmipaddress=$(az vm show -g "$RG" -n "$VMNAME" --query privateIps -d --out tsv 2>&1)
+  echo "$ccvmipaddress"
+}
+
 function wait_cyclecloud() {
 
   if [ "$VPNVNETPEERED" == false ]; then
@@ -565,8 +571,9 @@ function wait_cyclecloud() {
   fi
 
   set +e
-  ccvmipaddress=$1
-  pollingdelay=$2
+
+  ccvmipaddress=$(get_cyclecloud_ip)
+  pollingdelay=10
 
   showmsg "Polling CycleCloud (VPN required). You can control-c at any time "
 
@@ -620,7 +627,7 @@ function wait_cluster_provision() {
 
   pollingdelay=10
 
-  ccvmipaddress=$(az vm show -g "$RG" -n "$VMNAME" --query privateIps -d --out tsv 2>&1)
+  ccvmipaddress=$(get_cyclecloud_ip)
 
   wait_cyclecloud "$ccvmipaddress" "$pollingdelay"
   wait_scheduler "$ccvmipaddress" "$pollingdelay"

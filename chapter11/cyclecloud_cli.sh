@@ -456,7 +456,16 @@ function peer_vpn() {
 
   echo "Peering vpn with created vnet"
 
-  curl https://raw.githubusercontent.com/marconetto/azadventures/main/chapter3/create_peering_vpn.sh -O 2 /dev/null &>1
+  URL=https://raw.githubusercontent.com/marconetto/azadventures/main/chapter3/create_peering_vpn.sh
+  curl -O --head --fail "$URL"
+
+  if curl -O -s --head --fail "$URL" 2>/dev/null; then
+    echo "File exists. Downloading...$URL"
+    curl "$URL" -O -s >/dev/null 2>&1
+  else
+    echo "File does not exist. $URL"
+    showstatusmsg "failed"
+  fi
 
   bash ./create_peering_vpn.sh "$VPNRG" "$VPNVNET" "$RG" "$VMVNETNAME"
 

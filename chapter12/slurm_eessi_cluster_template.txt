@@ -25,7 +25,7 @@ Autoscale = $Autoscale
     SubnetId = $SubnetId
     Region = $Region
     KeyPairLocation = ~/.ssh/cyclecloud.pem
-    [[[cluster-init eessi:default:1.0.0]]]
+    [[[cluster-init cc_eessi:default:1.0.0]]]
         Optional = True
 
     # Slurm autoscaling supports both Terminate and Deallocate shutdown policies

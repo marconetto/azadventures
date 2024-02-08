@@ -85,8 +85,7 @@ Autoscale = $Autoscale
         options = ${ifThenElse(AdditionalNAS, AdditionalNFSMountOptions, undefined)}
 
     [[node scheduler]]
-    [[[cluster-init cc_wrfconus:default:1.0.0]]]
-        Optional = True
+
 
     MachineType = $SchedulerMachineType
     ImageName = $SchedulerImageName
@@ -108,6 +107,8 @@ Autoscale = $Autoscale
 
 
         [[[cluster-init cyclecloud/slurm:scheduler:3.0.1]]]
+        [[[cluster-init cc_wrfconus:default:1.0.0]]]
+           Optional = True
 
         [[[network-interface eth0]]]
         AssociatePublicIpAddress = $UsePublicNetwork

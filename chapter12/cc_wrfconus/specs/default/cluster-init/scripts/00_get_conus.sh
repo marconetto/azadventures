@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
-curl -O https://www2.mmm.ucar.edu/wrf/users/benchmark/v3911/bench_12km.tar.bz2
-tar jxvf bench_12km.tar.bz2
+ADMINUSER=$(grep name /opt/cycle/jetpack/config/auth.json | awk -F'"' '{print $4}')
+
+runuser -l "$ADMINUSER" -c 'curl -O https://www2.mmm.ucar.edu/wrf/users/benchmark/v3911/bench_12km.tar.bz2'
+runuser -l "$ADMINUSER" -c 'tar jxvf bench_12km.tar.bz2'

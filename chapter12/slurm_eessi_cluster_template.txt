@@ -85,6 +85,9 @@ Autoscale = $Autoscale
         options = ${ifThenElse(AdditionalNAS, AdditionalNFSMountOptions, undefined)}
 
     [[node scheduler]]
+    [[[cluster-init cc_wrfconus:default:1.0.0]]]
+        Optional = True
+
     MachineType = $SchedulerMachineType
     ImageName = $SchedulerImageName
     IsReturnProxy = $ReturnProxy

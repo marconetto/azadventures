@@ -1,0 +1,4416 @@
++ showmsg 'Create resource group: nettocc20240214v7'
++ msg='Create resource group: nettocc20240214v7'
++ printf '[33m%-70s[0m' 'Create resource group: nettocc20240214v7'
++ [[ -z 'mytagname1=mytagvalue1' 'mytagname2=mytagvalue2' ]]
++ cmd='az group create --location '\''eastus'\'' \
+         --name '\''nettocc20240214v7'\'' \
+         --tags '\''mytagname1=mytagvalue1'\'' '\''mytagname2=mytagvalue2'\'''
++ echo 'az group create --location '\''eastus'\'' \
+         --name '\''nettocc20240214v7'\'' \
+         --tags '\''mytagname1=mytagvalue1'\'' '\''mytagname2=mytagvalue2'\'''
+az group create --location 'eastus' \
+         --name 'nettocc20240214v7' \
+         --tags 'mytagname1=mytagvalue1' 'mytagname2=mytagvalue2'
++ eval 'az group create --location '\''eastus'\'' \
+         --name '\''nettocc20240214v7'\'' \
+         --tags '\''mytagname1=mytagvalue1'\'' '\''mytagname2=mytagvalue2'\'''
+++ az group create --location eastus --name nettocc20240214v7 --tags mytagname1=mytagvalue1 mytagname2=mytagvalue2
+{
+  "id": "/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/resourceGroups/nettocc20240214v7",
+  "location": "eastus",
+  "managedBy": null,
+  "name": "nettocc20240214v7",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": {
+    "mytagname1": "mytagvalue1",
+    "mytagname2": "mytagvalue2"
+  },
+  "type": "Microsoft.Resources/resourceGroups"
+}
++ showstatusmsg done
++ statusmsg=done
++ [[ done == \d\o\n\e ]]
++ printf '%s\n' '[32m[done][0m'
++ [[ done == \f\a\i\l\e\d ]]
++ [[ done == \w\a\r\n\i\n\g ]]
++ return 0
++ create_vnet_subnet
++ showmsg 'Create VNET/VSUBNET: nettocc20240214v7VNET/nettocc20240214v7SUBNET'
++ msg='Create VNET/VSUBNET: nettocc20240214v7VNET/nettocc20240214v7SUBNET'
++ printf '[33m%-70s[0m' 'Create VNET/VSUBNET: nettocc20240214v7VNET/nettocc20240214v7SUBNET'
++ az network vnet create -g nettocc20240214v7 -n nettocc20240214v7VNET --address-prefix 10.65.0.0/16 --subnet-name nettocc20240214v7SUBNET --subnet-prefixes 10.65.0.0/21
+{
+  "newVNet": {
+    "addressSpace": {
+      "addressPrefixes": [
+        "10.65.0.0/16"
+      ]
+    },
+    "enableDdosProtection": false,
+    "etag": "W/\"2665f1ef-80ce-4511-b700-2adc4d9aa3ff\"",
+    "id": "/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/resourceGroups/nettocc20240214v7/providers/Microsoft.Network/virtualNetworks/nettocc20240214v7VNET",
+    "location": "eastus",
+    "name": "nettocc20240214v7VNET",
+    "provisioningState": "Succeeded",
+    "resourceGroup": "nettocc20240214v7",
+    "resourceGuid": "c40fd225-3511-45f1-8cdb-e3aa1b52de9d",
+    "subnets": [
+      {
+        "addressPrefix": "10.65.0.0/21",
+        "delegations": [],
+        "etag": "W/\"2665f1ef-80ce-4511-b700-2adc4d9aa3ff\"",
+        "id": "/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/resourceGroups/nettocc20240214v7/providers/Microsoft.Network/virtualNetworks/nettocc20240214v7VNET/subnets/nettocc20240214v7SUBNET",
+        "name": "nettocc20240214v7SUBNET",
+        "privateEndpointNetworkPolicies": "Disabled",
+        "privateLinkServiceNetworkPolicies": "Enabled",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "nettocc20240214v7",
+        "type": "Microsoft.Network/virtualNetworks/subnets"
+      }
+    ],
+    "type": "Microsoft.Network/virtualNetworks",
+    "virtualNetworkPeerings": []
+  }
+}
++ showstatusmsg done
++ statusmsg=done
++ [[ done == \d\o\n\e ]]
++ printf '%s\n' '[32m[done][0m'
++ [[ done == \f\a\i\l\e\d ]]
++ [[ done == \w\a\r\n\i\n\g ]]
++ return 0
++ peer_vpn
++ set +e
++ showmsg 'VPNRG/VPNVNET required for testing cyclecloud access'
++ msg='VPNRG/VPNVNET required for testing cyclecloud access'
++ printf '[33m%-70s[0m' 'VPNRG/VPNVNET required for testing cyclecloud access'
++ '[' -z nettovpn2 ']'
++ '[' -z nettovpn2vnet1 ']'
++ echo 'Peering vpn with created vnet'
+Peering vpn with created vnet
++ URL=https://raw.githubusercontent.com/marconetto/azadventures/main/chapter3/create_peering_vpn.sh
++ curl -O --head --fail https://raw.githubusercontent.com/marconetto/azadventures/main/chapter3/create_peering_vpn.sh
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0  1706    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0  1706    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
++ curl -O -s --head --fail https://raw.githubusercontent.com/marconetto/azadventures/main/chapter3/create_peering_vpn.sh
++ echo 'File exists. Downloading...https://raw.githubusercontent.com/marconetto/azadventures/main/chapter3/create_peering_vpn.sh'
+File exists. Downloading...https://raw.githubusercontent.com/marconetto/azadventures/main/chapter3/create_peering_vpn.sh
++ curl https://raw.githubusercontent.com/marconetto/azadventures/main/chapter3/create_peering_vpn.sh -O -s
++ bash ./create_peering_vpn.sh nettovpn2 nettovpn2vnet1 nettocc20240214v7 nettocc20240214v7VNET
+---- Starting VPN Peering ----
+RGVMVNET=nettocc20240214v7
+VMVNET=nettocc20240214v7VNET
+RGGWVNET=nettovpn2
+GWVNET=nettovpn2vnet1
+GWVNET_TO_VMVNET=nettovpn2-nettovpn2vnet1-TO-nettocc20240214v7-nettocc20240214v7VNET
+VMVNET_TO_GWVNET=nettocc20240214v7-nettocc20240214v7VNET-TO-nettovpn2-nettovpn2vnet1
+VM VNET ID=/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/resourceGroups/nettocc20240214v7/providers/Microsoft.Network/virtualNetworks/nettocc20240214v7VNET
++ az network vnet peering create --name nettovpn2-nettovpn2vnet1-TO-nettocc20240214v7-nettocc20240214v7VNET --resource-group nettovpn2 --vnet-name nettovpn2vnet1 --remote-vnet ''\''/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/resourceGroups/nettocc20240214v7/providers/Microsoft.Network/virtualNetworks/nettocc20240214v7VNET'\''' --allow-vnet-access --allow-gateway-transit --allow-forwarded-traffic
+{
+  "allowForwardedTraffic": true,
+  "allowGatewayTransit": true,
+  "allowVirtualNetworkAccess": true,
+  "doNotVerifyRemoteGateways": false,
+  "etag": "W/\"db61357d-be56-4b1a-9dd8-1e70fdeaba87\"",
+  "id": "/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/resourceGroups/nettovpn2/providers/Microsoft.Network/virtualNetworks/nettovpn2vnet1/virtualNetworkPeerings/nettovpn2-nettovpn2vnet1-TO-nettocc20240214v7-nettocc20240214v7VNET",
+  "name": "nettovpn2-nettovpn2vnet1-TO-nettocc20240214v7-nettocc20240214v7VNET",
+  "peeringState": "Initiated",
+  "peeringSyncLevel": "RemoteNotInSync",
+  "provisioningState": "Succeeded",
+  "remoteAddressSpace": {
+    "addressPrefixes": [
+      "10.65.0.0/16"
+    ]
+  },
+  "remoteVirtualNetwork": {
+    "id": "/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/resourceGroups/nettocc20240214v7/providers/Microsoft.Network/virtualNetworks/nettocc20240214v7VNET",
+    "resourceGroup": "nettocc20240214v7"
+  },
+  "remoteVirtualNetworkAddressSpace": {
+    "addressPrefixes": [
+      "10.65.0.0/16"
+    ]
+  },
+  "resourceGroup": "nettovpn2",
+  "resourceGuid": "93585ac3-b7f8-0c92-1e6d-c59804737880",
+  "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+  "useRemoteGateways": false
+}
++ check_error 0
++ error=0
++ [[ 0 -ne 0 ]]
++ set +x
+GW VNET ID=/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/resourceGroups/nettovpn2/providers/Microsoft.Network/virtualNetworks/nettovpn2vnet1
++ az network vnet peering create --name nettocc20240214v7-nettocc20240214v7VNET-TO-nettovpn2-nettovpn2vnet1 --resource-group nettocc20240214v7 --vnet-name nettocc20240214v7VNET --remote-vnet ''\''/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/resourceGroups/nettovpn2/providers/Microsoft.Network/virtualNetworks/nettovpn2vnet1'\''' --allow-vnet-access --allow-forwarded-traffic --use-remote-gateways
+{
+  "allowForwardedTraffic": true,
+  "allowGatewayTransit": false,
+  "allowVirtualNetworkAccess": true,
+  "doNotVerifyRemoteGateways": false,
+  "etag": "W/\"d4537f6f-7d1c-41f2-ae82-54de344404ec\"",
+  "id": "/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/resourceGroups/nettocc20240214v7/providers/Microsoft.Network/virtualNetworks/nettocc20240214v7VNET/virtualNetworkPeerings/nettocc20240214v7-nettocc20240214v7VNET-TO-nettovpn2-nettovpn2vnet1",
+  "name": "nettocc20240214v7-nettocc20240214v7VNET-TO-nettovpn2-nettovpn2vnet1",
+  "peeringState": "Connected",
+  "peeringSyncLevel": "FullyInSync",
+  "provisioningState": "Succeeded",
+  "remoteAddressSpace": {
+    "addressPrefixes": [
+      "10.254.0.0/25"
+    ]
+  },
+  "remoteVirtualNetwork": {
+    "id": "/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/resourceGroups/nettovpn2/providers/Microsoft.Network/virtualNetworks/nettovpn2vnet1",
+    "resourceGroup": "nettovpn2"
+  },
+  "remoteVirtualNetworkAddressSpace": {
+    "addressPrefixes": [
+      "10.254.0.0/25"
+    ]
+  },
+  "resourceGroup": "nettocc20240214v7",
+  "resourceGuid": "93585ac3-b7f8-0c92-1e6d-c59804737880",
+  "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+  "useRemoteGateways": true
+}
++ check_error 0
++ error=0
++ [[ 0 -ne 0 ]]
++ set +x
+AllowForwardedTraffic    AllowGatewayTransit    AllowVirtualNetworkAccess    DoNotVerifyRemoteGateways    Name                                                                 PeeringState    PeeringSyncLevel    ProvisioningState    ResourceGroup    ResourceGuid                          UseRemoteGateways
+-----------------------  ---------------------  ---------------------------  ---------------------------  -------------------------------------------------------------------  --------------  ------------------  -------------------  ---------------  ------------------------------------  -------------------
+False                    True                   True                         False                        t2                                                                   Disconnected    FullyInSync         Succeeded            nettovpn2        6d59d154-b575-0bcb-0c8b-1a445a1c2785  False
+True                     True                   True                         False                        nettovpn2-nettovpn2vnet1-TO-nettocc20240214v7-nettocc20240214v7VNET  Connected       FullyInSync         Succeeded            nettovpn2        93585ac3-b7f8-0c92-1e6d-c59804737880  False
+AllowForwardedTraffic    AllowGatewayTransit    AllowVirtualNetworkAccess    DoNotVerifyRemoteGateways    Name                                                                 PeeringState    PeeringSyncLevel    ProvisioningState    ResourceGroup      ResourceGuid                          UseRemoteGateways
+-----------------------  ---------------------  ---------------------------  ---------------------------  -------------------------------------------------------------------  --------------  ------------------  -------------------  -----------------  ------------------------------------  -------------------
+True                     False                  True                         False                        nettocc20240214v7-nettocc20240214v7VNET-TO-nettovpn2-nettovpn2vnet1  Connected       FullyInSync         Succeeded            nettocc20240214v7  93585ac3-b7f8-0c92-1e6d-c59804737880  True
++ [[ 0 -ne 0 ]]
++ VPNVNETPEERED=true
++ showstatusmsg done
++ statusmsg=done
++ [[ done == \d\o\n\e ]]
++ printf '%s\n' '[32m[done][0m'
++ [[ done == \f\a\i\l\e\d ]]
++ [[ done == \w\a\r\n\i\n\g ]]
++ return 0
++ rm -f create_peering_vpn.sh
++ set -e
++ create_storage_account
++ showmsg 'Create storage account: nettocc20240214v7sa'
++ msg='Create storage account: nettocc20240214v7sa'
++ printf '[33m%-70s[0m' 'Create storage account: nettocc20240214v7sa'
++ az storage account create -n nettocc20240214v7sa -g nettocc20240214v7 --sku Standard_LRS
+{
+  "accessTier": "Hot",
+  "accountMigrationInProgress": null,
+  "allowBlobPublicAccess": false,
+  "allowCrossTenantReplication": false,
+  "allowSharedKeyAccess": null,
+  "allowedCopyScope": null,
+  "azureFilesIdentityBasedAuthentication": null,
+  "blobRestoreStatus": null,
+  "creationTime": "2024-02-15T00:40:38.835851+00:00",
+  "customDomain": null,
+  "defaultToOAuthAuthentication": null,
+  "dnsEndpointType": null,
+  "enableHttpsTrafficOnly": true,
+  "enableNfsV3": null,
+  "encryption": {
+    "encryptionIdentity": null,
+    "keySource": "Microsoft.Storage",
+    "keyVaultProperties": null,
+    "requireInfrastructureEncryption": null,
+    "services": {
+      "blob": {
+        "enabled": true,
+        "keyType": "Account",
+        "lastEnabledTime": "2024-02-15T00:40:39.163991+00:00"
+      },
+      "file": {
+        "enabled": true,
+        "keyType": "Account",
+        "lastEnabledTime": "2024-02-15T00:40:39.163991+00:00"
+      },
+      "queue": null,
+      "table": null
+    }
+  },
+  "extendedLocation": null,
+  "failoverInProgress": null,
+  "geoReplicationStats": null,
+  "id": "/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/resourceGroups/nettocc20240214v7/providers/Microsoft.Storage/storageAccounts/nettocc20240214v7sa",
+  "identity": null,
+  "immutableStorageWithVersioning": null,
+  "isHnsEnabled": null,
+  "isLocalUserEnabled": null,
+  "isSftpEnabled": null,
+  "isSkuConversionBlocked": null,
+  "keyCreationTime": {
+    "key1": "2024-02-15T00:40:39.007775+00:00",
+    "key2": "2024-02-15T00:40:39.007775+00:00"
+  },
+  "keyPolicy": null,
+  "kind": "StorageV2",
+  "largeFileSharesState": null,
+  "lastGeoFailoverTime": null,
+  "location": "eastus",
+  "minimumTlsVersion": "TLS1_0",
+  "name": "nettocc20240214v7sa",
+  "networkRuleSet": {
+    "bypass": "AzureServices",
+    "defaultAction": "Allow",
+    "ipRules": [],
+    "ipv6Rules": [],
+    "resourceAccessRules": null,
+    "virtualNetworkRules": []
+  },
+  "primaryEndpoints": {
+    "blob": "https://nettocc20240214v7sa.blob.core.windows.net/",
+    "dfs": "https://nettocc20240214v7sa.dfs.core.windows.net/",
+    "file": "https://nettocc20240214v7sa.file.core.windows.net/",
+    "internetEndpoints": null,
+    "microsoftEndpoints": null,
+    "queue": "https://nettocc20240214v7sa.queue.core.windows.net/",
+    "table": "https://nettocc20240214v7sa.table.core.windows.net/",
+    "web": "https://nettocc20240214v7sa.z13.web.core.windows.net/"
+  },
+  "primaryLocation": "eastus",
+  "privateEndpointConnections": [],
+  "provisioningState": "Succeeded",
+  "publicNetworkAccess": null,
+  "resourceGroup": "nettocc20240214v7",
+  "routingPreference": null,
+  "sasPolicy": null,
+  "secondaryEndpoints": null,
+  "secondaryLocation": null,
+  "sku": {
+    "name": "Standard_LRS",
+    "tier": "Standard"
+  },
+  "statusOfPrimary": "available",
+  "statusOfSecondary": null,
+  "storageAccountSkuConversionStatus": null,
+  "tags": {},
+  "type": "Microsoft.Storage/storageAccounts"
+}
++ showstatusmsg done
++ statusmsg=done
++ [[ done == \d\o\n\e ]]
++ printf '%s\n' '[32m[done][0m'
++ [[ done == \f\a\i\l\e\d ]]
++ [[ done == \w\a\r\n\i\n\g ]]
++ return 0
++ create_keyvault
++ showmsg 'Create keyvault: nettocc20240214v7kv'
++ msg='Create keyvault: nettocc20240214v7kv'
++ printf '[33m%-70s[0m' 'Create keyvault: nettocc20240214v7kv'
++ az keyvault create --resource-group nettocc20240214v7 --name nettocc20240214v7kv --location eastus --enabled-for-deployment true --enabled-for-disk-encryption true --enabled-for-template-deployment true
+{
+  "id": "/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/resourceGroups/nettocc20240214v7/providers/Microsoft.KeyVault/vaults/nettocc20240214v7kv",
+  "location": "eastus",
+  "name": "nettocc20240214v7kv",
+  "properties": {
+    "accessPolicies": [
+      {
+        "applicationId": null,
+        "objectId": "3973087a-9d36-43ff-bf1a-3dc7275f3363",
+        "permissions": {
+          "certificates": [
+            "all"
+          ],
+          "keys": [
+            "all"
+          ],
+          "secrets": [
+            "all"
+          ],
+          "storage": [
+            "all"
+          ]
+        },
+        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+      }
+    ],
+    "createMode": null,
+    "enablePurgeProtection": null,
+    "enableRbacAuthorization": null,
+    "enableSoftDelete": true,
+    "enabledForDeployment": true,
+    "enabledForDiskEncryption": true,
+    "enabledForTemplateDeployment": true,
+    "hsmPoolResourceId": null,
+    "networkAcls": null,
+    "privateEndpointConnections": null,
+    "provisioningState": "Succeeded",
+    "publicNetworkAccess": "Enabled",
+    "sku": {
+      "family": "A",
+      "name": "standard"
+    },
+    "softDeleteRetentionInDays": 90,
+    "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+    "vaultUri": "https://nettocc20240214v7kv.vault.azure.net/"
+  },
+  "resourceGroup": "nettocc20240214v7",
+  "systemData": {
+    "createdAt": "2024-02-15T00:44:43.077000+00:00",
+    "createdBy": "marconetto@microsoft.com",
+    "createdByType": "User",
+    "lastModifiedAt": "2024-02-15T00:44:43.077000+00:00",
+    "lastModifiedBy": "marconetto@microsoft.com",
+    "lastModifiedByType": "User"
+  },
+  "tags": {},
+  "type": "Microsoft.KeyVault/vaults"
+}
++ showstatusmsg done
++ statusmsg=done
++ [[ done == \d\o\n\e ]]
++ printf '%s\n' '[32m[done][0m'
++ [[ done == \f\a\i\l\e\d ]]
++ [[ done == \w\a\r\n\i\n\g ]]
++ return 0
++ create_cloud_init
+++ az account show
++ account_info='{
+  "environmentName": "AzureCloud",
+  "homeTenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "id": "f5a67d06-2d09-4090-91cc-e3298907a021",
+  "isDefault": true,
+  "managedByTenants": [
+    {
+      "tenantId": "2f4a9838-26b7-47ee-be60-ccc1fdec5953"
+    }
+  ],
+  "name": "AG_CI_CE_SWHPC_kanchanm",
+  "state": "Enabled",
+  "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "user": {
+    "name": "marconetto@microsoft.com",
+    "type": "user"
+  }
+}'
+++ echo '{
+  "environmentName": "AzureCloud",
+  "homeTenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "id": "f5a67d06-2d09-4090-91cc-e3298907a021",
+  "isDefault": true,
+  "managedByTenants": [
+    {
+      "tenantId": "2f4a9838-26b7-47ee-be60-ccc1fdec5953"
+    }
+  ],
+  "name": "AG_CI_CE_SWHPC_kanchanm",
+  "state": "Enabled",
+  "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "user": {
+    "name": "marconetto@microsoft.com",
+    "type": "user"
+  }
+}'
+++ jq -r .id
++ azure_subscription_id=f5a67d06-2d09-4090-91cc-e3298907a021
+++ echo '{
+  "environmentName": "AzureCloud",
+  "homeTenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "id": "f5a67d06-2d09-4090-91cc-e3298907a021",
+  "isDefault": true,
+  "managedByTenants": [
+    {
+      "tenantId": "2f4a9838-26b7-47ee-be60-ccc1fdec5953"
+    }
+  ],
+  "name": "AG_CI_CE_SWHPC_kanchanm",
+  "state": "Enabled",
+  "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "user": {
+    "name": "marconetto@microsoft.com",
+    "type": "user"
+  }
+}'
+++ jq -r .tenantId
++ azure_tenant_id=72f988bf-86f1-41af-91ab-2d7cd011db47
+++ echo '{
+  "environmentName": "AzureCloud",
+  "homeTenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "id": "f5a67d06-2d09-4090-91cc-e3298907a021",
+  "isDefault": true,
+  "managedByTenants": [
+    {
+      "tenantId": "2f4a9838-26b7-47ee-be60-ccc1fdec5953"
+    }
+  ],
+  "name": "AG_CI_CE_SWHPC_kanchanm",
+  "state": "Enabled",
+  "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "user": {
+    "name": "marconetto@microsoft.com",
+    "type": "user"
+  }
+}'
+++ jq -r .name
++ cyclecloud_subscription_name=AG_CI_CE_SWHPC_kanchanm
++ cyclecloud_admin_name=azureuser
++ cyclecloud_storage_account=nettocc20240214v7sa
++ cyclecloud_storage_container=cyclecloud
++ cyclecloud_location=eastus
++ cyclecloud_rg=nettocc20240214v7
++ cat
+++ add_cluster_templates
+++ cat
+++ create_cluster_cloudinit_commands
+++ [[ -z clusterwrf ]]
+++ cat
+++ create_cluster_cloudinit_files AG_CI_CE_SWHPC_kanchanm
+++ [[ -z clusterwrf ]]
+++ cyclecloud_subscription_name=AG_CI_CE_SWHPC_kanchanm
+++ cat
++ set_keyvault_secrets
++ showmsg 'Set keyvault secrets'
++ msg='Set keyvault secrets'
++ printf '[33m%-70s[0m' 'Set keyvault secrets'
++ az keyvault secret set --name ccpassword --vault-name nettocc20240214v7kv --value Q1w2e3r4.123
++ az keyvault secret set --name ccpubkey --vault-name nettocc20240214v7kv --value 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDWvNZq8+rzA054S41CPBDsYblxNyYiQyX94z4ptc3LOayg8z1FrhNQNQplXHBM7XcnVDXIHQmjnU+NEoDLvyEhuDvUNhDPBDrcYrXbID/M9VPLLiKCWK8wRyPNuhmAj/FguiWxvi0rqSXt3iIEPNV63XWs7sZq3tU1Inokepfb3/4E5xpJQ5DqDmAXeFI0HYtFDufJPETNpGImv0pDxRQvCndnktnOS+KNUiE9DjGp6oP53HGYwCJk798WI3L2gx0kPJBOAdeXcZmu3w7sJWm8zObq1/6x3Lgpkb6BheOJXyD470LEQ8tegvbbeuvlHGO7lvi1SL/xtUjAlqsdotsv mstelmar@mstelmar'
++ showstatusmsg done
++ statusmsg=done
++ [[ done == \d\o\n\e ]]
++ printf '%s\n' '[32m[done][0m'
++ [[ done == \f\a\i\l\e\d ]]
++ [[ done == \w\a\r\n\i\n\g ]]
++ return 0
++ create_vm
++ showmsg 'Start CycleCloud VM provisioning request'
++ msg='Start CycleCloud VM provisioning request'
++ printf '[33m%-70s[0m' 'Start CycleCloud VM provisioning request'
++ az vm create -n nettocc20240214v7vm01 -g nettocc20240214v7 --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest --size Standard_E32s_v4 --vnet-name nettocc20240214v7VNET --subnet nettocc20240214v7SUBNET --public-ip-address '' --admin-username azureuser --assign-identity --generate-ssh-keys --no-wait --custom-data cloudinit.file
++ set +e
++ true
+++ az vm show -g nettocc20240214v7 -n nettocc20240214v7vm01 --query identity.principalId -o tsv
+ERROR: <urllib3.connection.HTTPSConnection object at 0x10cb85f90>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known
++ vm_principal=
++ error=1
++ [[ 1 == 0 ]]
++ sleep 10
++ echo 'waiting for VM principal ID...'
+waiting for VM principal ID...
++ true
+++ az vm show -g nettocc20240214v7 -n nettocc20240214v7vm01 --query identity.principalId -o tsv
+ERROR: The command failed with an unexpected error. Here is the traceback:
+ERROR: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10684ae50>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+Traceback (most recent call last):
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/python@3.11/3.11.7_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socket.py", line 962, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connectionpool.py", line 715, in urlopen
+    httplib_response = self._make_request(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connectionpool.py", line 404, in _make_request
+    self._validate_conn(conn)
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1058, in _validate_conn
+    conn.connect()
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connection.py", line 363, in connect
+    self.sock = conn = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x10684ae50>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/requests/adapters.py", line 486, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connectionpool.py", line 827, in urlopen
+    return self.urlopen(
+           ^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connectionpool.py", line 799, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/util/retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10684ae50>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/knack/cli.py", line 233, in invoke
+    cmd_result = self.invocation.execute(args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/commands/__init__.py", line 663, in execute
+    raise ex
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/commands/__init__.py", line 726, in _run_jobs_serially
+    results.append(self._run_job(expanded_arg, cmd_copy))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/commands/__init__.py", line 697, in _run_job
+    result = cmd_copy(params)
+             ^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/commands/__init__.py", line 333, in __call__
+    return self.handler(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/commands/command_operation.py", line 363, in handler
+    show_exception_handler(ex)
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/commands/arm.py", line 429, in show_exception_handler
+    raise ex
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/commands/command_operation.py", line 361, in handler
+    return op(**command_args)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/command_modules/vm/custom.py", line 1605, in show_vm
+    return get_vm(cmd, resource_group_name, vm_name, expand)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/command_modules/vm/custom.py", line 1285, in get_vm
+    return client.virtual_machines.get(resource_group_name, vm_name, expand=expand)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/tracing/decorator.py", line 76, in wrapper_use_tracer
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/mgmt/compute/v2023_09_01/operations/_operations.py", line 17073, in get
+    pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/_base.py", line 213, in run
+    return first_node.send(pipeline_request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/_base.py", line 70, in send
+    response = self.next.send(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/_base.py", line 70, in send
+    response = self.next.send(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/_base.py", line 70, in send
+    response = self.next.send(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  [Previous line repeated 2 more times]
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/mgmt/core/policies/_base.py", line 47, in send
+    response = self.next.send(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/policies/_redirect.py", line 181, in send
+    response = self.next.send(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/policies/_retry.py", line 467, in send
+    response = self.next.send(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/policies/_authentication.py", line 113, in send
+    self.on_request(request)
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/policies/_authentication.py", line 90, in on_request
+    self._token = self._credential.get_token(*self._scopes)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/auth/credential_adaptor.py", line 65, in get_token
+    token, _ = self._get_token(scopes, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/auth/credential_adaptor.py", line 38, in _get_token
+    token = self._credential.get_token(*scopes, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/auth/msal_authentication.py", line 69, in get_token
+    result = self.acquire_token_silent_with_error(list(scopes), self._account, claims_challenge=claims, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/application.py", line 1279, in acquire_token_silent_with_error
+    return _clean_up(self._acquire_token_silent_with_error(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/application.py", line 1301, in _acquire_token_silent_with_error
+    result = self._acquire_token_silent_from_cache_and_possibly_refresh_it(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/application.py", line 1415, in _acquire_token_silent_from_cache_and_possibly_refresh_it
+    result = self._acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/application.py", line 1471, in _acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family
+    last_resp = at = self._acquire_token_silent_by_finding_specific_refresh_token(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/application.py", line 1521, in _acquire_token_silent_by_finding_specific_refresh_token
+    response = client.obtain_token_by_refresh_token(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/oauth2cli/oauth2.py", line 830, in obtain_token_by_refresh_token
+    resp = super(Client, self).obtain_token_by_refresh_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/oauth2cli/oauth2.py", line 262, in obtain_token_by_refresh_token
+    return self._obtain_token("refresh_token", data=data, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/oauth2cli/oidc.py", line 116, in _obtain_token
+    ret = super(Client, self)._obtain_token(grant_type, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/oauth2cli/oauth2.py", line 771, in _obtain_token
+    resp = super(Client, self)._obtain_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/oauth2cli/oauth2.py", line 234, in _obtain_token
+    resp = (post or self._http_client.post)(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/requests/sessions.py", line 637, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/requests/adapters.py", line 519, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10684ae50>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+To check existing issues, please visit: https://github.com/Azure/azure-cli/issues
++ vm_principal=
++ error=1
++ [[ 1 == 0 ]]
++ sleep 10
++ echo 'waiting for VM principal ID...'
+waiting for VM principal ID...
++ true
+++ az vm show -g nettocc20240214v7 -n nettocc20240214v7vm01 --query identity.principalId -o tsv
+ERROR: The command failed with an unexpected error. Here is the traceback:
+ERROR: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10bb6aed0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+Traceback (most recent call last):
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/python@3.11/3.11.7_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socket.py", line 962, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connectionpool.py", line 715, in urlopen
+    httplib_response = self._make_request(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connectionpool.py", line 404, in _make_request
+    self._validate_conn(conn)
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1058, in _validate_conn
+    conn.connect()
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connection.py", line 363, in connect
+    self.sock = conn = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x10bb6aed0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/requests/adapters.py", line 486, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connectionpool.py", line 827, in urlopen
+    return self.urlopen(
+           ^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/connectionpool.py", line 799, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/urllib3/util/retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10bb6aed0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/knack/cli.py", line 233, in invoke
+    cmd_result = self.invocation.execute(args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/commands/__init__.py", line 663, in execute
+    raise ex
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/commands/__init__.py", line 726, in _run_jobs_serially
+    results.append(self._run_job(expanded_arg, cmd_copy))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/commands/__init__.py", line 697, in _run_job
+    result = cmd_copy(params)
+             ^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/commands/__init__.py", line 333, in __call__
+    return self.handler(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/commands/command_operation.py", line 363, in handler
+    show_exception_handler(ex)
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/commands/arm.py", line 429, in show_exception_handler
+    raise ex
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/commands/command_operation.py", line 361, in handler
+    return op(**command_args)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/command_modules/vm/custom.py", line 1605, in show_vm
+    return get_vm(cmd, resource_group_name, vm_name, expand)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/command_modules/vm/custom.py", line 1285, in get_vm
+    return client.virtual_machines.get(resource_group_name, vm_name, expand=expand)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/tracing/decorator.py", line 76, in wrapper_use_tracer
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/mgmt/compute/v2023_09_01/operations/_operations.py", line 17073, in get
+    pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/_base.py", line 213, in run
+    return first_node.send(pipeline_request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/_base.py", line 70, in send
+    response = self.next.send(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/_base.py", line 70, in send
+    response = self.next.send(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/_base.py", line 70, in send
+    response = self.next.send(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  [Previous line repeated 2 more times]
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/mgmt/core/policies/_base.py", line 47, in send
+    response = self.next.send(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/policies/_redirect.py", line 181, in send
+    response = self.next.send(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/policies/_retry.py", line 467, in send
+    response = self.next.send(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/policies/_authentication.py", line 113, in send
+    self.on_request(request)
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/core/pipeline/policies/_authentication.py", line 90, in on_request
+    self._token = self._credential.get_token(*self._scopes)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/auth/credential_adaptor.py", line 65, in get_token
+    token, _ = self._get_token(scopes, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/auth/credential_adaptor.py", line 38, in _get_token
+    token = self._credential.get_token(*scopes, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/azure/cli/core/auth/msal_authentication.py", line 69, in get_token
+    result = self.acquire_token_silent_with_error(list(scopes), self._account, claims_challenge=claims, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/application.py", line 1279, in acquire_token_silent_with_error
+    return _clean_up(self._acquire_token_silent_with_error(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/application.py", line 1301, in _acquire_token_silent_with_error
+    result = self._acquire_token_silent_from_cache_and_possibly_refresh_it(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/application.py", line 1415, in _acquire_token_silent_from_cache_and_possibly_refresh_it
+    result = self._acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/application.py", line 1471, in _acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family
+    last_resp = at = self._acquire_token_silent_by_finding_specific_refresh_token(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/application.py", line 1521, in _acquire_token_silent_by_finding_specific_refresh_token
+    response = client.obtain_token_by_refresh_token(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/oauth2cli/oauth2.py", line 830, in obtain_token_by_refresh_token
+    resp = super(Client, self).obtain_token_by_refresh_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/oauth2cli/oauth2.py", line 262, in obtain_token_by_refresh_token
+    return self._obtain_token("refresh_token", data=data, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/oauth2cli/oidc.py", line 116, in _obtain_token
+    ret = super(Client, self)._obtain_token(grant_type, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/oauth2cli/oauth2.py", line 771, in _obtain_token
+    resp = super(Client, self)._obtain_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/oauth2cli/oauth2.py", line 234, in _obtain_token
+    resp = (post or self._http_client.post)(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/requests/sessions.py", line 637, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/azure-cli/2.56.0/libexec/lib/python3.11/site-packages/requests/adapters.py", line 519, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10bb6aed0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+To check existing issues, please visit: https://github.com/Azure/azure-cli/issues
++ vm_principal=
++ error=1
++ [[ 1 == 0 ]]
++ sleep 10
++ echo 'waiting for VM principal ID...'
+waiting for VM principal ID...
++ true
+++ az vm show -g nettocc20240214v7 -n nettocc20240214v7vm01 --query identity.principalId -o tsv
++ vm_principal=d4b84eb0-4fc0-43f9-853a-45776d2091ab
++ error=0
++ [[ 0 == 0 ]]
++ break
++ echo 'VM principal ID: d4b84eb0-4fc0-43f9-853a-45776d2091ab'
+VM principal ID: d4b84eb0-4fc0-43f9-853a-45776d2091ab
++ set -e
++ showstatusmsg done
++ statusmsg=done
++ [[ done == \d\o\n\e ]]
++ printf '%s\n' '[32m[done][0m'
++ [[ done == \f\a\i\l\e\d ]]
++ [[ done == \w\a\r\n\i\n\g ]]
++ return 0
++ add_vm_permission_subscription
++ showmsg 'Add VM principal ID access to subscription'
++ msg='Add VM principal ID access to subscription'
++ printf '[33m%-70s[0m' 'Add VM principal ID access to subscription'
+++ az account show
++ account_info='{
+  "environmentName": "AzureCloud",
+  "homeTenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "id": "f5a67d06-2d09-4090-91cc-e3298907a021",
+  "isDefault": true,
+  "managedByTenants": [
+    {
+      "tenantId": "2f4a9838-26b7-47ee-be60-ccc1fdec5953"
+    }
+  ],
+  "name": "AG_CI_CE_SWHPC_kanchanm",
+  "state": "Enabled",
+  "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "user": {
+    "name": "marconetto@microsoft.com",
+    "type": "user"
+  }
+}'
+++ echo '{
+  "environmentName": "AzureCloud",
+  "homeTenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "id": "f5a67d06-2d09-4090-91cc-e3298907a021",
+  "isDefault": true,
+  "managedByTenants": [
+    {
+      "tenantId": "2f4a9838-26b7-47ee-be60-ccc1fdec5953"
+    }
+  ],
+  "name": "AG_CI_CE_SWHPC_kanchanm",
+  "state": "Enabled",
+  "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "user": {
+    "name": "marconetto@microsoft.com",
+    "type": "user"
+  }
+}'
+++ jq -r .id
++ subscription=f5a67d06-2d09-4090-91cc-e3298907a021
+++ az vm show -g nettocc20240214v7 -n nettocc20240214v7vm01 --query identity.principalId -o tsv
++ VMPrincipalID=d4b84eb0-4fc0-43f9-853a-45776d2091ab
++ az role assignment create --assignee-principal-type ServicePrincipal --assignee-object-id d4b84eb0-4fc0-43f9-853a-45776d2091ab --role Contributor --scope /subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021
+{
+  "condition": null,
+  "conditionVersion": null,
+  "createdBy": null,
+  "createdOn": "2024-02-15T01:58:15.459930+00:00",
+  "delegatedManagedIdentityResourceId": null,
+  "description": null,
+  "id": "/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/providers/Microsoft.Authorization/roleAssignments/ca4a8e54-c3d8-483d-b40d-cabff409adde",
+  "name": "ca4a8e54-c3d8-483d-b40d-cabff409adde",
+  "principalId": "d4b84eb0-4fc0-43f9-853a-45776d2091ab",
+  "principalType": "ServicePrincipal",
+  "roleDefinitionId": "/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c",
+  "scope": "/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021",
+  "type": "Microsoft.Authorization/roleAssignments",
+  "updatedBy": "3973087a-9d36-43ff-bf1a-3dc7275f3363",
+  "updatedOn": "2024-02-15T01:58:15.942943+00:00"
+}
++ showstatusmsg done
++ statusmsg=done
++ [[ done == \d\o\n\e ]]
++ printf '%s\n' '[32m[done][0m'
++ [[ done == \f\a\i\l\e\d ]]
++ [[ done == \w\a\r\n\i\n\g ]]
++ return 0
++ add_vm_permission_keyvault
++ showmsg 'Add VM principal ID permission to keyvault: nettocc20240214v7kv'
++ msg='Add VM principal ID permission to keyvault: nettocc20240214v7kv'
++ printf '[33m%-70s[0m' 'Add VM principal ID permission to keyvault: nettocc20240214v7kv'
+++ az vm show -g nettocc20240214v7 -n nettocc20240214v7vm01 --query identity.principalId -o tsv
++ VMPrincipalID=d4b84eb0-4fc0-43f9-853a-45776d2091ab
++ echo d4b84eb0-4fc0-43f9-853a-45776d2091ab
+d4b84eb0-4fc0-43f9-853a-45776d2091ab
++ az keyvault set-policy --resource-group nettocc20240214v7 --name nettocc20240214v7kv --object-id d4b84eb0-4fc0-43f9-853a-45776d2091ab --key-permissions all --secret-permissions all
+{
+  "id": "/subscriptions/f5a67d06-2d09-4090-91cc-e3298907a021/resourceGroups/nettocc20240214v7/providers/Microsoft.KeyVault/vaults/nettocc20240214v7kv",
+  "location": "eastus",
+  "name": "nettocc20240214v7kv",
+  "properties": {
+    "accessPolicies": [
+      {
+        "applicationId": null,
+        "objectId": "3973087a-9d36-43ff-bf1a-3dc7275f3363",
+        "permissions": {
+          "certificates": [
+            "all"
+          ],
+          "keys": [
+            "all"
+          ],
+          "secrets": [
+            "all"
+          ],
+          "storage": [
+            "all"
+          ]
+        },
+        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+      },
+      {
+        "applicationId": null,
+        "objectId": "d4b84eb0-4fc0-43f9-853a-45776d2091ab",
+        "permissions": {
+          "certificates": null,
+          "keys": [
+            "all"
+          ],
+          "secrets": [
+            "all"
+          ],
+          "storage": null
+        },
+        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+      }
+    ],
+    "createMode": null,
+    "enablePurgeProtection": null,
+    "enableRbacAuthorization": null,
+    "enableSoftDelete": true,
+    "enabledForDeployment": true,
+    "enabledForDiskEncryption": true,
+    "enabledForTemplateDeployment": true,
+    "hsmPoolResourceId": null,
+    "networkAcls": null,
+    "privateEndpointConnections": null,
+    "provisioningState": "Succeeded",
+    "publicNetworkAccess": "Enabled",
+    "sku": {
+      "family": "A",
+      "name": "standard"
+    },
+    "softDeleteRetentionInDays": 90,
+    "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+    "vaultUri": "https://nettocc20240214v7kv.vault.azure.net/"
+  },
+  "resourceGroup": "nettocc20240214v7",
+  "systemData": {
+    "createdAt": "2024-02-15T00:44:43.077000+00:00",
+    "createdBy": "marconetto@microsoft.com",
+    "createdByType": "User",
+    "lastModifiedAt": "2024-02-15T02:06:16.287000+00:00",
+    "lastModifiedBy": "marconetto@microsoft.com",
+    "lastModifiedByType": "User"
+  },
+  "tags": {},
+  "type": "Microsoft.KeyVault/vaults"
+}
++ showstatusmsg done
++ statusmsg=done
++ [[ done == \d\o\n\e ]]
++ printf '%s\n' '[32m[done][0m'
++ [[ done == \f\a\i\l\e\d ]]
++ [[ done == \w\a\r\n\i\n\g ]]
++ return 0
++ show_vm_access
++ showmsginfo 'CycleCloud access when cloud-init is done'
++ msg='CycleCloud access when cloud-init is done'
++ printf '[33m%-70s%s\n' 'CycleCloud access when cloud-init is done' '[36m[info][0m'
+++ az vm show -g nettocc20240214v7 -n nettocc20240214v7vm01 --query privateIps -d --out tsv
++ ipaddress=10.65.0.4
++ showmsginfo 'CycleCloud via SSH: ssh [-i <privsshkey>] azureuser@10.65.0.4'
++ msg='CycleCloud via SSH: ssh [-i <privsshkey>] azureuser@10.65.0.4'
++ printf '[33m%-70s%s\n' 'CycleCloud via SSH: ssh [-i <privsshkey>] azureuser@10.65.0.4' '[36m[info][0m'
++ showmsginfo 'CycleCloud via WEB: http://10.65.0.4:8080'
++ msg='CycleCloud via WEB: http://10.65.0.4:8080'
++ printf '[33m%-70s%s\n' 'CycleCloud via WEB: http://10.65.0.4:8080' '[36m[info][0m'
++ wait_cyclecloud
++ '[' true == false ']'
++ set +e
+++ get_cyclecloud_ip
++++ az vm show -g nettocc20240214v7 -n nettocc20240214v7vm01 --query privateIps -d --out tsv
+++ ccvmipaddress=10.65.0.4
+++ echo 10.65.0.4
++ ccvmipaddress=10.65.0.4
++ pollingdelay=10
++ showmsg 'Polling CycleCloud (VPN required). You can control-c at any time '
++ msg='Polling CycleCloud (VPN required). You can control-c at any time '
++ printf '[33m%-70s[0m' 'Polling CycleCloud (VPN required). You can control-c at any time '
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '\|/-'
++ sp='|/-\'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '|/-\'
++ sp='/-\|'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '/-\|'
++ sp='-\|/'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname
++ gotaccess=
++ error=255
++ echo error=255
+error=255
++ [[ 255 == 0 ]]
++ sleep 10
++ spinanim
++ printf '\b%.1s' '-\|/'
++ sp='\|/-'
++ true
+++ eval 'ssh -o StrictHostKeychecking=no -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null' azureuser@10.65.0.4 hostname

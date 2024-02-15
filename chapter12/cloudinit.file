@@ -1,0 +1,198 @@
+#cloud-config
+
+runcmd:
+    - alias apt-get='apt-get -o DPkg::Lock::Timeout=-1'
+
+    # Install CycleCloud
+    - apt-get -y install gnupg2
+    - wget -qO - https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+    - echo 'deb https://packages.microsoft.com/repos/cyclecloud bionic main' > /etc/apt/sources.list.d/cyclecloud.list
+    - apt-get update
+    - apt-get install -yq cyclecloud8=8.5.0-3196
+    - /opt/cycle_server/cycle_server await_startup
+
+    # Collect and process admin password and ssh public key
+    - bash /tmp/azcliinstaller.sh
+    - az login --identity --allow-no-subscriptions
+    - CCPASSWORD=$(az keyvault secret show --name ccpassword --vault-name nettocc20240215v1kv --query 'value' -o tsv)
+    - CCPUBKEY=$(az keyvault secret show --name ccpubkey --vault-name nettocc20240215v1kv --query 'value' -o tsv)
+    - escaped_CCPASSWORD=$(printf '%s\n' "$CCPASSWORD" | sed -e 's/[]\/$*.^[]/\\&/g')
+    - escaped_CCPUBKEY=$(printf '%s\n' "$CCPUBKEY" | sed -e 's/[]\/$*.^[]/\\&/g')
+    - sed -i "s/CCPASSWORD/$escaped_CCPASSWORD/g" /tmp/cyclecloud_account.json
+    - sed -i "s/CCPUBKEY/$escaped_CCPUBKEY/g" /tmp/cyclecloud_account.json
+
+    # Setup CycleCloud
+    - mv /tmp/cyclecloud_account.json /opt/cycle_server/config/data/
+    - apt-get install -yq unzip python3-venv
+    - unzip /opt/cycle_server/tools/cyclecloud-cli.zip -d /tmp
+    - python3 /tmp/cyclecloud-cli-installer/install.py -y --installdir /home/azureuser/.cycle --system
+    - runuser -l azureuser -c "/usr/local/bin/cyclecloud initialize --loglevel=debug --batch --url=http://localhost:8080 --verify-ssl=false --username=\"azureuser\" --password=\"$CCPASSWORD\""
+    - mv /tmp/azure_subscription.json /opt/cycle_server/
+    - runuser -l azureuser -c '/usr/local/bin/cyclecloud account create -f /opt/cycle_server/azure_subscription.json'
+    - rm -f /opt/cycle_server/config/data/cyclecloud_account.json.imported
+    - sleep 60
+    - runuser -l azureuser -c 'git clone https://github.com/marconetto/azadventures.git'
+    - runuser -l azureuser -c 'LOCKER=$(cyclecloud locker list | cut -d " " -f1); cd azadventures/chapter12/cc_eessi/ ; cyclecloud project upload $LOCKER'
+    - runuser -l azureuser -c 'LOCKER=$(cyclecloud locker list | cut -d " " -f1); cd azadventures/chapter12/cc_wrfconus/ ; cyclecloud project upload $LOCKER'
+    - runuser -l azureuser -c 'cd azadventures/chapter12/ ; cyclecloud import_template -f slurm_eessi_cluster_template.txt'
+    - bash /tmp/createcluster.sh
+
+write_files:
+
+    - path: /tmp/cyclecloud_account.json
+      content: |
+        [
+          {
+            "AdType": "Application.Setting",
+            "Name": "cycleserver.installation.initial_user",
+            "Value": "azureuser"
+          },
+          {
+            "AdType": "AuthenticatedUser",
+            "Name": "azureuser",
+            "RawPassword": "CCPASSWORD",
+            "Superuser": true
+          },
+          {
+            "AdType": "Credential",
+            "CredentialType": "PublicKey",
+            "Name": "azureuser/public",
+            "PublicKey": "CCPUBKEY"
+          },
+          {
+            "AdType": "Application.Setting",
+            "Name": "cycleserver.installation.complete",
+            "Value": true
+          }
+        ]
+
+    - path: /tmp/azure_subscription.json
+      content: |
+        {
+          "Environment": "public",
+          "AzureRMUseManagedIdentity": true,
+          "AzureResourceGroup": "nettocc20240215v1",
+          "AzureRMApplicationId": " ",
+          "AzureRMApplicationSecret": " ",
+          "AzureRMSubscriptionId": "f5a67d06-2d09-4090-91cc-e3298907a021",
+          "AzureRMTenantId": " 72f988bf-86f1-41af-91ab-2d7cd011db47",
+          "DefaultAccount": true,
+          "Location": "eastus",
+          "Name": "AG_CI_CE_SWHPC_kanchanm",
+          "Provider": "azure",
+          "ProviderId": "f5a67d06-2d09-4090-91cc-e3298907a021",
+          "RMStorageAccount": "nettocc20240215v1sa",
+          "RMStorageContainer": "cyclecloud",
+          "AcceptMarketplaceTerms": true
+        }
+
+    - path: /tmp/azcliinstaller.sh
+      content: |
+        function retry_installer(){
+            local attempts=0
+            local max=15
+            local delay=25
+
+            while true; do
+                ((attempts++))
+                "$@" && {
+                    echo "CLI installed"
+                    break
+                } || {
+                    if [[ $attempts -lt $max ]]; then
+                        echo "CLI installation failed. Attempt $attempts/$max."
+                        sleep $delay;
+                    else
+                        echo "CLI installation has failed after $attempts attempts."
+                        break
+                    fi
+                }
+            done
+        }
+
+        function install_azure_cli(){
+            install_script="/tmp/azurecli_installer.sh"
+            curl -sL https://aka.ms/InstallAzureCLIDeb -o "$install_script"
+            retry_installer sudo bash "$install_script"
+            rm $install_script
+        }
+
+        if ! command -v az &> /dev/null
+        then
+            echo "Installing Azure CLI"
+            install_azure_cli
+        fi
+
+    - path: /tmp/cluster_parameters.json
+      content: |
+        {
+          "Credentials": "AG_CI_CE_SWHPC_kanchanm",
+          "SubnetId": "nettocc20240215v1/nettocc20240215v1VNET/nettocc20240215v1SUBNET",
+          "ReturnProxy": false,
+          "UsePublicNetwork": false,
+          "ExecuteNodesPublic": false,
+          "Region": "eastus",
+          "AdditionalNFSExportPath": null,
+          "AdditionalNFSMountPoint": null,
+          "DynamicSpotMaxPrice": null,
+          "HTCImageName" : "microsoft-dsvm:ubuntu-hpc:2004:20.04.2023111801",
+          "HPCImageName" : "microsoft-dsvm:ubuntu-hpc:2004:20.04.2023111801",
+          "SchedulerImageName" : "microsoft-dsvm:ubuntu-hpc:2004:20.04.2023111801",
+          "DynamicImageName" : "microsoft-dsvm:ubuntu-hpc:2004:20.04.2023111801",
+          "SchedulerMachineType" :  "Standard_D4ads_v5",
+          "HPCMachineType" :  "Standard_HB120rs_v3",
+          "MaxHPCExecuteCoreCount": "5000",
+          "MaxHTCExecuteCoreCount": "5000"
+        }
+
+    - path: /tmp/createcluster.sh
+      permissions: '0755'
+      content: |
+         #!/bin/bash
+
+         echo "Setting up the slurm cluster!"
+         SLURMTEMPLATE=$(runuser -l azureuser -c 'cyclecloud show_cluster  -t' | grep -i "slurmeessi.*template" | cut -d':' -f1)
+         echo "SLURMTEMPLATE=$SLURMTEMPLATE"
+         runuser -l azureuser -c "cyclecloud create_cluster $SLURMTEMPLATE clusterwrf -p /tmp/cluster_parameters.json"
+         runuser -l azureuser -c "cyclecloud start_cluster clusterwrf"
+
+         echo "Waiting for scheduler to be up-and-running..."
+         max_provisioning_time=120
+         max_retries=20
+         wait_time=20
+         get_state(){ runuser -l azureuser -c "cyclecloud show_nodes scheduler -c clusterwrf --states='Started' --output='%(Status)s'" ; }
+
+         for (( r=1; r<=max_retries; r++ )); do
+
+            schedulerstate=$(get_state)
+            echo $schedulerstate
+            if [ "$schedulerstate" == "Failed" ]; then
+                    runuser -l azureuser -c "cyclecloud retry clusterwrf"
+                    sleep $wait_time
+            elif [ "$schedulerstate" == "Ready" ]; then
+                    echo "Scheduler provisioned"
+                    break
+            elif [ "$schedulerstate" == "Off" ]; then
+                    echo "Scheduler provisioning has not started yet"
+                    sleep $wait_time
+            elif [ "$schedulerstate" == "Acquiring" ] || [ "$schedulerstate" == "Preparing" ] ; then
+                start_time=$(date +%s)
+                while true; do
+                    echo -n "."
+                    sleep $wait_time
+                    current_time=$(date +%s)
+                    elapsed_time=$((current_time - start_time))
+
+                    if [ $elapsed_time -ge $max_provisioning_time ]; then
+                            break
+                    fi
+                    schedulerstate=$(get_state)
+                    if [ "$schedulerstate" != "Acquiring" ] && [ "$schedulerstate" != "Preparing" ]  ; then
+                            break
+                    fi
+                done
+            fi
+
+         done
+         echo "Final scheduler state = $schedulerstate"
+

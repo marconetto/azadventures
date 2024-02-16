@@ -417,13 +417,17 @@ node:
 ⋮
 ```
 
-Upload the cluster template. With this you are ready to play with the new
-template+projects on existing CycleCloud. In our case, we uploaded these files
-into get to be consumed by the automation script.
+Upload the cluster template.
+
 
 ```
 cyclecloud import_template -f $NEW_TEMPLATE
 ```
+
+With this you are ready to play with the new
+template+projects on existing CycleCloud. In our case, we uploaded these files
+into get to be consumed by the automation script.
+
 
 
 

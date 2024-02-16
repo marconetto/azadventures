@@ -80,11 +80,11 @@ Provision the resources (resources group, vnet, keyvault, cyclecloud, etc...):
 ```
 
 <p align="center" width="100%">
-   <img width="75%" src="cyclecloudcli.png">
+   <img width="75%" src="figs/cyclecloudcli.png">
 </p>
 
 <p align="center" width="100%">
-   <img width="75%" src="cyclecloudui.png">
+   <img width="75%" src="figs/cyclecloudui.png">
 </p>
 
 

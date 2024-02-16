@@ -435,13 +435,8 @@ cyclecloud import_template -f $NEW_TEMPLATE
    <https://learn.microsoft.com/en-us/azure/cyclecloud/concepts/core?view=cyclecloud-8>
 1. SLURM cluster template: <br>
    <https://github.com/Azure/cyclecloud-slurm/blob/master/templates/slurm.txt>
-1. cyclecloud cloud-init: <br>
-   <https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/cloud-init?view=cyclecloud-8>
-1. EESSI:<br>
-<https://www.eessi.io/docs/getting_access/native_installation/>
-1. EESSI+WRF on Azure: <br>
-<https://easybuild.io/eum22/013_eum22_WRF_Azure_EESSI.pdf>
-1. SPACK: <br>
-<https://spack.io/>
-1. EasyBuild: <br>
-<https://easybuild.io/>
+1. cyclecloud cloud-init: <br> <https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/cloud-init?view=cyclecloud-8>
+1. EESSI:<br> <https://www.eessi.io/docs/getting_access/native_installation/>
+1. EESSI+WRF on Azure: <br> <https://easybuild.io/eum22/013_eum22_WRF_Azure_EESSI.pdf>
+1. SPACK: <br> <https://spack.io/>
+1. EasyBuild: <br> <https://easybuild.io/>

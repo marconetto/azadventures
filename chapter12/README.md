@@ -25,7 +25,7 @@ using WRF (Weather Research & Forecasting) Model as a use case scenario.
 - We leverage EESSI to have access to ready-to-use applications which are mounted into the cluster nodes;
 - The setup of EESSI is done via two relevant CycleCloud concepts: projects and cluster templates---so here you will learn a bit about those;
 - We use WRF as example, so the cluster provisioned will contain both WRF application and the benchmarking data Conus 2.5km and Conus 12km automatically available for job submission;
-- This tutorial shows how you could do this for different applications and is not intended to describe the optimized ways to run WRF in a production system. For this, there are plenty of material out there, including a previous blog post (see [here](https://techcommunity.microsoft.com/t5/azure-high-performance-computing/run-wrf-v4-on-azure-hpc-virtual-machines/ba-p/1131097)).
+- This tutorial shows how you could do this for different applications and is not intended to describe the optimized ways to run WRF in a production system. For this, there are plenty of material out there, including a previous blog post (see [here](https://techcommunity.microsoft.com/t5/azure-high-performance-computing/run-wrf-v4-on-azure-hpc-virtual-machines/ba-p/1131097) and [here](https://techcommunity.microsoft.com/t5/azure-high-performance-computing/tool-to-assist-in-optimal-pinning-of-processes-threads-for-azure/ba-p/2672201)).
 
 
 Here is the git repository that contains the script:
@@ -64,9 +64,9 @@ export CCPUBKEY=$(cat ~/.ssh/id_rsa.pub)
 ```
 
 If the variables below are setup, the script will automatically check for you
-    when the cluster is ready for job submission. Otherwise, you can access
-    check the cluster creation yourself using Azure Bastion---the automation
-    script will show you the IP address of the CycleCloud VM.
+when the cluster is ready for job submission. Otherwise, you can check the
+cluster creation yourself using Azure Bastion---the automation script will show
+you the IP address of the CycleCloud VM.
 
 ```
 export VPNRG=myvpnrg
@@ -79,8 +79,14 @@ Provision the resources (resources group, vnet, keyvault, cyclecloud, etc...):
 ./cyclecloud_cli.sh <clustername>
 ```
 
-SCREENSHOT OF PROVISIONING
-SCREENSHOT OF CYCLECLOUD
+<p align="center" width="100%">
+   <img width="75%" src="cyclecloudcli.png">
+</p>
+
+<p align="center" width="100%">
+   <img width="75%" src="cyclecloudui.png">
+</p>
+
 
 ## 2. Run your WRF job
 

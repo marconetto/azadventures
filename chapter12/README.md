@@ -139,9 +139,10 @@ including GROMACS, OpenFOAM, OpenBLAS, among others.
 Now let's move to the behind the scenes here in case you want to learn how this
 was done or you want to modify/expand the current automation.
 
-EESSI will provide you with quick access to various applications. Alternatively,
-you could modify the steps below, to have applications being built from source
-code, or use frameworks such as SPACK or EasyBuild.
+EESSI will provide you with quick access to various applications.
+Alternatively, you could modify the steps below, to have applications being
+built from source code, or use frameworks such as SPACK or EasyBuild (see
+references for details).
 
 
 
@@ -440,3 +441,7 @@ cyclecloud import_template -f $NEW_TEMPLATE
 <https://www.eessi.io/docs/getting_access/native_installation/>
 1. EESSI+WRF on Azure: <br>
 <https://easybuild.io/eum22/013_eum22_WRF_Azure_EESSI.pdf>
+1. SPACK: <br>
+<https://spack.io/>
+1. EasyBuild: <br>
+<https://easybuild.io/>

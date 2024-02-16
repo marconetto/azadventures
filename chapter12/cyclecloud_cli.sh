@@ -48,6 +48,7 @@ CREATECLUSTERFILE=/tmp/createcluster.sh
 
 # used for slurm compute nodes and scheduler
 CLUSTERIMAGE=microsoft-dsvm:ubuntu-hpc:2004:20.04.2023111801
+CLUSTERIMAGE=microsoft-dsvm:ubuntu-hpc:2004:20.04.2023111801
 #CLUSTERIMAGE=almalinux8
 
 ##############################################################################
@@ -215,6 +216,7 @@ function add_cluster_templates() {
     - runuser -l $ADMINUSER -c 'LOCKER=\$(cyclecloud locker list | cut -d " " -f1); cd azadventures/chapter12/cc_eessi/ ; cyclecloud project upload \$LOCKER'
     - runuser -l $ADMINUSER -c 'LOCKER=\$(cyclecloud locker list | cut -d " " -f1); cd azadventures/chapter12/cc_wrfconus/ ; cyclecloud project upload \$LOCKER'
     - runuser -l $ADMINUSER -c 'cd azadventures/chapter12/ ; cyclecloud import_template -f slurm_eessi_cluster_template.txt'
+    - runuser -l $ADMINUSER -c 'cp azadventures/chapter12/run_*.sh ~/'
 
 EOF
 }

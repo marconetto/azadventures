@@ -88,7 +88,7 @@ SCREENSHOT OF CYCLECLOUD
 Once you are in the cluster scheduler via ssh or Azure Bastion, just:
 
 ```
-sbatch -N 4 run_wrf.sh
+sbatch -N 4 run_wrf_hb_2_5km.sh
 ```
 
 SCREENSHOT OF ls + sbatch run_wrf.sh
@@ -96,6 +96,40 @@ SCREENSHOT OF ls + sbatch run_wrf.sh
 The benchmark data is in the azureuser home directory, together with a couple of
 SLURM batch script examples that you can work with depending on the SKU,
 network, and data you want to use.
+
+Here is an example of a sbatch script available to run using for instance HB
+SKU, with Infiniband network, and Conus 2.5km benchmark data:
+
+```
+#!/bin/bash
+
+export EESSI_SOFTWARE_SUBDIR_OVERRIDE=x86_64/amd/zen3
+
+source /cvmfs/pilot.eessi-hpc.org/latest/init/bash
+module load WRF/3.9.1.1-foss-2020a-dmpar
+module load mpi
+
+execdir="run_$((RANDOM % 90000 + 10000))"
+mkdir -p $execdir
+cd $execdir || exit
+echo "Execution directory: $execdir"
+
+wrfrundir=$(which wrf.exe | sed 's/\/main\/wrf.exe/\/run\//')
+ln -s "$wrfrundir"/* .
+ln -sf /shared/home/azureuser/bench_2.5km/* .
+
+export UCX_NET_DEVICES=mlx5_ib0:1
+export OMPI_MCA_pml=ucx
+
+time mpirun -np 4 wrf.exe
+```
+
+Here we source the pilot EESSI repository which contains a WRF3.9 available. For
+other applications you could explore the most up-to-date repository. See this
+link for details:
+[LINK](https://www.eessi.io/docs/repositories/software.eessi.io/)
+
+
 
 Now let's move to the behind the scenes here in case you want to learn how this
 was done or you want to modify/expand the current automation.
@@ -376,8 +410,6 @@ into get to be consumed by the automation script.
 cyclecloud import_template -f $NEW_TEMPLATE
 ```
 
-
-Once you modify `NEW_TEMPLATE`, you can import it by running:
 
 
 

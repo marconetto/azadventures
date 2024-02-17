@@ -97,7 +97,10 @@ Once you are in the cluster scheduler via ssh or Azure Bastion, just:
 sbatch -N 4 run_wrf_hb_2_5km.sh
 ```
 
-SCREENSHOT OF ls + sbatch run_wrf.sh
+<p align="center" width="100%">
+   <img width="75%" src="figs/wrfexec.png">
+</p>
+
 
 The benchmark data is in the azureuser home directory, together with a couple of
 SLURM batch script examples that you can work with depending on the SKU,

@@ -43,7 +43,7 @@ Here is the git repository that contains the script:
 - Deployment relies only on PRIVATE IP addresses;
 - Private and public ssh keys available;
 - We use Ubuntu for all resources: CycleCloud VM, scheduler and cluster nodes.
-- Azure CLI must be setup in the user machine that triggers the script call (i.e. `az login` should work with the subscription for deployment).
+- Azure CLI must be setup in the machine that triggers the script call (i.e. `az login` should work with the subscription for deployment). The command `jq` must also be available.
 
 ## 1. How to run the script
 
@@ -262,7 +262,8 @@ make use of cluster template and cyclecloud project files to get there.
 All of the steps below have been added to the CycleCloud CLI automation script.
 
 There are several ways of doing so; let's see one of those ways exploring
-CycleCloud projects (we could alternatively use cloud-init).
+CycleCloud projects (we could alternatively use cloud-init). Here we assume you
+are on an existing CycleCloud VM.
 
 
 #### Creating and uploading a CycleCloud project
@@ -428,7 +429,7 @@ cyclecloud import_template -f $NEW_TEMPLATE
 
 With this you are ready to play with the new
 template+projects on existing CycleCloud. In our case, we uploaded these files
-into get to be consumed by the automation script.
+into git to be consumed by the automation script.
 
 
 

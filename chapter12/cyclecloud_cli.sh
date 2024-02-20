@@ -330,11 +330,11 @@ function create_cluster_cloudinit_files() {
          }
 
          echo "import EESSI related cluster template and project"
-         LOCKER=\$(cyclecloud locker list | cut -d " " -f1)
+         LOCKER=\$(runuser -l $ADMINUSER -c 'cyclecloud locker list | cut -d " " -f1')
          runuser -l $ADMINUSER -c 'git clone https://github.com/marconetto/azadventures.git'
          runuser -l $ADMINUSER -c 'cp azadventures/chapter12/run_*.sh ~/'
-         import_project azadventures/chapter12/cc_eessi/ \$LOCKER
-         import_project azadventures/chapter12/cc_wrfconus/ \$LOCKER
+         import_project "azadventures/chapter12/cc_eessi/" \$LOCKER
+         import_project "azadventures/chapter12/cc_wrfconus/" \$LOCKER
          runuser -l $ADMINUSER -c 'cd azadventures/chapter12/ ; cyclecloud import_template -f slurm_eessi_cluster_template.txt'
 
 EOF

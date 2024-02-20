@@ -504,13 +504,13 @@ function peer_vpn() {
     curl "$URL" -O -s >/dev/null 2>&1
   else
     echo "File does not exist. $URL"
-    showstatusmsg "failed"
+    showstatusmsg "warning"
   fi
 
   bash ./create_peering_vpn.sh "$VPNRG" "$VPNVNET" "$RG" "$VMVNETNAME"
 
   if [[ $? -ne 0 ]]; then
-    showstatusmsg "failed"
+    showstatusmsg "warning"
   else
     VPNVNETPEERED=true
     showstatusmsg "done"

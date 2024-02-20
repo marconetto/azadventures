@@ -8,7 +8,7 @@ Computing (HPC) clusters with access to several ready-to-use HPC applications
 scientific and engineering challenges? Then this blog may be relevant to you.
 
 
-To achieve this goal we rely on a cluster provisioning solution described in
+To achieve this goal we rely on a cluster provisioning script described in
 a previous blog post (see
 [here](https://techcommunity.microsoft.com/t5/azure-high-performance-computing/automated-deployment-of-cyclecloud-and-slurm-using-cli/ba-p/3943666)),
 which is based on Command Line Interface (CLI) from both Azure and Azure
@@ -23,7 +23,7 @@ using WRF (Weather Research & Forecasting) Model as a use case scenario.
 
 - We provide a script for a SLURM cluster creation via Azure CycleCloud ready to submit your (MPI) jobs using only Command Line Interface (CLI);
 - We leverage EESSI to have access to ready-to-use applications which are mounted into the cluster nodes;
-- The setup of EESSI is done via two relevant CycleCloud concepts: projects and cluster templates---so here you will learn a bit about those;
+- The setup of EESSI is done via two relevant CycleCloud concepts: projects and cluster templates---so here you will learn a bit about those and can reuse the projects and cluster template even when CycleCloud was provisioned in other ways such as via marketplace in the Azure Portal;
 - We use WRF as example, so the cluster provisioned will contain both WRF application and the benchmarking data Conus 2.5km and Conus 12km automatically available for job submission;
 - This tutorial shows how you could do this for different applications and is not intended to describe the optimized ways to run WRF in a production system. For this, there are plenty of material out there, including a previous blog post (see [here](https://techcommunity.microsoft.com/t5/azure-high-performance-computing/run-wrf-v4-on-azure-hpc-virtual-machines/ba-p/1131097) and [here](https://techcommunity.microsoft.com/t5/azure-high-performance-computing/tool-to-assist-in-optimal-pinning-of-processes-threads-for-azure/ba-p/2672201)).
 
@@ -42,7 +42,7 @@ Here is the git repository that contains the script:
 
 - Deployment relies only on PRIVATE IP addresses;
 - Private and public ssh keys available;
-- We use Ubuntu for all resources: CycleCloud VM, scheduler and cluster nodes.
+- We use Ubuntu for all resources: CycleCloud VM, scheduler, and cluster nodes.
 - Azure CLI must be setup in the machine that triggers the script call (i.e. `az login` should work with the subscription for deployment). The command `jq` must also be available.
 
 ## 1. How to run the script
@@ -429,9 +429,11 @@ Upload the cluster template.
 cyclecloud import_template -f $NEW_TEMPLATE
 ```
 
-With this you are ready to play with the new
-template+projects on existing CycleCloud. In our case, we uploaded these files
-into git to be consumed by the automation script.
+With this you are ready to play with the new template+projects on existing
+CycleCloud VM. In our case, we uploaded these files into git to be consumed by
+the automation script or consumed by other CycleCloud VM created in different
+ways.
+
 
 
 

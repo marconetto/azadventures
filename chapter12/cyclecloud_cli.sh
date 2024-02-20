@@ -45,6 +45,7 @@ AZURESUBSCRIPTIONFILE=azure_subscription.json
 CYCLECLOUDACCOUNTFILE=cyclecloud_account.json
 CLUSTERPARAMETERFILE=cluster_parameters.json
 CREATECLUSTERFILE=/tmp/createcluster.sh
+DEPLOYTEMPLATEFILE=/tmp/deploytemplate.sh
 
 # used for slurm compute nodes and scheduler
 CLUSTERIMAGE=microsoft-dsvm:ubuntu-hpc:2004:20.04.2023111801
@@ -215,15 +216,6 @@ function add_cluster_templates() {
 
 EOF
 
-  cat <<EOF
-    - sleep 60
-    - runuser -l $ADMINUSER -c 'git clone https://github.com/marconetto/azadventures.git'
-    - runuser -l $ADMINUSER -c 'LOCKER=\$(cyclecloud locker list | cut -d " " -f1); cd azadventures/chapter12/cc_eessi/ ; cyclecloud project upload \$LOCKER'
-    - runuser -l $ADMINUSER -c 'LOCKER=\$(cyclecloud locker list | cut -d " " -f1); cd azadventures/chapter12/cc_wrfconus/ ; cyclecloud project upload \$LOCKER'
-    - runuser -l $ADMINUSER -c 'cd azadventures/chapter12/ ; cyclecloud import_template -f slurm_eessi_cluster_template.txt'
-    - runuser -l $ADMINUSER -c 'cp azadventures/chapter12/run_*.sh ~/'
-
-EOF
 }
 
 function create_cluster_cloudinit_commands() {

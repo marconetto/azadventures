@@ -135,9 +135,11 @@ time mpirun -np 4 wrf.exe
 
 Here we source the pilot EESSI repository which contains a WRF3.9 available. For
 other applications you could explore the most up-to-date repository. Click
-[here](https://www.eessi.io/docs/repositories/software.eessi.io/) for details.
-Once you `source` the EESSI bash script, you can have access to many other apps,
-including GROMACS, OpenFOAM, OpenBLAS, among others.
+[here](https://www.eessi.io/docs/repositories/software.eessi.io/) for details
+and to get up to date information on applications that are being onboarded to
+EESSI.
+Once you `source` the EESSI bash script, you can have access to many other
+apps/libraries, including GROMACS, OpenFOAM, among others.
 
 
 

@@ -317,8 +317,9 @@ function create_cluster_cloudinit_files() {
             projdir=\$1
             locker=\$2
             attempts=5
+            echo "import projdir=\$projdir locker=\$locker"
             for (( i=1; i<=attempts; i++ )); do
-                runuser -l $ADMINUSER -c 'cd \$projdir ; cyclecloud project upload \$locker'
+                runuser -l $ADMINUSER -c "cd \$projdir ; cyclecloud project upload \$locker"
                 if [[ \$? -eq 0 ]]; then
                     break
                 else

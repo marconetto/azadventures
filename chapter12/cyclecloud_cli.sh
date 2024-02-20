@@ -211,6 +211,11 @@ function create_keyvault() {
 function add_cluster_templates() {
 
   cat <<EOF
+    - bash $DEPLOYTEMPLATEFILE
+
+EOF
+
+  cat <<EOF
     - sleep 60
     - runuser -l $ADMINUSER -c 'git clone https://github.com/marconetto/azadventures.git'
     - runuser -l $ADMINUSER -c 'LOCKER=\$(cyclecloud locker list | cut -d " " -f1); cd azadventures/chapter12/cc_eessi/ ; cyclecloud project upload \$LOCKER'
@@ -311,6 +316,34 @@ function create_cluster_cloudinit_files() {
 
          done
          echo "Final scheduler state = \$schedulerstate"
+    - path: $DEPLOYTEMPLATEFILE
+      permissions: '0755'
+      content: |
+         #!/bin/bash
+
+         function import_project() {
+            projdir=\$1
+            locker=\$2
+            attempts=5
+            for (( i=1; i<=attempts; i++ )); do
+                runuser -l $ADMINUSER -c 'cd \$projdir ; cyclecloud project upload \$locker'
+                if [[ \$? -eq 0 ]]; then
+                    break
+                else
+                    echo "failed to import project... trying it again"
+                    sleep 20
+                fi
+            done
+         }
+
+         echo "import EESSI related cluster template and project"
+         LOCKER=\$(cyclecloud locker list | cut -d " " -f1)
+         runuser -l $ADMINUSER -c 'git clone https://github.com/marconetto/azadventures.git'
+         runuser -l $ADMINUSER -c 'cp azadventures/chapter12/run_*.sh ~/'
+         import_project azadventures/chapter12/cc_eessi/ \$LOCKER
+         import_project azadventures/chapter12/cc_wrfconus/ \$LOCKER
+         runuser -l $ADMINUSER -c 'cd azadventures/chapter12/ ; cyclecloud import_template -f slurm_eessi_cluster_template.txt'
+
 EOF
 }
 

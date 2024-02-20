@@ -380,7 +380,7 @@ assuming you got the right release ID from your current CycleCloud installation.
 
 #### Updating and uploading a CycleCloud cluster template
 
-We modified $NEW_TEMPLATE in three places:
+We modified $NEW_TEMPLATE in three places.
 
 We first changed the cluster template name from `Slurm` to `SlurmEESSI`:
 

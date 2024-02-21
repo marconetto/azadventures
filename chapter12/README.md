@@ -112,7 +112,7 @@ SKU, with Infiniband network, and Conus 2.5km benchmark data:
 ```
 #!/bin/bash
 
-export EESSI_SOFTWARE_SUBDIR_OVERRIDE=x86_64/amd/zen3
+export EESSI_SOFTWARE_SUBDIR_OVERRIDE=x86_64/amd/zen3 #won't be required in near future
 
 source /cvmfs/pilot.eessi-hpc.org/latest/init/bash
 module load WRF/3.9.1.1-foss-2020a-dmpar
@@ -229,8 +229,8 @@ Here is a simplified view of a CycleCloud project:
 - **templates directory:** hold cluster templates
 - **specs:** the specifications defining your project
 - **scripts:** scripts executed in lexicographical order on the node
-- **files:** raw data files to will be put on the node)
-- **tests:** tests executed when a cluster is started in testing mode.
+- **files:** raw data files to will be put on the node
+- **tests:** tests executed when a cluster is started in testing mode
 
 Here is the URL on how to create a project and additional functionalities of
 cluster projects:

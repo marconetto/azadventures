@@ -347,7 +347,7 @@ function create_cluster_cloudinit_files() {
             attempts=5
             echo "import projdir=\$projdir locker=\$locker"
             for (( i=1; i<=attempts; i++ )); do
-                runuser -l $ADMINUSER -c "cd \$projdir ; cyclecloud project upload \$locker"
+                runuser -l $ADMINUSER -c "cd \$projdir ; cyclecloud project upload \"\$locker\""
                 if [[ \$? -eq 0 ]]; then
                     break
                 else
@@ -364,8 +364,8 @@ function create_cluster_cloudinit_files() {
 
          runuser -l $ADMINUSER -c 'git clone https://github.com/marconetto/azadventures.git'
          runuser -l $ADMINUSER -c 'cp azadventures/chapter12/run_*.sh ~/'
-         import_project "azadventures/chapter12/cc_eessi/" \$LOCKER
-         import_project "azadventures/chapter12/cc_wrfconus/" \$LOCKER
+         import_project "azadventures/chapter12/cc_eessi/" "\$LOCKER"
+         import_project "azadventures/chapter12/cc_wrfconus/" "\$LOCKER"
          runuser -l $ADMINUSER -c 'cd azadventures/chapter12/ ; cyclecloud import_template -f slurm_eessi_cluster_template.txt'
 
 EOF

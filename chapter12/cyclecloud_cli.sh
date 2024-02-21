@@ -176,13 +176,26 @@ function check_dependencies() {
     exit 1
   fi
 
+  if ! az account show &>/dev/null; then
+    echo "You are not logged in. Please use az login and try again"
+    exit 1
+  fi
+
+}
+
+function set_subscription() {
+
+  account_info=$(az account show)
+  subscription=$(echo "$account_info" | jq -r '.name')
+  # az account set --subscription "$SUBSCRIPTION"
+
+  echo ">> Using subscription: $subscription"
 }
 ##############################################################################
 # Core functions
 ##############################################################################
 function create_resource_group() {
 
-  set -x
   showmsg "Create resource group: $RG"
 
   if [[ -z ${AZURETAGS-} ]]; then
@@ -193,7 +206,6 @@ function create_resource_group() {
          --tags ${AZURETAGS}"
   fi
 
-  echo "$cmd"
   eval "${cmd}"
 
   showstatusmsg "done"
@@ -202,6 +214,7 @@ function create_resource_group() {
 function create_vnet_subnet() {
 
   showmsg "Create VNET/VSUBNET: $VMVNETNAME/$VMSUBNETNAME"
+
   az network vnet create -g "$RG" \
     -n "$VMVNETNAME" \
     --address-prefix "$CIDRVNETADDRESS" \
@@ -345,7 +358,10 @@ function create_cluster_cloudinit_files() {
          }
 
          echo "import EESSI related cluster template and project"
-         LOCKER=\$(runuser -l $ADMINUSER -c 'cyclecloud locker list | cut -d " " -f1')
+         RAWLOCKER=\$(runuser -l $ADMINUSER -c 'cyclecloud locker list')
+         # locker may have white spaces
+         LOCKER=\$(echo \$RAWLOCKER | sed 's/ (.*)//')
+
          runuser -l $ADMINUSER -c 'git clone https://github.com/marconetto/azadventures.git'
          runuser -l $ADMINUSER -c 'cp azadventures/chapter12/run_*.sh ~/'
          import_project "azadventures/chapter12/cc_eessi/" \$LOCKER
@@ -683,7 +699,6 @@ function wait_cyclecloud() {
 function wait_scheduler() {
 
   set +e
-  set -x
   ccvmipaddress=$1
   pollingdelay=$2
 
@@ -727,7 +742,9 @@ function wait_cluster_provision() {
 ##############################################################################
 
 [[ "$*" =~ -h|--help|-help ]] && echo "$0 <clustername>" && exit 0
+
 check_dependencies
+set_subscription
 
 echo ">> Logfile: $LOGFILE"
 

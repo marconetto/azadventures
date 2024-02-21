@@ -162,6 +162,21 @@ function validate_secret_availability() {
   fi
 }
 
+function check_dependencies() {
+
+  if ! command -v az &>/dev/null; then
+    echo "Azure CLI is not installed. Please install it and try again"
+    echo "https://learn.microsoft.com/en-us/cli/azure/install-azure-cli"
+    exit 1
+  fi
+
+  if ! command -v jq &>/dev/null; then
+    echo "jq is not installed. Please install it and try again"
+    echo "https://jqlang.github.io/jq/download/"
+    exit 1
+  fi
+
+}
 ##############################################################################
 # Core functions
 ##############################################################################
@@ -704,7 +719,6 @@ function wait_cluster_provision() {
 
   ccvmipaddress=$(get_cyclecloud_ip)
 
-  wait_cyclecloud "$ccvmipaddress" "$pollingdelay"
   wait_scheduler "$ccvmipaddress" "$pollingdelay"
 }
 
@@ -713,6 +727,7 @@ function wait_cluster_provision() {
 ##############################################################################
 
 [[ "$*" =~ -h|--help|-help ]] && echo "$0 <clustername>" && exit 0
+check_dependencies
 
 echo ">> Logfile: $LOGFILE"
 

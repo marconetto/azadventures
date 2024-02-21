@@ -347,8 +347,9 @@ function create_cluster_cloudinit_files() {
             attempts=5
             echo "import projdir=\$projdir locker=\$locker"
             for (( i=1; i<=attempts; i++ )); do
-                runuser -l $ADMINUSER -c "cd \$projdir ; cyclecloud project upload \"\$locker\""
-                if [[ \$? -eq 0 ]]; then
+
+                runuser -l $ADMINUSER -c "cd \$projdir ; cyclecloud project upload \"\$locker\"" > /tmp/ccimport
+                if cat /tmp/ccimport | grep "Upload complete"; then
                     break
                 else
                     echo "failed to import project... trying it again"

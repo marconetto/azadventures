@@ -12,8 +12,8 @@ To achieve this goal we rely on a cluster provisioning script described in
 a previous blog post (see
 [here](https://techcommunity.microsoft.com/t5/azure-high-performance-computing/automated-deployment-of-cyclecloud-and-slurm-using-cli/ba-p/3943666)),
 which is based on Command Line Interface (CLI) from both Azure and Azure
-CycleCloud. We then extended this script to automatically setup EESSI (European
-Environment for Scientific Software Installations)---see a previous blog post on
+CycleCloud. We then extended this script to automatically setup [EESSI (European
+Environment for Scientific Software Installations)](https://www.eessi-hpc.org/)---see a previous blog post on
 EESSI
 [here](https://techcommunity.microsoft.com/t5/azure-compute-blog/accessing-the-eessi-common-stack-of-scientific-software-using/ba-p/3688602).
 And to make things concrete, we describe here how we put all of this together
@@ -46,6 +46,13 @@ Here is the git repository that contains the script:
 - Azure CLI must be setup in the machine that triggers the script call (i.e. `az login` should work with the subscription for deployment). The command `jq` must also be available.
 
 ## 1. How to run the script
+
+Download the repository where the script is hosted:
+
+```
+git clone https://github.com/marconetto/azadventures.git
+cd azadventures/chapter12
+```
 
 Customize variables in `setvars.sh`, including resource group, storage account,
 keyvault, among others and `source` the file:
@@ -172,6 +179,11 @@ cluster nodes, storage options, deployment region, network ports to access
 a scheduler node, cluster partitions/queues, etc. All these can also be
 parameterized, so a template can be used for multiple use cases.
 
+1. CycleCloud cluster template docs  [LINK 1](https://learn.microsoft.com/en-us/training/modules/customize-clusters-azure-cyclecloud/2-describe-templates)
+1. CycleCloud cluster templates docs [LINK 2](https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/cluster-templates?view=cyclecloud-8)
+
+Here is an example of a cluster template for a SLURM cluster: [LINK](https://github.com/Azure/cyclecloud-slurm/blob/master/templates/slurm.txt)
+
 The format of these cluster templates follow the INI format. Further details can be
 found in both links below:
 
@@ -191,10 +203,6 @@ found in both links below:
 ```
 
 
-1. cyclecloud cluster templates [LINK 1](https://learn.microsoft.com/en-us/training/modules/customize-clusters-azure-cyclecloud/2-describe-templates)
-1. cyclecloud cluster templates [LINK 2](https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/cluster-templates?view=cyclecloud-8)
-
-Here is an example of a cluster template for a SLURM cluster: [LINK](https://github.com/Azure/cyclecloud-slurm/blob/master/templates/slurm.txt)
 
 #### Cluster projects
 
@@ -453,7 +461,8 @@ ways.
 1. SLURM cluster template: <br>
    <https://github.com/Azure/cyclecloud-slurm/blob/master/templates/slurm.txt>
 1. cyclecloud cloud-init: <br> <https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/cloud-init?view=cyclecloud-8>
-1. EESSI:<br> <https://www.eessi.io/docs/getting_access/native_installation/>
+1. EESSI Website:<br> <https://www.eessi-hpc.org/>
+1. EESSI Getting Access:<br> <https://www.eessi.io/docs/getting_access/native_installation/>
 1. EESSI+WRF on Azure: <br> <https://easybuild.io/eum22/013_eum22_WRF_Azure_EESSI.pdf>
-1. SPACK: <br> <https://spack.io/>
+1. SPACK Website: <br> <https://spack.io/>
 1. EasyBuild: <br> <https://easybuild.io/>

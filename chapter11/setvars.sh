@@ -2,7 +2,12 @@ export RG=mydemo
 export REGION=eastus
 
 export VMNAME=${RG}vm
-export SKU=Standard_B2ms
+
+export SKUCYCLECLOUD=Standard_E32s_v4
+export SKUSCHEDULER=Standard_F2s_v2
+export SKUHPCNODES=Standard_F2s_v2
+#export SKUHPCNODES=Standard_HB120rs_v3
+
 export VMIMAGE=microsoft-dsvm:ubuntu-hpc:1804:18.04.2021120101
 export ADMINUSER=azureuser
 

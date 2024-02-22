@@ -9,7 +9,6 @@ IFS=$'\n\t'
 : ${REGION:=eastus}
 
 : ${VMNAME:=${RG}vm}
-: ${SKU:=Standard_B2ms}
 : ${VMIMAGE:=microsoft-dsvm:ubuntu-hpc:1804:18.04.2021120101}
 : ${ADMINUSER:=azureuser}
 
@@ -20,6 +19,10 @@ IFS=$'\n\t'
 : ${VMVNETNAME:=${RG}VNET}
 : ${VMSUBNETNAME:=${RG}SUBNET}
 
+: ${SKUCYCLECLOUD:=Standard_B2ms}
+: ${SKUSCHEDULER:=Standard_F2s_v2}
+: ${SKUHPCNODES:=Standard_F2s_v2}
+
 # Checking status for cyclecloud provisioning is not mandatory
 : ${VPNRG:=}
 : ${VPNVNET:=}
@@ -27,6 +30,12 @@ IFS=$'\n\t'
 # /21 will give you 2k IP addresses
 CIDRVNETADDRESS="$VNETADDRESS"/16
 CIDRSUBVNETADDRESS="$VNETADDRESS"/21
+
+HPCNCORES=5000
+HTCNCORES=5000
+
+CYCLECLOUDVERSION=8.5.0-3196
+#CYCLECLOUDVERSION=8.4.0-3122
 
 ##############################################################################
 # Definitions that are not recommended to be changed
@@ -90,21 +99,8 @@ function return_typed_password() {
   set +u
   password=""
   echo -n ">> Enter password: " >&2
-  while IFS= read -p "$prompt" -r -s -n 1 char; do
-    if [[ $char == $'\0' ]]; then
-      break
-    fi
-    if [[ $char == $'\177' ]]; then
-      prompt=$'\b \b'
-      password="${password%?}"
-    else
-      prompt='*'
-      password+="$char"
-    fi
-  done
+  read -s password
   echo "$password"
-  echo "" >&2
-  set -u
 }
 
 function get_password_manually() {
@@ -113,6 +109,7 @@ function get_password_manually() {
 
   while true; do
     password1=$(return_typed_password)
+    echo
     password2=$(return_typed_password)
 
     if [[ ${password1} != ${password2} ]]; then
@@ -122,6 +119,7 @@ function get_password_manually() {
     fi
   done
   CCPASSWORD=$password1
+  echo
 }
 
 function validate_secret_availability() {
@@ -150,6 +148,35 @@ function validate_secret_availability() {
   fi
 }
 
+function check_dependencies() {
+
+  if ! command -v az &>/dev/null; then
+    echo "Azure CLI is not installed. Please install it and try again"
+    echo "https://learn.microsoft.com/en-us/cli/azure/install-azure-cli"
+    exit 1
+  fi
+
+  if ! command -v jq &>/dev/null; then
+    echo "jq is not installed. Please install it and try again"
+    echo "https://jqlang.github.io/jq/download/"
+    exit 1
+  fi
+
+  if ! az account show &>/dev/null; then
+    echo "You are not logged in. Please use az login and try again"
+    exit 1
+  fi
+
+}
+
+function set_subscription() {
+
+  account_info=$(az account show)
+  subscription=$(echo "$account_info" | jq -r '.name')
+  # az account set --subscription "$SUBSCRIPTION"
+
+  echo ">> Using subscription: $subscription"
+}
 ##############################################################################
 # Core functions
 ##############################################################################
@@ -230,7 +257,11 @@ function create_cluster_cloudinit_files() {
           "HTCImageName" : "$CLUSTERIMAGE",
           "HPCImageName" : "$CLUSTERIMAGE",
           "SchedulerImageName" : "$CLUSTERIMAGE",
-          "DynamicImageName" : "$CLUSTERIMAGE"
+          "DynamicImageName" : "$CLUSTERIMAGE",
+          "SchedulerMachineType" :  "$SKUSCHEDULER",
+          "HPCMachineType" :  "$SKUHPCNODES",
+          "MaxHPCExecuteCoreCount": "$HPCNCORES",
+          "MaxHTCExecuteCoreCount": "$HTCNCORES"
         }
 
     - path: $CREATECLUSTERFILE
@@ -312,7 +343,7 @@ runcmd:
     - wget -qO - https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
     - echo 'deb https://packages.microsoft.com/repos/cyclecloud bionic main' > /etc/apt/sources.list.d/cyclecloud.list
     - apt-get update
-    - apt-get install -yq cyclecloud8=8.4.0-3122
+    - apt-get install -yq cyclecloud8=$CYCLECLOUDVERSION
     - /opt/cycle_server/cycle_server await_startup
 
     # Collect and process admin password and ssh public key
@@ -433,16 +464,30 @@ function create_vm() {
   az vm create -n "$VMNAME" \
     -g "$RG" \
     --image "$VMIMAGE" \
-    --size "$SKU" \
+    --size "$SKUCYCLECLOUD" \
     --vnet-name "$VMVNETNAME" \
     --subnet "$VMSUBNETNAME" \
     --public-ip-address "" \
     --admin-username "$ADMINUSER" \
     --assign-identity \
     --generate-ssh-keys \
+    --no-wait \
     --custom-data "$CLOUDINITFILE"
 
+  set +e
+
+  while true; do
+    vm_principal=$(az vm show -g "$RG" -n "$VMNAME" --query identity.principalId -o tsv)
+    error=$?
+    [[ "$error" == 0 ]] && break
+    sleep 10
+    echo "waiting for VM principal ID..."
+  done
+  echo "VM principal ID: $vm_principal"
+  set -e
+
   showstatusmsg "done"
+
 }
 
 function peer_vpn() {
@@ -464,13 +509,13 @@ function peer_vpn() {
     curl "$URL" -O -s >/dev/null 2>&1
   else
     echo "File does not exist. $URL"
-    showstatusmsg "failed"
+    showstatusmsg "warning"
   fi
 
   bash ./create_peering_vpn.sh "$VPNRG" "$VPNVNET" "$RG" "$VMVNETNAME"
 
   if [[ $? -ne 0 ]]; then
-    showstatusmsg "failed"
+    showstatusmsg "warning"
   else
     VPNVNETPEERED=true
     showstatusmsg "done"
@@ -521,7 +566,7 @@ function add_vm_permission_subscription() {
     --role "Contributor" \
     --scope "/subscriptions/${subscription}"
 
-  az role assignment list --assignee "${VMPrincipalID}"
+  # az role assignment list --assignee "${VMPrincipalID}"
 
   showstatusmsg "done"
 }
@@ -647,6 +692,9 @@ function wait_cluster_provision() {
 ##############################################################################
 
 [[ "$*" =~ -h|--help|-help ]] && echo "$0 <clustername>" && exit 0
+
+check_dependencies
+set_subscription
 
 echo ">> Logfile: $LOGFILE"
 

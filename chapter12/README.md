@@ -17,7 +17,7 @@ Environment for Scientific Software Installations)](https://www.eessi-hpc.org/)-
 EESSI
 [here](https://techcommunity.microsoft.com/t5/azure-compute-blog/accessing-the-eessi-common-stack-of-scientific-software-using/ba-p/3688602).
 And to make things concrete, we describe here how we put all of this together
-using WRF (Weather Research & Forecasting) Model as a use case scenario.
+using [WRF (Weather Research & Forecasting) Model](https://www.mmm.ucar.edu/models/wrf) as a use case scenario.
 
 ## TL;TR
 
@@ -47,7 +47,7 @@ Here is the git repository that contains the script:
 
 ## 1. How to run the script
 
-Download the repository where the script is hosted:
+Download the git repository where the script is hosted:
 
 ```
 git clone https://github.com/marconetto/azadventures.git
@@ -184,9 +184,7 @@ parameterized, so a template can be used for multiple use cases.
 
 Here is an example of a cluster template for a SLURM cluster: [LINK](https://github.com/Azure/cyclecloud-slurm/blob/master/templates/slurm.txt)
 
-The format of these cluster templates follow the INI format. Further details can be
-found in both links below:
-
+The format of these cluster templates follow the INI format.
 ```
 [cluster]
   [[node, nodearray]]
@@ -279,7 +277,7 @@ are on an existing CycleCloud VM.
 #### Creating and uploading a CycleCloud project
 
 ```
-LOCKER=`cyclecloud locker list | cut -d " " -f1`
+LOCKER=$(cyclecloud locker list | sed 's/ (.*)//')
 echo $LOCKER | cyclecloud project init cc_eessi
 ```
 

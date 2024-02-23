@@ -4,7 +4,6 @@
 
 source /cvmfs/software.eessi.io/versions/2023.06/init/bash
 module load WRF/4.4.1-foss-2022b-dmpar
-module load mpi/openmpi-4.1.5
 
 execdir="run_$((RANDOM % 90000 + 10000))"
 mkdir -p $execdir
@@ -17,6 +16,5 @@ ln -sf /shared/home/azureuser/v4.4_bench_conus12km/* .
 
 export UCX_TLS=tcp
 export UCX_NET_DEVICES=eth0
-export OMPI_MCA_pml=ucx
 
 time mpirun wrf.exe

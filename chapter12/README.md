@@ -135,7 +135,6 @@ ln -s "$wrfrundir"/* .
 ln -sf /shared/home/azureuser/v4.4_bench_conus2.5km/* .
 
 export UCX_NET_DEVICES=mlx5_ib0:1
-export OMPI_MCA_pml=ucx
 
 time mpirun wrf.exe
 ```

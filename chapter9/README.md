@@ -3,7 +3,10 @@
 **GitHub Pages: [Here](https://marconetto.github.io/azadventures/chapter9/)**
 
 The goal of this tutorial is to describe how to create a custom VM image from an
-existing VM, and provision a new VM from this custom image using CLI.
+existing VM, and provision a new VM from this custom image using CLI and
+Terraform. Here we cover the use of the Azure VM image gallery, which is created
+to host the VM images to be used in a subscription. We do not cover here the
+creation of VM images to be published in the Azure Marketplace.
 
 Content of this git folder:
 - [terra folder](https://github.com/marconetto/azadventures/tree/main/chapter9/terra): terraform scripts to provision VM with custom image
@@ -251,3 +254,9 @@ terraform apply main.tfplan
 - **Troubleshooting shared image:** <https://learn.microsoft.com/en-us/azure/virtual-machines/troubleshooting-shared-images>
 - **Generalized Azure VM:** <https://learn.microsoft.com/en-us/azure/virtual-machines/generalize>
 - **Provision VM with Terraform:** <https://learn.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-terraform>
+- **Azure Marketplace**:
+  <https://learn.microsoft.com/en-us/partner-center/create-account>
+- **Azure Marketplace:**
+  <https://learn.microsoft.com/en-us/partner-center/marketplace/azure-app-offer-setup>
+- **VM offer in Azure Marketplace:**
+  <https://learn.microsoft.com/en-us/partner-center/marketplace/azure-vm-offer-setup>

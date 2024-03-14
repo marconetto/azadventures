@@ -47,11 +47,6 @@ There are also different types of images:
   azure image gallery in your subscription.
 
 
-Shared Image Gallery: Azure Shared Image Gallery is a service that enables users to centrally manage and share custom VM images, including across different Azure Active Directory tenants. Shared Image Gallery simplifies image distribution and governance for organizations with complex deployment requirements.
-
-
-
-
 In Azure, **VM image definitions** consist of three main fields:
 
 - **Publisher:** The publisher represents the entity that created the VM image.

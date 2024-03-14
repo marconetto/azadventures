@@ -103,6 +103,11 @@ resource "azurerm_linux_virtual_machine" "my_terraform_vm" {
     storage_account_type = "Premium_LRS"
   }
 
+  # EDIT here (and comment lines for source_image_reference) to use custom image from gallery
+  #
+  # source_image_id = "/subscriptions/<Subscription ID>/resourceGroups/mygalleryrg/providers/Microsoft.Compute/galleries/mygallery/images/myimagedef/versions/1.0.0"
+
+  # platform/marketplace image
   source_image_reference {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-jammy"

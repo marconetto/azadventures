@@ -242,25 +242,25 @@ terraform apply main.tfplan
 
 ## References
 
-- **azure cli:**<br>
-<https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt]>
-- **tutorial linux custom images:**<br>
+- **azure cli:**
+<https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt>
+- **tutorial linux custom images:**
 <https://learn.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-custom-images>
-- **specialized vs generalized images:**<br>
+- **specialized vs generalized images:**
 <https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries?tabs=azure-cli#generalized-and-specialized-images>
-- **VM image definitions:**<br>
+- **VM image definitions:**
 <https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries?tabs=azure-cli#image-definitions>
-- **Azure HPC images blog:**<br>
+- **Azure HPC images blog:**
 <https://techcommunity.microsoft.com/t5/azure-compute-blog/azure-hpc-vm-images/ba-p/977094>
-- **Azure HPC image docs:**<br>
+- **Azure HPC image docs:**
 <https://learn.microsoft.com/en-us/azure/virtual-machines/configure#centos-hpc-vm-images>
-- **azure marketplace:**<br>
+- **azure marketplace:**
 <https://azuremarketplace.microsoft.com/en-us/marketplace/apps>
-- **azure shared image gallery:**<br>
+- **azure shared image gallery:**
 <https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries>
-- **troubleshooting shared image:**<br>
+- **troubleshooting shared image:**
 <https://learn.microsoft.com/en-us/azure/virtual-machines/troubleshooting-shared-images>
-- **generalized azure VM:**<br>
+- **generalized azure VM:**
 <https://learn.microsoft.com/en-us/azure/virtual-machines/generalize>
-- **provision vm with terraform:**<br>
+- **provision vm with terraform:**
 <https://learn.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-terraform>

@@ -9,11 +9,9 @@ Content of this git folder:
 - [terra folder](https://github.com/marconetto/azadventures/tree/main/chapter9/terra): terraform scripts to provision VM with custom image
 
 
-
 *DISCLAIMER: This document is work-in-progress and my personal experience
 performing this task.*
 
-<br>
 ---
 
 

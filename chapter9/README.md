@@ -247,7 +247,7 @@ terraform apply main.tfplan
 - **tutorial linux custom images:**<br>
 <https://learn.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-custom-images>
 - **specialized vs generalized images:**<br>
-https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries?tabs=azure-cli#generalized-and-specialized-images>
+<https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries?tabs=azure-cli#generalized-and-specialized-images>
 - **VM image definitions:**<br>
 <https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries?tabs=azure-cli#image-definitions>
 - **Azure HPC images blog:**<br>

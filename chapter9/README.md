@@ -1,4 +1,4 @@
-## Create Custom VM images
+## Create Custom VM images (and use them via CLI/Terraform)
 
 The goal of this tutorial is to describe how to create a custom VM image from an
 existing VM, and provision a new VM from this custom image using CLI.
@@ -235,13 +235,13 @@ terraform apply main.tfplan
 ## References
 
 - **azure cli:**<br>
-  <https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt]>
+<https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt]>
 - **tutorial linux custom images:**<br>
-  <https://learn.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-custom-images>
+<https://learn.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-custom-images>
 - **specialized vs generalized images:**<br>
- <https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries?tabs=azure-cli#generalized-and-specialized-images>
+https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries?tabs=azure-cli#generalized-and-specialized-images>
 - **VM image definitions:**<br>
- <https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries?tabs=azure-cli#image-definitions>
+<https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries?tabs=azure-cli#image-definitions>
 - **Azure HPC images blog:**<br>
 <https://techcommunity.microsoft.com/t5/azure-compute-blog/azure-hpc-vm-images/ba-p/977094>
 - **Azure HPC image docs:**<br>
@@ -250,7 +250,7 @@ terraform apply main.tfplan
 <https://azuremarketplace.microsoft.com/en-us/marketplace/apps>
 - **azure shared image gallery:**<br>
 <https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries>
-- **troubleshooting shared image:**
+- **troubleshooting shared image:**<br>
 <https://learn.microsoft.com/en-us/azure/virtual-machines/troubleshooting-shared-images>
 - **generalized azure VM:**<br>
 <https://learn.microsoft.com/en-us/azure/virtual-machines/generalize>

@@ -1,4 +1,4 @@
-## Create Custom VM images (and use them via CLI/Terraform)
+## Create custom VM images (and use them via CLI/Terraform)
 
 **GitHub Pages: [Here](https://marconetto.github.io/azadventures/chapter9/)**
 

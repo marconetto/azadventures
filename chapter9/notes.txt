@@ -1,6 +1,0 @@
-https://microsofteur.sharepoint.com/teams/HPCandAISupportTeam/SitePages/Newsletter---fall%2723-Edition.aspx
-
-
-commands
-
-az account list-locations

@@ -240,25 +240,14 @@ terraform apply main.tfplan
 
 ## References
 
-- **Azure CLI:**
-<https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt>
-- **Tutorial linux custom images:**
-<https://learn.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-custom-images>
-- **Specialized vs generalized images:**
-<https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries?tabs=azure-cli#generalized-and-specialized-images>
-- **VM image definitions:**
-<https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries?tabs=azure-cli#image-definitions>
-- **Azure HPC images blog:**
-<https://techcommunity.microsoft.com/t5/azure-compute-blog/azure-hpc-vm-images/ba-p/977094>
-- **Azure HPC image docs:**
-<https://learn.microsoft.com/en-us/azure/virtual-machines/configure#centos-hpc-vm-images>
-- **Azure marketplace:**
-<https://azuremarketplace.microsoft.com/en-us/marketplace/apps>
-- **Azure shared image gallery:**
-<https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries>
-- **Troubleshooting shared image:**
-<https://learn.microsoft.com/en-us/azure/virtual-machines/troubleshooting-shared-images>
-- **Generalized Azure VM:**
-<https://learn.microsoft.com/en-us/azure/virtual-machines/generalize>
-- **Provision VM with Terraform:**
-<https://learn.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-terraform>
+- **Azure CLI:** <https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt>
+- **Tutorial linux custom images:** <https://learn.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-custom-images>
+- **Specialized vs generalized images:** <https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries?tabs=azure-cli#generalized-and-specialized-images>
+- **VM image definitions:** <https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries?tabs=azure-cli#image-definitions>
+- **Azure HPC images blog:** <https://techcommunity.microsoft.com/t5/azure-compute-blog/azure-hpc-vm-images/ba-p/977094>
+- **Azure HPC image docs:** <https://learn.microsoft.com/en-us/azure/virtual-machines/configure#centos-hpc-vm-images>
+- **Azure marketplace:** <https://azuremarketplace.microsoft.com/en-us/marketplace/apps>
+- **Azure shared image gallery:** <https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries>
+- **Troubleshooting shared image:** <https://learn.microsoft.com/en-us/azure/virtual-machines/troubleshooting-shared-images>
+- **Generalized Azure VM:** <https://learn.microsoft.com/en-us/azure/virtual-machines/generalize>
+- **Provision VM with Terraform:** <https://learn.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-terraform>

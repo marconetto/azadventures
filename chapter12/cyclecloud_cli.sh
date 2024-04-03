@@ -102,21 +102,8 @@ function return_typed_password() {
   set +u
   password=""
   echo -n ">> Enter password: " >&2
-  while IFS= read -p "$prompt" -r -s -n 1 char; do
-    if [[ $char == $'\0' ]]; then
-      break
-    fi
-    if [[ $char == $'\177' ]]; then
-      prompt=$'\b \b'
-      password="${password%?}"
-    else
-      prompt='*'
-      password+="$char"
-    fi
-  done
+  read -s password
   echo "$password"
-  echo "" >&2
-  set -u
 }
 
 function get_password_manually() {
@@ -125,6 +112,7 @@ function get_password_manually() {
 
   while true; do
     password1=$(return_typed_password)
+    echo
     password2=$(return_typed_password)
 
     if [[ ${password1} != ${password2} ]]; then
@@ -134,6 +122,7 @@ function get_password_manually() {
     fi
   done
   CCPASSWORD=$password1
+  echo
 }
 
 function validate_secret_availability() {

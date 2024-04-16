@@ -19,7 +19,7 @@ tutorials in this repository.
 5. [Chapter5:](chapter5/) VMSS with NFS on blob
 6. [Chapter6:](chapter6/) Auto scaling in VMSS
 7. [Chapter7:](chapter7/) Boot worker processes in VMSS
-8. Chapter8: TBD
+8. [Chapter8:](chapter8) Notes on cloud init (WIP)
 9. [Chapter9:](chapter9/) Create custom VM images (and use them via CLI/Terraform)
 10. [Chapter10:](chapter10/) Run MPI jobs using Azure Batch + NFS
 11. [Chapter11:](chapter11/) Automated deployment of CycleCloud and SLURM using CLI

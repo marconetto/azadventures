@@ -24,5 +24,6 @@ tutorials in this repository.
 10. [Chapter10:](chapter10/) Run MPI jobs using Azure Batch + NFS
 11. [Chapter11:](chapter11/) Automated deployment of CycleCloud and SLURM using CLI
 12. [Chapter12:](chapter12/) Quick HPC Cluster Creation with Apps using CycleCloud and EESSI: A WRF example
+13. [Chapter13:](chapter13/) Quick intro on containers and Azure Container Instances (ACI) example
 
 

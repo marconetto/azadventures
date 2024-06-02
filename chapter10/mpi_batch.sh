@@ -52,9 +52,8 @@ function create_vnet_subnet() {
 
 function create_vm() {
 
-  echo "creating $VMNAME for testing"
-
   vmname="${VMNAMEPREFIX}_"$(get_random_code)
+  echo "creating $vmname for testing"
 
   FILE=/tmp/vmcreate.$$
   cat <<EOF >$FILE

@@ -186,6 +186,7 @@ function create_keyvault() {
   az keyvault create --resource-group $RG \
     --name $KEYVAULT \
     --location "$REGION" \
+    --enable-rbac-authorization false \
     --enabled-for-deployment true \
     --enabled-for-disk-encryption true \
     --enabled-for-template-deployment true

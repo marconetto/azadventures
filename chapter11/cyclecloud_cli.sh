@@ -34,8 +34,8 @@ CIDRSUBVNETADDRESS="$VNETADDRESS"/21
 HPCNCORES=5000
 HTCNCORES=5000
 
-CYCLECLOUDVERSION=8.6.1-3248
-#CYCLECLOUDVERSION=8.5.0-3196
+# CYCLECLOUDVERSION=8.6.1-3248
+CYCLECLOUDVERSION=8.5.0-3196
 #CYCLECLOUDVERSION=8.4.0-3122
 
 ##############################################################################
@@ -345,6 +345,8 @@ runcmd:
     - wget -qO - https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
     - echo 'deb https://packages.microsoft.com/repos/cyclecloud bionic main' > /etc/apt/sources.list.d/cyclecloud.list
     - apt-get update
+    - apt-get install openjdk-8-jdk -y
+    - update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
     - apt-get install -yq cyclecloud8=$CYCLECLOUDVERSION
     - /opt/cycle_server/cycle_server await_startup
 

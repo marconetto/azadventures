@@ -8,7 +8,7 @@ export SKUSCHEDULER=Standard_D4ads_v5
 export SKUHPCNODES=Standard_F2s_v2
 #export SKUHPCNODES=Standard_HB120rs_v3
 
-export VMIMAGE=microsoft-dsvm:ubuntu-hpc:1804:18.04.2021120101
+export VMIMAGE=microsoft-dsvm:ubuntu-hpc:2204:18.04.2021120101
 export ADMINUSER=azureuser
 
 export STORAGEACCOUNT=${RG}sa

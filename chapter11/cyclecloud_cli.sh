@@ -34,7 +34,8 @@ CIDRSUBVNETADDRESS="$VNETADDRESS"/21
 HPCNCORES=5000
 HTCNCORES=5000
 
-CYCLECLOUDVERSION=8.5.0-3196
+CYCLECLOUDVERSION=8.6.1-3248
+#CYCLECLOUDVERSION=8.5.0-3196
 #CYCLECLOUDVERSION=8.4.0-3122
 
 ##############################################################################
@@ -217,6 +218,7 @@ function create_keyvault() {
   az keyvault create --resource-group "$RG" \
     --name "$KEYVAULT" \
     --location "$REGION" \
+    --enable-rbac-authorization false \
     --enabled-for-deployment true \
     --enabled-for-disk-encryption true \
     --enabled-for-template-deployment true

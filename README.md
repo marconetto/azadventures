@@ -25,5 +25,7 @@ tutorials in this repository.
 11. [Chapter11:](chapter11/) Automated deployment of CycleCloud and SLURM using CLI
 12. [Chapter12:](chapter12/) Quick HPC Cluster Creation with Apps using CycleCloud and EESSI: A WRF example
 13. [Chapter13:](chapter13/) Quick intro on containers and Azure Container Instances (ACI) example
+13. [Chapter14:](chapter14/) Example Azure Batch+Container (SOON AVAILABLE)
+13. [Chapter15:](chapter15/) Process Pinning (WIP)
 
 

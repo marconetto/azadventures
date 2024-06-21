@@ -25,6 +25,7 @@ In hybrid parallel applications, that is, those mixing distributed and shared
 memory (e.g. OpenMPI and MPI), each process has multiple threads so, handling
 the mapping of threads to leverage the same L3 cache is beneficial.
 
+---
 
 #### A bit on OpenMPI pinning flags
 
@@ -33,7 +34,9 @@ specify how the pinning should take place.
 
 [Here](https://www-lb.open-mpi.org/papers/sc-2016/Open-MPI-SC16-BOF.pdf), on
 page 84 onwards, you will find examples for OpenMPI `--map-by`, `--rank-by` and
-`--bind-to`.
+`--bind-to`. This following reference also has an interesting description about
+this topic:
+[[LINK]](https://github.com/open-mpi/ompi/wiki/ProcessPlacement).
 
 Terminology:
 
@@ -70,8 +73,12 @@ L3 cache and memory controllers within a Core Complex (CCD).
 - Assigns MPI_COMM_WORLD rank to each process
 
 **Binding**
+- Constrain a process to execute on specific resources on a node.
+- Processes can be bound to any resource on a node, including NUMA regions, sockets, and caches.
 - Binds processes to specific processing elements
 - Detects overload
+
+
 
 
 The following document contains an overview of the relationship between CCD and
@@ -104,10 +111,12 @@ Example: `mpirun --bind-to core ./your_program`
 
 `--report-bindings`: Reports the binding of processes after execution.
 
-In summary, `--map-by` controls where processes are initially placed, whereas
+In summary, `--map-by` controls where processes are initially placed (i.e.
+assign processes a hardware component), whereas
 `--bind-to` to control how processes are pinned to specific hardware resources
-once placed.
+once placed (i.e. restrict the motion of processes in the mapped hardware).
 
+---
 
 #### Check compute node information
 
@@ -210,6 +219,7 @@ can generate an image. For the image support, you may need to install
 lstopo --output-format png --no-legend  --no-io output.png
 ```
 
+---
 
 #### Pinning on Azure HPC VMs
 
@@ -225,11 +235,13 @@ placement with the instructions from the blog.
 VMs](https://techcommunity.microsoft.com/t5/azure-high-performance-computing/optimal-mpi-process-placement-for-azure-hb-series-vms/ba-p/2450663)
 
 
+There is another blog, which describes a python tool to assist on process
+pinning for Azure HPC SKUs:
+
+- [Blog: Tool to assist in optimal pinning of processes/threads for Azure HPC/AI VM’s](https://techcommunity.microsoft.com/t5/azure-high-performance-computing/tool-to-assist-in-optimal-pinning-of-processes-threads-for-azure/ba-p/2672201)
 
 
-
-
-
+---
 
 ### References
 
@@ -247,5 +259,7 @@ VMs](https://techcommunity.microsoft.com/t5/azure-high-performance-computing/opt
 - [lstopo tool (from hwloc)](https://github.com/open-mpi/hwloc)
 - [discussion on docs about OpenMPI mapped-by,rank-by, and bind-to](https://github.com/open-mpi/ompi/issues/7042)
 - [OpenMPI Wiki - Process Placement](https://github.com/open-mpi/ompi/wiki/ProcessPlacement)
+- [Binding/Mapping/Ranking Page 66](https://agenda.infn.it/event/31877/contributions/181482/attachments/97828/135121/Introduction_to_MPI_esc22_07102022.pdf)
+- [PETSc discussion on mpi process mapping](https://petsc.org/main/manual/performance/)
 
 

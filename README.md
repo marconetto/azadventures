@@ -6,7 +6,14 @@
 Here we have a set of tutorials to work with Azure cloud technologies.
 
 These tutorials represent my personal experience and may be helpful for other
-people.
+people. They are snapshots in time for a particular question I needed more
+investigation or I was just curious about. They may not represent the best
+approach to solve a particular problem. Consider as "some notes" with no
+warranty at all.
+
+Some of them got (or will get) published at Azure HPC tech blog website
+[[LINK]](
+https://techcommunity.microsoft.com/t5/azure-high-performance-computing/bg-p/AzureHighPerformanceComputingBlog).
 
 Each folder contains a different tutorial and one tutorial may link to other
 tutorials in this repository.

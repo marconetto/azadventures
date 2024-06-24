@@ -265,9 +265,10 @@ pinning for Azure HPC SKUs:
 - [blog: Performance of Azure HBv4 and HX VMs for HPC (Nov 2022)](https://techcommunity.microsoft.com/t5/azure-high-performance-computing/performance-of-azure-hbv4-and-hx-vms-for-hpc/ba-p/3673730)
 - [HBv4
 overview](https://learn.microsoft.com/en-us/azure/virtual-machines/hbv4-series-overview)
-- [HBv3 overview]()https://learn.microsoft.com/en-us/azure/virtual-machines/hbv3-series-overview
+- [HBv3 overview](https://learn.microsoft.com/en-us/azure/virtual-machines/hbv3-series-overview)
 - [Azure HPC apps setup git repo](https://github.com/Azure/azurehpc/tree/master/apps)
 - [Compiling/scaling HPC apps overview tips](https://learn.microsoft.com/en-us/azure/virtual-machines/compiling-scaling-applications)
 - [Choosing MPI in Azure overview](https://learn.microsoft.com/en-us/azure/virtual-machines/setup-mpi)
+- [Azure HPC images - release notes](https://github.com/Azure/azhpc-images/releases)
 
 

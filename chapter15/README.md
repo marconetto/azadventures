@@ -261,5 +261,7 @@ pinning for Azure HPC SKUs:
 - [OpenMPI Wiki - Process Placement](https://github.com/open-mpi/ompi/wiki/ProcessPlacement)
 - [Binding/Mapping/Ranking Page 66](https://agenda.infn.it/event/31877/contributions/181482/attachments/97828/135121/Introduction_to_MPI_esc22_07102022.pdf)
 - [PETSc discussion on mpi process mapping](https://petsc.org/main/manual/performance/)
+- [blog: Performance & Scalability of HBv4 and HX-Series VMs with Genoa-X CPUs (Jun 2023)](https://techcommunity.microsoft.com/t5/azure-high-performance-computing/performance-amp-scalability-of-hbv4-and-hx-series-vms-with-genoa/ba-p/3846766)
+- [blog: Performance of Azure HBv4 and HX VMs for HPC (Nov 2022)](https://techcommunity.microsoft.com/t5/azure-high-performance-computing/performance-of-azure-hbv4-and-hx-vms-for-hpc/ba-p/3673730)
 
 

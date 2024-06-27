@@ -116,6 +116,14 @@ assign processes a hardware component), whereas
 `--bind-to` to control how processes are pinned to specific hardware resources
 once placed (i.e. restrict the motion of processes in the mapped hardware).
 
+
+If you want to test the process pinning without running your application, you
+can use something simpler, such as `hostname` application.
+
+```
+mpirun --report-bindings -np 88 --bind-to core --map-by ppr:2:socket hostname
+```
+
 ---
 
 #### Check compute node information

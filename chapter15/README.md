@@ -178,7 +178,7 @@ Here is an example of output (for HBv3). The figure was generated using
 [gnuplot](http://www.gnuplot.info/)
 but data from c2clat can be imported in excel for visualization too.
 
-<p align="center" width="100%"> <img width="75%" src="./c2clat_output.png"> </p>
+<p align="center" width="100%"> <img width="75%" src="./c2clat_output_hbv3.png"> </p>
 
 
 You can get the number of sockets:

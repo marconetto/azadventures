@@ -27,3 +27,4 @@ NVIDIA interconnects and GPUs.
 <https://www.intel.com/content/www/us/en/developer/tools/oneapi/mpi-library.html>
 - MVAPICH: <https://mvapich.cse.ohio-state.edu/>
 - NVIDIA HPC-X MPI: <https://developer.nvidia.com/networking/hpc-x>
+- MPI nuts and bolts and more: <https://www.osti.gov/servlets/purl/2386887>

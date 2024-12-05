@@ -177,7 +177,58 @@ The following OFED modules are loaded:
   mlxfw
 ```
 
+It is also possible to do some RDMA local test using the following command:
+```
+$ run_perftest_loopback 0 1 ib_write_bw -s 1000
+************************************
+* Waiting for client to connect... *
+************************************
+---------------------------------------------------------------------------------------
+                    RDMA_Write BW Test
+ Dual-port       : OFF          Device         : mlx5_ib0
+ Number of qps   : 1            Transport type : IB
+ Connection type : RC           Using SRQ      : OFF
+ PCIe relax order: ON
+---------------------------------------------------------------------------------------
+                    RDMA_Write BW Test
+ Dual-port       : OFF          Device         : mlx5_ib0
+ Number of qps   : 1            Transport type : IB
+ Connection type : RC           Using SRQ      : OFF
+ PCIe relax order: ON
+ ibv_wr* API     : ON
+ ibv_wr* API     : ON
+ CQ Moderation   : 100
+ TX depth        : 128
+ Mtu             : 4096[B]
+ CQ Moderation   : 100
+ Link type       : IB
+ Mtu             : 4096[B]
+ Max inline data : 0[B]
+ Link type       : IB
+ rdma_cm QPs     : OFF
+ Max inline data : 0[B]
+ Data ex. method : Ethernet
+ rdma_cm QPs     : OFF
+---------------------------------------------------------------------------------------
+ Data ex. method : Ethernet
+---------------------------------------------------------------------------------------
+ local address: LID 0x29b QPN 0x013c PSN 0x5cd491 RKey 0x040500 VAddr 0x0055ae3cf1c000
+ local address: LID 0x29b QPN 0x013b PSN 0xb8cbdb RKey 0x040600 VAddr 0x00560ad0c50000
+ remote address: LID 0x29b QPN 0x013b PSN 0xb8cbdb RKey 0x040600 VAddr 0x00560ad0c50000
+ remote address: LID 0x29b QPN 0x013c PSN 0x5cd491 RKey 0x040500 VAddr 0x0055ae3cf1c000
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+ #bytes     #iterations    BW peak[MiB/sec]    BW average[MiB/sec]   MsgRate[Mpps]
+ #bytes     #iterations    BW peak[MiB/sec]    BW average[MiB/sec]   MsgRate[Mpps]
+Conflicting CPU frequency values detected: 1846.550000 != 2596.396000. CPU Frequency is not max.
+ 1000       5000             4104.91            4020.54              4.215846
+---------------------------------------------------------------------------------------
+ 1000       5000             4104.91            4020.54              4.215846
+---------------------------------------------------------------------------------------
+```
 
+
+#### Exploring two nodes
 
 #### References
 
@@ -188,3 +239,7 @@ The following OFED modules are loaded:
 - [InfiniBand Principles Every HPC Expert MUST Know (Part 2)](https://www.youtube.com/watch?v=Pgy4wAw6eEo)
 - [27 Aug 18: Webinar: Introduction to InfiniBand Networks](https://www.youtube.com/watch?v=2gidd6lLiH8)
 - [High-performance computing on InfiniBand enabled HB-seri\es and N-series VMs](https://learn.microsoft.com/en-us/azure/virtual-machines/overview-hb-hc)
+- [CERN. InfiniBand Linux
+SW Stack, 2009](https://indico.cern.ch/event/218156/attachments/351726/490091/9_OFED_SW_stack.pdf)
+- [CERN, Into to InfiniBand](https://indico.cern.ch/event/218156/attachments/351724/490088/Intro_to_InfiniBand.pdf)
+- [How do a loop back test with single card installed?](https://forums.developer.nvidia.com/t/how-do-a-loop-back-test-with-single-card-installed/210070/1)

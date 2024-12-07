@@ -26,13 +26,16 @@ tutorials in this repository.
 5. [Chapter5:](chapter5/) VMSS with NFS on blob
 6. [Chapter6:](chapter6/) Auto scaling in VMSS
 7. [Chapter7:](chapter7/) Boot worker processes in VMSS
-8. [Chapter8:](chapter8) Notes on cloud init (WIP)
+8. [Chapter8:](chapter8) Notes on cloud init
 9. [Chapter9:](chapter9/) Create custom VM images (and use them via CLI/Terraform)
 10. [Chapter10:](chapter10/) Run MPI jobs using Azure Batch + NFS
 11. [Chapter11:](chapter11/) Automated deployment of CycleCloud and SLURM using CLI
 12. [Chapter12:](chapter12/) Quick HPC Cluster Creation with Apps using CycleCloud and EESSI: A WRF example
 13. [Chapter13:](chapter13/) Quick intro on containers and Azure Container Instances (ACI) example
-13. [Chapter14:](chapter14/) Example Azure Batch+Container (SOON AVAILABLE)
-13. [Chapter15:](chapter15/) Process Pinning (WIP)
+14. Chapter14: Example Azure Batch+Container (to-be-written)
+15. [Chapter15:](chapter15/) Process Pinning
+16. [Chapter16:](chapter16/) Notes on MPI Implementations
+16. [Chapter17:](chapter17/) Notes on InfiniBand
+
 
 

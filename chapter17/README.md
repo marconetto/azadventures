@@ -15,7 +15,8 @@ Direct Memory Access), enabling near-zero CPU involvement for data transfers.
 This ensures consistent, deterministic performance critical for HPC workloads.
 Furthermore, its sub-microsecond latency, advanced congestion management, and
 scalability across thousands of nodes make it the preferred choice for
-supercomputing and AI/ML applications.
+supercomputing and AI/ML applications. The network cards for InfiniBand are
+called a host channel adapters (HCAs).
 
 
 Here are the VM types (SKUs) which contain InfiniBand network in Azure:
@@ -227,13 +228,221 @@ Conflicting CPU frequency values detected: 1846.550000 != 2596.396000. CPU Frequ
 ---------------------------------------------------------------------------------------
 ```
 
+Check firmware information
+
+```
+$ ethtool -i ib0
+driver: mlx5_core[ib_ipoib]
+version: 24.07-0.6.1
+firmware-version: 20.31.1014 (MT_0000000223)
+expansion-rom-version:
+bus-info: 0101:00:00.0
+supports-statistics: yes
+supports-test: yes
+supports-eeprom-access: no
+supports-register-dump: no
+supports-priv-flags: yes
+```
+
 
 #### Exploring two nodes
+
+To run a test with two VMs, provision a VM Scale Set (VMSS) in Azure. Tests
+won't work provisioning two separate VMs
+[LINK](https://learn.microsoft.com/en-us/azure/virtual-machines/setup-infiniband).
+
+
+```
+az vmss create -n myvmss1  \
+               -g netto241206v1 \
+               --image microsoft-dsvm:ubuntu-hpc:2204:latest\
+               --vm-sku standard_hb120rs_v3  \
+               --vnet-name netto241206v1VNET  \
+               --subnet netto241206v1SUBNET  \
+               --security-type '\''Standard'\''  \
+               --public-ip-address '\'''\''  \
+               --admin-username azureuser  \
+               --instance-count 2  \
+               --generate-ssh-keys
+```
+
+Once provisioned, you can for instance run a Send Latency Test
+
+In the server machine run:
+
+```
+$ ib_send_lat --all --CPU-freq --iters=100000
+
+************************************
+* Waiting for client to connect... *
+************************************
+---------------------------------------------------------------------------------------
+                    Send Latency Test
+ Dual-port       : OFF          Device         : mlx5_ib0
+ Number of qps   : 1            Transport type : IB
+ Connection type : RC           Using SRQ      : OFF
+ PCIe relax order: ON
+ ibv_wr* API     : ON
+ RX depth        : 512
+ Mtu             : 4096[B]
+ Link type       : IB
+ Max inline data : 236[B]
+ rdma_cm QPs     : OFF
+ Data ex. method : Ethernet
+---------------------------------------------------------------------------------------
+ local address: LID 0x439 QPN 0x012e PSN 0xb9aea2
+ remote address: LID 0x43a QPN 0x012d PSN 0x3db11e
+---------------------------------------------------------------------------------------
+ #bytes #iterations    t_min[usec]    t_max[usec]  t_typical[usec]    t_avg[usec]    t_stdev[usec]   99% percentile[usec]   99.9% percentile[usec]
+ 2       100000          1.55           7.16         1.60              1.60             0.07            1.62                 3.49
+ 4       100000          1.55           7.23         1.58              1.59             0.06            1.62                 3.29
+ 8       100000          1.55           22.36        1.58              1.59             0.07            1.62                 3.22
+ 16      100000          1.55           21.41        1.58              1.59             0.07            1.62                 3.40
+ 32      100000          1.55           6.20         1.58              1.59             0.07            1.62                 3.43
+ 64      100000          1.62           6.18         1.65              1.65             0.07            1.69                 3.46
+ 128     100000          1.64           13.84        1.68              1.68             0.07            1.72                 3.52
+ 256     100000          2.08           18.54        2.12              2.13             0.10            2.17                 3.98
+ 512     100000          2.12           8.49         2.15              2.17             0.07            2.31                 3.87
+ 1024    100000          2.17           27.38        2.21              2.23             0.10            2.37                 4.04
+ 2048    100000          2.30           12.33        2.34              2.35             0.08            2.43                 4.22
+ 4096    100000          2.81           14.50        2.85              2.86             0.07            3.02                 4.44
+ 8192    100000          3.11           8.20         3.19              3.19             0.07            3.34                 5.03
+ 16384   100000          3.68           17.48        3.76              3.77             0.08            3.91                 5.57
+...
+```
+
+In the client machine run:
+
+```
+$ ib_send_lat --all --CPU-freq   --iters=100000 $SERVER
+---------------------------------------------------------------------------------------
+                    Send Latency Test
+ Dual-port       : OFF          Device         : mlx5_ib0
+ Number of qps   : 1            Transport type : IB
+ Connection type : RC           Using SRQ      : OFF
+ PCIe relax order: ON
+ ibv_wr* API     : ON
+ TX depth        : 1
+ Mtu             : 4096[B]
+ Link type       : IB
+ Max inline data : 236[B]
+ rdma_cm QPs     : OFF
+ Data ex. method : Ethernet
+---------------------------------------------------------------------------------------
+ local address: LID 0x43a QPN 0x012d PSN 0x3db11e
+ remote address: LID 0x439 QPN 0x012e PSN 0xb9aea2
+---------------------------------------------------------------------------------------
+ #bytes #iterations    t_min[usec]    t_max[usec]  t_typical[usec]    t_avg[usec]    t_stdev[usec]   99% percentile[usec]   99.9% percentile[usec]
+ 2       100000          1.55           7.17         1.60              1.60             0.09            1.62                 3.65
+ 4       100000          1.54           7.22         1.58              1.59             0.06            1.62                 3.27
+ 8       100000          1.55           22.40        1.58              1.59             0.07            1.62                 3.22
+ 16      100000          1.55           21.40        1.58              1.59             0.08            1.62                 3.40
+ 32      100000          1.55           6.20         1.58              1.59             0.07            1.62                 3.43
+ 64      100000          1.62           6.19         1.65              1.65             0.07            1.68                 3.47
+ 128     100000          1.65           13.83        1.68              1.68             0.07            1.72                 3.52
+ 256     100000          2.09           18.54        2.12              2.13             0.10            2.17                 3.98
+ 512     100000          2.12           8.49         2.16              2.17             0.07            2.31                 3.87
+ 1024    100000          2.17           27.38        2.21              2.23             0.10            2.37                 4.04
+ 2048    100000          2.30           12.34        2.34              2.35             0.08            2.43                 4.23
+ 4096    100000          2.81           14.48        2.85              2.86             0.07            3.02                 4.43
+ 8192    100000          3.11           8.18         3.19              3.19             0.07            3.34                 5.03
+ 16384   100000          3.68           17.45        3.76              3.77             0.08            3.92                 5.58
+...
+```
+
+
+Similar, Send BW test can be run. On the server machine execute:
+
+```
+$ ib_send_bw --all --CPU-freq --iters=100000
+ WARNING: BW peak won't be measured in this run.
+
+************************************
+* Waiting for client to connect... *
+************************************
+---------------------------------------------------------------------------------------
+                    Send BW Test
+ Dual-port       : OFF          Device         : mlx5_ib0
+ Number of qps   : 1            Transport type : IB
+ Connection type : RC           Using SRQ      : OFF
+ PCIe relax order: ON
+ ibv_wr* API     : ON
+ RX depth        : 512
+ CQ Moderation   : 100
+ Mtu             : 4096[B]
+ Link type       : IB
+ Max inline data : 0[B]
+ rdma_cm QPs     : OFF
+ Data ex. method : Ethernet
+---------------------------------------------------------------------------------------
+ local address: LID 0x439 QPN 0x012f PSN 0xe6be9b
+ remote address: LID 0x43a QPN 0x012e PSN 0x53099c
+---------------------------------------------------------------------------------------
+ #bytes     #iterations    BW peak[MiB/sec]    BW average[MiB/sec]   MsgRate[Mpps]
+ 2          100000           0.00               9.29                 4.869852
+ 4          100000           0.00               18.47                4.841161
+ 8          100000           0.00               37.35                4.894914
+ 16         100000           0.00               74.60                4.889038
+ 32         100000           0.00               149.31               4.892644
+ 64         100000           0.00               298.53               4.891084
+ 128        100000           0.00               596.10               4.883235
+ 256        100000           0.00               1189.91              4.873857
+ 512        100000           0.00               2370.48              4.854738
+ 1024       100000           0.00               4710.37              4.823419
+ 2048       100000           0.00               9303.36              4.763320
+ 4096       100000           0.00               18287.02             4.681478
+ 8192       100000           0.00               23539.34             3.013035
+ 16384      100000           0.00               23551.65             1.507306
+....
+```
+
+On the client side, run:
+
+```
+$ ib_send_bw --all --CPU-freq   --iters=100000 10.31.0.7
+ WARNING: BW peak won't be measured in this run.
+---------------------------------------------------------------------------------------
+                    Send BW Test
+ Dual-port       : OFF          Device         : mlx5_ib0
+ Number of qps   : 1            Transport type : IB
+ Connection type : RC           Using SRQ      : OFF
+ PCIe relax order: ON
+ ibv_wr* API     : ON
+ TX depth        : 128
+ CQ Moderation   : 100
+ Mtu             : 4096[B]
+ Link type       : IB
+ Max inline data : 0[B]
+ rdma_cm QPs     : OFF
+ Data ex. method : Ethernet
+---------------------------------------------------------------------------------------
+ local address: LID 0x43a QPN 0x012e PSN 0x53099c
+ remote address: LID 0x439 QPN 0x012f PSN 0xe6be9b
+---------------------------------------------------------------------------------------
+ #bytes     #iterations    BW peak[MiB/sec]    BW average[MiB/sec]   MsgRate[Mpps]
+ 2          100000           0.00               9.29                 4.868276
+ 4          100000           0.00               18.46                4.840157
+ 8          100000           0.00               37.34                4.893924
+ 16         100000           0.00               74.59                4.888095
+ 32         100000           0.00               149.28               4.891664
+ 64         100000           0.00               298.46               4.889968
+ 128        100000           0.00               595.96               4.882103
+ 256        100000           0.00               1189.64              4.872746
+ 512        100000           0.00               2369.90              4.853561
+ 1024       100000           0.00               4709.34              4.822369
+ 2048       100000           0.00               9301.12              4.762171
+ 4096       100000           0.00               18282.39             4.680292
+ 8192       100000           0.00               23532.80             3.012198
+ 16384      100000           0.00               23547.97             1.507070
+...
+```
+
 
 #### References
 
 - [InfiniBand at Wikipedia](https://en.wikipedia.org/wiki/InfiniBand)
 - [Introduction to InfiniBand](https://network.nvidia.com/pdf/whitepapers/IB_Intro_WP_190.pdf)
+- [Azure: Set up InfiniBand](https://learn.microsoft.com/en-us/azure/virtual-machines/setup-infiniband)
 - [InfiniBand Essentials Every HPC Expert Must Know, 2014](https://people.cs.pitt.edu/~jacklange/teaching/cs1652-f15/1_Mellanox.pdf)
 - [InfiniBand Principles Every HPC Expert MUST Know (Part 1)](https://www.youtube.com/watch?v=wecZb5lHkXk)
 - [InfiniBand Principles Every HPC Expert MUST Know (Part 2)](https://www.youtube.com/watch?v=Pgy4wAw6eEo)
@@ -243,3 +452,6 @@ Conflicting CPU frequency values detected: 1846.550000 != 2596.396000. CPU Frequ
 SW Stack, 2009](https://indico.cern.ch/event/218156/attachments/351726/490091/9_OFED_SW_stack.pdf)
 - [CERN, Into to InfiniBand](https://indico.cern.ch/event/218156/attachments/351724/490088/Intro_to_InfiniBand.pdf)
 - [How do a loop back test with single card installed?](https://forums.developer.nvidia.com/t/how-do-a-loop-back-test-with-single-card-installed/210070/1)
+- [RDMA not working with ConnectX-6](https://forums.developer.nvidia.com/t/rdma-not-working-with-connectx-6/205913/3)
+- [RedHat. Chapter 1. Introduction to InfiniBand and RDMA](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_infiniband_and_rdma_networks/understanding-infiniband-and-rdma_configuring-infiniband-and-rdma-networks)
+- [Introduction to Programming Infiniband RDMA](https://insujang.github.io/2020-02-09/introduction-to-programming-infiniband/)

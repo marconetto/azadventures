@@ -1,5 +1,6 @@
 ### Notes on InfiniBand
 
+<br>
 
 #### Overview
 
@@ -248,8 +249,7 @@ supports-priv-flags: yes
 #### Exploring two nodes
 
 To run a test with two VMs, provision a VM Scale Set (VMSS) in Azure. Tests
-won't work provisioning two separate VMs
-[LINK](https://learn.microsoft.com/en-us/azure/virtual-machines/setup-infiniband).
+won't work provisioning two separate VMs [[LINK](https://learn.microsoft.com/en-us/azure/virtual-machines/setup-infiniband)].
 
 
 ```
@@ -437,6 +437,11 @@ $ ib_send_bw --all --CPU-freq   --iters=100000 10.31.0.7
 ...
 ```
 
+
+Next step can be to explore [OSU Micro-Benchmarks](https://mvapich.cse.ohio-state.edu/benchmarks/).
+
+<br>
+<br>
 
 #### References
 

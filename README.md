@@ -35,7 +35,8 @@ tutorials in this repository.
 14. Chapter14: Example Azure Batch+Container (to-be-written)
 15. [Chapter15:](chapter15/) Process Pinning
 16. [Chapter16:](chapter16/) Notes on MPI Implementations
-16. [Chapter17:](chapter17/) Notes on InfiniBand
+17. [Chapter17:](chapter17/) Notes on InfiniBand
+18. [Chapter18:](chapter18/) Notes on NCCL
 
 
 
